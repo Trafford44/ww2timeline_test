@@ -501,7 +501,7 @@
 
           const title = document.createElement("div");
           title.className = "event-title";
-          ${film.FilmTitle}${film.ReleaseYear ? ` <span style="font-weight: normal;">(${film.ReleaseYear})</span>` : ""}
+          ${film.FilmTitle}${film.ReleaseYear ? ` <span style="font-weight: normal;">(${film.ReleaseYear})</span>` : ""};
           event.appendChild(title);
 
           const details = document.createElement("div");
