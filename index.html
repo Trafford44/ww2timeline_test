@@ -1,600 +1,506 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WW2 Film Timeline Test Site</title>
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        background: #f4f4f4;
-        margin: 20px;
-    }
-
-    h1 {
-        text-align: center;
-        margin-bottom: 20px;
-    }
-
-    .controls {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        margin-bottom: 20px;
-        justify-content: center;
-        padding: 0 10px;
-    }
-
-    input[type="text"], select, button {
-        padding: 8px;
-        font-size: 14px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-    }
-    
-    /* --- Legend Styling --- */
-    .timeline-legend {
-        max-width: 900px;
-        margin: 0 auto 20px;
-        padding: 10px 20px;
-        background: #fff;
-        border: 1px solid #ccc;
-        border-radius: 6px;
-    }
-
-    .timeline-legend summary {
-        font-weight: bold;
-        cursor: pointer;
-        padding: 5px 0;
-        list-style: none;
-    }
-    .timeline-legend summary::before {
-        content: '▶';
-        margin-right: 8px;
-        display: inline-block;
-        transition: transform 0.2s;
-    }
-    .timeline-legend[open] summary::before {
-        content: '▼';
-        transform: rotate(0deg);
-    }
-
-    .legend-content {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 30px;
-        padding-top: 10px;
-        border-top: 1px dashed #eee;
-    }
-
-    .legend-group h3 {
-        font-size: 1.1em;
-        margin-top: 0;
-        margin-bottom: 5px;
-        color: #333;
-    }
-
-    .legend-group table {
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 0.9em;
-    }
-
-    .legend-group td {
-        padding: 4px 8px 4px 0;
-        vertical-align: top;
-    }
-
-    .legend-box {
-        width: 20px;
-        padding: 0 !important;
-        border-left: 5px solid;
-        height: 1.2em;
-        background: #f9f9f9;
-    }
-    
-    /* Timeline Styling */
-    .timeline {
-        position: relative;
-        max-width: 900px;
-        margin: 0 auto;
-        padding: 20px 0;
-    }
-
-    .timeline::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 50%;
-        width: 4px;
-        background: #555;
-        transform: translateX(-50%);
-    }
-
-    .year-group {
-        position: relative;
-        margin-bottom: 80px;
-        width: 100%;
-        padding-top: 30px;
-    }
-
-    .year-marker {
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-        font-size: 1.5em;
-        font-weight: bold;
-        color: #333;
-        top: 0;
-        background: #dcdcdc;
-        padding: 4px 12px;
-        border-radius: 4px;
-        z-index: 10;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-
-    .timeline-event {
-        position: relative;
-        width: 45%;
-        padding: 15px;
-        background: #fff;
-        border-radius: 8px;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-        margin-bottom: 20px;
-        cursor: pointer;
-        transition: transform 0.2s, background-color 0.2s;
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-        border-left: 5px solid #ccc;
-    }
-
-    .timeline-event:hover {
-        transform: translateY(-3px);
-        background-color: #eaf1f9;
-    }
-
-    /* Color Coding by Classification */
-    .classification-Documentary { border-left-color: #1a8754; }
-    .classification-Dramatisation { border-left-color: #ffc107; }
-    .classification-Fiction { border-left-color: #dc3545; }
-    
-    .timeline-event.watched { 
-        border-left-width: 5px; 
-        border-left-style: solid;
-    }
-
-    /* Icon for the timeline events (Blue Dots) */
-    .timeline-event::before {
-        content: '';
-        position: absolute;
-        top: 15px;
-        width: 30px;
-        height: 30px;
-        background: #1d4ed8; 
-        border-radius: 50%;
-        z-index: 1;
-    }
-
-    .left { left: 0; }
-    .left::before { right: -55px; transform: translateX(-50%); }
-
-    .right { left: 55%; }
-    .right::before { left: -55px; transform: translateX(50%); }
-    
-    .event-title { 
-        font-weight: bold; 
-        font-size: 1.1em;
-        line-height: 1.3;
-    }
-    
-    .event-image {
-        max-width: 60px;
-        height: auto;
-        border-radius: 4px;
-        margin-right: 10px;
-        float: left;
-        object-fit: cover;
-    }
-
-    .event-details { margin-top: 5px; color: #555; font-size: 0.9em; }
-    .notes { 
-        display: none; 
-        margin-top: 10px; 
-        padding-top: 10px;
-        border-top: 1px dashed #ccc;
-        color: #444; 
-        font-style: italic; 
-        font-size: 0.9em;
-    }
-    .notes.show { display: block; }
-    
-    .rating-stars { 
-        color: #f5b301; 
-        font-size: 1.2em; 
-        display: inline-block;
-        margin-left: 5px;
-    }
-    
-    .initial-prompt {
-        text-align: center;
-        margin-top: 50px;
-        font-size: 1.2em;
-        color: #777;
-    }
-    
-    /* Platform Icon Styling */
-    .platform-icon {
-        display: inline-block;
-        width: 16px;
-        height: 16px;
-        margin-left: 4px;
-        vertical-align: middle;
-        background-size: cover;
-    }
-    .icon-Netflix { background-color: #E50914; border-radius: 2px; }
-    .icon-Prime { background-color: #00A8E1; border-radius: 2px; }
-    .icon-YouTube { background-color: #FF0000; border-radius: 2px; }
-    .icon-Apple { background-color: #555; border-radius: 50%; }
-
-    /* Watched Status Tick Icon */
-    .watched-status-icon {
-        font-size: 1.1em;
-        color: #0d6efd;
-        margin-left: 5px;
-        font-weight: bold;
-    }
-    
-    /* Notes Indicator Icon */
-    .notes-indicator {
-        font-size: 1em;
-        color: #4CAF50;
-        margin-left: 5px;
-        font-weight: bold;
-        cursor: help;
-    }
-
-
-    /* --- Responsive Design --- */
-    @media screen and (max-width: 600px) {
-        .legend-content {
-            flex-direction: column;
-            gap: 20px;
-        }
-        .legend-group td {
-            padding-right: 2px;
-        }
-    }
-    
-    @media screen and (max-width: 768px) {
-        body {
-            margin: 10px;
-        }
-        .controls {
-            padding: 0;
-            justify-content: space-around;
-        }
-        
-        .timeline::before { left: 20px; }
-        .year-marker { left: 20px; transform: none; }
-        
-        .timeline-event { 
-            width: calc(100% - 60px); 
-            left: 40px !important; 
-            padding: 10px;
-        }
-        .timeline-event::before { 
-            left: -45px !important; 
-            top: 15px; 
-            width: 20px; 
-            height: 20px;
-        }
-        .event-title {
-            font-size: 1em;
-        }
-    }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WW2 Film Timeline Test Site</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      margin: 20px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+      justify-content: center;
+      padding: 0 10px;
+    }
+    input[type="text"], select, button {
+      padding: 8px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .timeline-legend {
+      max-width: 900px;
+      margin: 0 auto 20px;
+      padding: 10px 20px;
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    .timeline-legend summary {
+      font-weight: bold;
+      cursor: pointer;
+      padding: 5px 0;
+      list-style: none;
+    }
+    .timeline-legend summary::before {
+      content: '▶';
+      margin-right: 8px;
+      display: inline-block;
+      transition: transform 0.2s;
+    }
+    .timeline-legend[open] summary::before {
+      content: '▼';
+      transform: rotate(0deg);
+    }
+    .legend-content {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
+      padding-top: 10px;
+      border-top: 1px dashed #eee;
+    }
+    .legend-group h3 {
+      font-size: 1.1em;
+      margin-top: 0;
+      margin-bottom: 5px;
+      color: #333;
+    }
+    .legend-group table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9em;
+    }
+    .legend-group td {
+      padding: 4px 8px 4px 0;
+      vertical-align: top;
+    }
+    .legend-box {
+      width: 20px;
+      padding: 0 !important;
+      border-left: 5px solid;
+      height: 1.2em;
+      background: #f9f9f9;
+    }
+    .timeline {
+      position: relative;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px 0;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 4px;
+      background: #555;
+      transform: translateX(-50%);
+    }
+    .year-group {
+      position: relative;
+      margin-bottom: 80px;
+      width: 100%;
+      padding-top: 30px;
+    }
+    .year-marker {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 1.5em;
+      font-weight: bold;
+      color: #333;
+      top: 0;
+      background: #dcdcdc;
+      padding: 4px 12px;
+      border-radius: 4px;
+      z-index: 10;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .timeline-event {
+      position: relative;
+      width: 45%;
+      padding: 15px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+      cursor: pointer;
+      transition: transform 0.2s, background-color 0.2s;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      border-left: 5px solid #ccc;
+    }
+    .timeline-event:hover {
+      transform: translateY(-3px);
+      background-color: #eaf1f9;
+    }
+    .classification-Documentary { border-left-color: #1a8754; }
+    .classification-Dramatisation { border-left-color: #ffc107; }
+    .classification-Fiction { border-left-color: #dc3545; }
+    .timeline-event.watched {
+      border-left-width: 5px;
+      border-left-style: solid;
+    }
+    .timeline-event::before {
+      content: '';
+      position: absolute;
+      top: 15px;
+      width: 30px;
+      height: 30px;
+      background: #1d4ed8;
+      border-radius: 50%;
+      z-index: 1;
+    }
+    .left { left: 0; }
+    .left::before { right: -55px; transform: translateX(-50%); }
+    .right { left: 55%; }
+    .right::before { left: -55px; transform: translateX(50%); }
+    .event-title {
+      font-weight: bold;
+      font-size: 1.1em;
+      line-height: 1.3;
+    }
+    .event-image {
+      max-width: 60px;
+      height: auto;
+      border-radius: 4px;
+      margin-right: 10px;
+      float: left;
+      object-fit: cover;
+    }
+    .event-details {
+      margin-top: 5px;
+      color: #555;
+      font-size: 0.9em;
+    }
+    .notes {
+      display: none;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px dashed #ccc;
+      color: #444;
+      font-style: italic;
+      font-size: 0.9em;
+    }
+    .notes.show { display: block; }
+    .rating-stars {
+      color: #f5b301;
+      font-size: 1.2em;
+      display: inline-block;
+      margin-left: 5px;
+    }
+    .initial-prompt {
+      text-align: center;
+      margin-top: 50px;
+      font-size: 1.2em;
+      color: #777;
+    }
+    .platform-icon {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      margin-left: 4px;
+      vertical-align: middle;
+      background-size: cover;
+    }
+    .icon-Netflix { background-color: #E50914; border-radius: 2px; }
+    .icon-Prime { background-color: #00A8E1; border-radius: 2px; }
+    .icon-YouTube { background-color: #FF0000; border-radius: 2px; }
+    .icon-Apple { background-color: #555; border-radius: 50%; }
+    .watched-status-icon {
+      font-size: 1.1em;
+      color: #0d6efd;
+      margin-left: 5px;
+      font-weight: bold;
+    }
+    .notes-indicator {
+      font-size: 1em;
+      color: #4CAF50;
+      margin-left: 5px;
+      font-weight: bold;
+      cursor: help;
+    }
+    @media screen and (max-width: 600px) {
+      .legend-content {
+        flex-direction: column;
+        gap: 20px;
+      }
+      .legend-group td {
+        padding-right: 2px;
+      }
+    }
+    @media screen and (max-width: 768px) {
+      body {
+        margin: 10px;
+      }
+      .controls {
+        padding: 0;
+        justify-content: space-around;
+      }
+      .timeline::before { left: 20px; }
+      .year-marker { left: 20px; transform: none; }
+      .timeline-event {
+        width: calc(100% - 60px);
+        left: 40px !important;
+        padding: 10px;
+      }
+      .timeline-event::before {
+        left: -45px !important;
+        top: 15px;
+        width: 20px;
+        height: 20px;
+      }
+      .event-title {
+        font-size: 1em;
+      }
+    }
+  </style>
 </head>
 <body>
+  <details class="timeline-legend">
+    <summary>Timeline Legend</summary>
+    <div class="legend-content">
+      <div class="legend-group">
+        <h3>Classification Color</h3>
+        <table>
+          <tr><td class="legend-box classification-Documentary"></td><td><strong>Documentary</strong> (Solid Green line)</td></tr>
+          <tr><td class="legend-box classification-Dramatisation"></td><td><strong>Dramatisation</strong> (Solid Amber line)</td></tr>
+          <tr><td class="legend-box classification-Fiction"></td><td><strong>Fiction</strong> (Solid Red line)</td></tr>
+        </table>
+      </div>
+      <div class="legend-group">
+        <h3>Historical Accuracy Rating</h3>
+        <table>
+          <tr><td><strong>5/5</strong></td><td>Highly accurate, closely follows historical records with minimal dramatization.</td></tr>
+          <tr><td><strong>4/5</strong></td><td>Mostly accurate, with some dramatized elements or composite characters.</td></tr>
+          <tr><td><strong>3/5</strong></td><td>Balanced mix of fact and fiction; key events are real but heavily dramatized.</td></tr>
+          <tr><td><strong>2/5</strong></td><td>Loosely based on history; significant liberties taken.</td></tr>
+          <tr><td><strong>1/5</strong></td><td>Fictional story with minimal historical grounding.</td></tr>
+        </table>
+      </div>
+      <div class="legend-group">
+        <h3>Other Symbols</h3>
+        <table>
+          <tr><td><span class="watched-status-icon">✔</span></td><td>Film has been <strong>Watched</strong></td></tr>
+          <tr><td><span class="notes-indicator">&#9999;</span></td><td>Film has <strong>Notes</strong> (Click card to view)</td></tr>
+        </table>
+      </div>
+    </div>
+  </details>
 
-<h1>WW2 Film Timeline - Test site</h1>
+  <div class="controls">
+    <input type="text" id="searchInput" placeholder="Search..." disabled>
+    <select id="watchedFilter" disabled>
+      <option value="">Watched: All</option>
+      <option value="Yes">Watched: Yes</option>
+      <option value="No">Watched: No</option>
+    </select>
+    <select id="formatFilter" disabled>
+      <option value="">Format: All</option>
+    </select>
+    <select id="classificationFilter" disabled>
+      <option value="">Classification: All</option>
+    </select>
+    <button id="clearFilters" disabled>Clear Filters</button>
+  </div>
 
-<details class="timeline-legend">
-    <summary>Timeline Legend</summary>
-    <div class="legend-content">
-        <div class="legend-group">
-            <h3>Classification Color</h3>
-            <table>
-                <tr><td class="legend-box classification-Documentary"></td><td>**Documentary** (Solid Green line)</td></tr>
-                <tr><td class="legend-box classification-Dramatisation"></td><td>**Dramatisation** (Solid Amber line)</td></tr>
-                <tr><td class="legend-box classification-Fiction"></td><td>**Fiction** (Solid Red line)</td></tr>
-            </table>
-        </div>
+  <div class="timeline" id="timeline">
+    <div class="initial-prompt" id="initialPrompt">Loading data...</div>
+  </div>
 
-        <div class="legend-group">
-            <h3>Historical Accuracy Rating</h3>
-            <table>
-                <tr><td>**5/5**</td><td>Highly accurate, closely follows historical records with minimal dramatization.</td></tr>
-                <tr><td>**4/5**</td><td>Mostly accurate, with some dramatized elements or composite characters.</td></tr>
-                <tr><td>**3/5**</td><td>Balanced mix of fact and fiction; key events are real but heavily dramatized.</td></tr>
-                <tr><td>**2/5**</td><td>Loosely based on history; significant liberties taken.</td></tr>
-                <tr><td>**1/5**</td><td>Fictional story with minimal historical grounding.</td></tr>
-            </table>
-        </div>
-        
-        <div class="legend-group">
-            <h3>Other Symbols</h3>
-            <table>
-                <tr><td><span class="watched-status-icon">✔</span></td><td>Film has been **Watched**</td></tr>
-                <tr><td><span class="notes-indicator">&#9999;</span></td><td>Film has **Notes** (Click card to view)</td></tr>
-            </table>
-        </div>
-    </div>
-</details>
-<div class="controls">
-    <input type="text" id="searchInput" placeholder="Search..." disabled>
-    <select id="watchedFilter" disabled>
-        <option value="">Watched: All</option>
-        <option value="Yes">Watched: Yes</option>
-        <option value="No">Watched: No</option>
-    </select>
-    <select id="formatFilter" disabled>
-        <option value="">Format: All</option>
-    </select>
-    <select id="classificationFilter" disabled>
-        <option value="">Classification: All</option>
-    </select>
-    <button id="clearFilters" disabled>Clear Filters</button>
-</div>
+  <script>
+    let data = [];
 
-<div class="timeline" id="timeline">
-    <div class="initial-prompt" id="initialPrompt">
-        Loading data...
-    </div>
-</div>
+    const searchInput = document.getElementById('searchInput');
+    const watchedFilter = document.getElementById('watchedFilter');
+    const formatFilter = document.getElementById('formatFilter');
+    const classificationFilter = document.getElementById('classificationFilter');
+    const clearFilters = document.getElementById('clearFilters');
+    const timelineContainer = document.getElementById('timeline');
+    const initialPrompt = document.getElementById('initialPrompt');
 
-<script>
-// =================================================================
-// NOTE: GOOGLE_DRIVE_CSV_URL is REMOVED.
-// The data is now fetched using google.script.run,
-// which calls a function in your Apps Script file (Code.gs).
-// =================================================================
-
-let data = [];
-
-// Helper functions 
-function getPlatformIcons(watchOnText) {
-    if (!watchOnText) return '';
-    const platforms = ['Netflix', 'Prime', 'YouTube', 'Apple'];
-    let icons = '';
-    
-    platforms.forEach(p => {
-        if (watchOnText.toLowerCase().includes(p.toLowerCase())) {
-            icons += `<span class="platform-icon icon-${p}" title="Available on ${p}"></span>`;
-        }
-    });
-    return icons;
-}
-
-function renderStars(rating) {
-    if (!rating) return "N/A";
-    let score = rating;
-    if (rating.includes('/')) {
-        score = parseFloat(rating.split('/')[0]);
-    } else {
-        score = parseFloat(rating);
-    }
-    
-    const fullStars = Math.floor(score);
-    const halfStar = score - fullStars >= 0.5 ? 1 : 0; 
-    const emptyStars = 5 - fullStars - halfStar;
-    return `<span class="rating-stars">${"★".repeat(fullStars)}${halfStar ? "½" : ""}${"☆".repeat(emptyStars)}</span>`;
-}
-
-// NOTE: The parseCSV function is no longer needed since the server-side
-// Apps Script will return an array of objects directly.
-// You can remove it or keep it here unused.
-
-// Get control elements
-const searchInput = document.getElementById('searchInput');
-const watchedFilter = document.getElementById('watchedFilter');
-const formatFilter = document.getElementById('formatFilter');
-const classificationFilter = document.getElementById('classificationFilter');
-const clearFilters = document.getElementById('clearFilters');
-const timelineContainer = document.getElementById('timeline');
-const initialPrompt = document.getElementById('initialPrompt');
-
-
-function renderTimeline(filteredData) {
-    timelineContainer.innerHTML = "";
-    if (filteredData.length === 0) {
-        timelineContainer.appendChild(initialPrompt);
-        initialPrompt.style.display = 'block';
-        initialPrompt.textContent = "No data found or all records filtered out.";
-        return;
-    }
-    
-    initialPrompt.style.display = 'none';
-
-    // 1. Group and sort data
-    const grouped = {};
-    filteredData.forEach(film => {
-        // Keep the year extraction logic, assuming your Apps Script returns a column named 'EventYear'
-        const year = film.EventYear ? String(film.EventYear).split('–')[0].split(' ')[0] : "Unknown Year";
-        if (!grouped[year]) grouped[year] = [];
-        grouped[year].push(film);
-    });
-
-    const sortedYears = Object.keys(grouped).sort((a, b) => {
-        // Ensure "Unknown Year" is at the end
-        if (a === "Unknown Year") return 1;
-        if (b === "Unknown Year") return -1;
-        return parseInt(a) - parseInt(b);
-    });
-
-    // 2. Render timeline
-    sortedYears.forEach(year => {
-        const filmsInYear = grouped[year];
-        const yearGroup = document.createElement("div");
-        yearGroup.className = "year-group";
-
-        const yearMarker = document.createElement("div");
-        yearMarker.className = "year-marker";
-        yearMarker.textContent = year;
-        yearGroup.appendChild(yearMarker);
-
-        filmsInYear.forEach((film, index) => {
-            const event = document.createElement("div");
-            event.className = `timeline-event ${index % 2 === 0 ? "left" : "right"}`;
-
-            if (film.Classification) {
-                event.classList.add(`classification-${String(film.Classification).split('/')[0].trim().replace(/\s/g, '-')}`);
-            }
-
-            // Define the Watched Status Text (with the tick icon)
-            const watchedStatus = film.Watched && String(film.Watched).toLowerCase() === 'yes'
-                ? `Yes <span class="watched-status-icon" title="You have watched this film.">✔</span>`
-                : (film.Watched || "No");
-            
-            // --- Notes Indicator ---
-            let notesIndicator = '';
-            if (film.Notes) {
-                notesIndicator = `<span class="notes-indicator" title="Click to view notes!">&#9999;</span>`;
-            }
-            // --- Image Rendering ---
-            let imageHTML = '';
-            if (film.ImageURL) {
-                imageHTML = `<img src="${film.ImageURL}" alt="Poster for ${film.FilmTitle}" class="event-image">`;
-            }
-            // --- End Image Rendering ---
-
-            const title = document.createElement("div");
-            title.className = "event-title";
-            title.innerHTML = `${imageHTML}${film.FilmTitle} <span style="font-weight: normal;">(${film.ReleaseYear || "n/a"})</span>${notesIndicator}`;
-            event.appendChild(title);
-
-            const details = document.createElement("div");
-            details.className = "event-details";
-            details.innerHTML = `
-                <b>Period:</b> ${film.Period}<br>
-                <b>Format:</b> ${film.Format} &nbsp; &nbsp;
-                <b>Classification:</b> ${film.Classification || "N/A"}<br>
-                <b>Running Time:</b> ${film.Running_Time}<br>
-                <b>Accuracy:</b> ${film.HistoricalAccuracy || "N/A"}<br>
-                <b>Description:</b> ${film.Short_Description || "N/A"}<br>
-                <b>Watch On:</b> ${film.WatchOn || "N/A"} ${getPlatformIcons(film.WatchOn)}<br>
-                <b>Link:</b> ${film.Link ? `<a href="${film.Link}" target="_blank">View Link</a>` : "N/A"}<br>
-                <b>Watched:</b> ${watchedStatus} &nbsp; &nbsp;
-                <b>Rating:</b> ${renderStars(film.Rating || 0)}
-            `;
-            event.appendChild(details);
-
-            if (film.Notes) {
-                const notes = document.createElement("div");
-                notes.className = "notes";
-                notes.textContent = `Notes: ${film.Notes}`;
-                event.appendChild(notes);
-
-                event.addEventListener("click", (e) => {
-                    if (e.target.tagName !== 'A') {
-                        notes.classList.toggle("show");
-                    }
-                });
-            }
-
-            yearGroup.appendChild(event);
-        });
-
-        timelineContainer.appendChild(yearGroup);
-    });
-}
-
-
-function toggleControls(enable) {
-    [searchInput, watchedFilter, formatFilter, classificationFilter, clearFilters].forEach(el => {
-        el.disabled = !enable;
-    });
-}
-
-function populateDropdowns(fullData) {
-    const formats = [...new Set(fullData.map(f => f.Format).filter(Boolean).sort())];
-    const classifications = [...new Set(fullData.map(f => f.Classification).filter(Boolean).sort())];
-    
-    formatFilter.innerHTML = '<option value="">Format: All</option>' + 
-        formats.map(f => `<option value="${f}">${f}</option>`).join("");
-
-    classificationFilter.innerHTML = '<option value="">Classification: All</option>' + 
-        classifications.map(c => `<option value="${c}">${c}</option>`).join("");
-}
-
-function applyFilters() {
-    const keyword = searchInput.value.toLowerCase();
-    const watched = watchedFilter.value;
-    const format = formatFilter.value;
-    const classification = classificationFilter.value;
-
-    const filtered = data.filter(film => {
-        let match = true;
-        
-        if (keyword) {
-            // Ensure values are converted to string for safe searching
-            match = Object.values(film).some(v => v !== null && v !== undefined && v.toString().toLowerCase().includes(keyword));
-        }
-        if (watched && film.Watched !== watched) return false;
-        if (format && film.Format !== format) return false;
-        if (classification && film.Classification !== classification) return false;
-        
-        return match;
-    });
-
-    renderTimeline(filtered);
-}
-
-// --- NEW DATA FETCH FUNCTION USING GOOGLE.SCRIPT.RUN ---
-/**
- * Success handler for the Apps Script call.
- * @param {Object[]} sheetData - The array of film objects returned from Code.gs.
- */
-function onDataSuccess(sheetData) {
-    if (!sheetData || sheetData.length === 0) {
-        initialPrompt.textContent = "Data loaded successfully, but the sheet is empty.";
-        return;
+    function getPlatformIcons(watchOnText) {
+      if (!watchOnText) return '';
+      const platforms = ['Netflix', 'Prime', 'YouTube', 'Apple', 'TVNZ', 'Neon', 'Beamafilm', 'AroVision'];
+      const seen = new Set();
+      return watchOnText.split(',').map(p => p.trim()).filter(p => {
+        const key = p.toLowerCase();
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return platforms.some(pl => key.includes(pl.toLowerCase()));
+      }).map(p => `<span class="platform-icon icon-${p}" title="Available on ${p}"></span>`).join('');
     }
-    
-    data = sheetData;
-    populateDropdowns(data);
-    toggleControls(true); 
-    renderTimeline(data);
-}
 
-/**
- * Failure handler for the Apps Script call.
- * @param {Error} error - The error object.
- */
-function onDataFailure(error) {
-    console.error("Apps Script Error:", error);
-    initialPrompt.textContent = `ERROR: Failed to load data from script. Ensure your Web App is deployed and authorized. Details: ${error.message}`;
-    toggleControls(false); 
-}
+    function renderStars(rating) {
+      if (!rating || isNaN(Date.parse(rating))) return "N/A";
+      const score = 5; // Placeholder: you can extract rating from date if needed
+      return `<span class="rating-stars">${"★".repeat(score)}${"☆".repeat(5 - score)}</span>`;
+    }
 
-async function fetchAndRenderData() {
-    initialPrompt.textContent = "Loading data via Google Apps Script...";
-   
-    // The key change: Call the server-side function 'readSheetData'
-    // The .withSuccessHandler() specifies the function to run when data returns.
-    // The .withFailureHandler() specifies the function to run if an error occurs.
-    google.script.run
-        .withSuccessHandler(onDataSuccess)
-        .withFailureHandler(onDataFailure)
-        .readSheetData(); // This is the name of the function in your Code.gs file
-}
+    function toggleControls(enable) {
+      [searchInput, watchedFilter, formatFilter, classificationFilter, clearFilters].forEach(el => {
+        el.disabled = !enable;
+      });
+    }
 
-// Initial state: Start data fetch
-toggleControls(false); 
-renderTimeline([]); 
-fetchAndRenderData();
-</script>
+    function populateDropdowns(fullData) {
+      const formats = [...new Set(fullData.map(f => f.Format).filter(Boolean).sort())];
+      const classifications = [...new Set(fullData.map(f => f.Classification).filter(Boolean).sort())];
 
+      formatFilter.innerHTML = '<option value="">Format: All</option>' + formats.map(f => `<option value="${f}">${f}</option>`).join("");
+      classificationFilter.innerHTML = '<option value="">Classification: All</option>' + classifications.map(c => `<option value="${c}">${c}</option>`).join("");
+    }
+
+    function applyFilters() {
+      const keyword = searchInput.value.toLowerCase();
+      const watched = watchedFilter.value;
+      const format = formatFilter.value;
+      const classification = classificationFilter.value;
+
+      const filtered = data.filter(film => {
+        let match = true;
+        if (keyword) {
+          match = Object.values(film).some(v => v && v.toString().toLowerCase().includes(keyword));
+        }
+        if (watched && film.Watched !== watched) return false;
+        if (format && film.Format !== format) return false;
+        if (classification && film.Classification !== classification) return false;
+        return match;
+      });
+
+      renderTimeline(filtered);
+    }
+
+    function renderTimeline(filteredData) {
+      timelineContainer.innerHTML = "";
+      if (filteredData.length === 0) {
+        timelineContainer.appendChild(initialPrompt);
+        initialPrompt.style.display = 'block';
+        initialPrompt.textContent = "No data found or all records filtered out.";
+        return;
+      }
+
+      initialPrompt.style.display = 'none';
+      const grouped = {};
+
+      filteredData.forEach(film => {
+        let year = "Unknown Year";
+        if (film.EventYear) {
+          if (!isNaN(Date.parse(film.EventYear))) {
+            year = new Date(film.EventYear).getFullYear();
+          } else {
+            year = String(film.EventYear).split('–')[0].split(' ')[0];
+          }
+        }
+        if (!grouped[year]) grouped[year] = [];
+        grouped[year].push(film);
+      });
+
+      const sortedYears = Object.keys(grouped).sort((a, b) => {
+        if (a === "Unknown Year") return 1;
+        if (b === "Unknown Year") return -1;
+        return parseInt(a) - parseInt(b);
+      });
+
+      sortedYears.forEach(year => {
+        const filmsInYear = grouped[year];
+        const yearGroup = document.createElement("div");
+        yearGroup.className = "year-group";
+
+        const yearMarker = document.createElement("div");
+        yearMarker.className = "year-marker";
+        yearMarker.textContent = year;
+        yearGroup.appendChild(yearMarker);
+
+        filmsInYear.forEach((film, index) => {
+          const event = document.createElement("div");
+          event.className = `timeline-event ${index % 2 === 0 ? "left" : "right"}`;
+          if (film.Classification) {
+            event.classList.add(`classification-${String(film.Classification).split('/')[0].trim().replace(/\s/g, '-')}`);
+          }
+
+          const watchedStatus = film.Watched && String(film.Watched).toLowerCase() === 'yes'
+            ? `Yes <span class="watched-status-icon" title="You have watched this film.">✔</span>`
+            : (film.Watched || "No");
+
+          let notesIndicator = film.Notes ? `<span class="notes-indicator" title="Click to view notes!">&#9999;</span>` : '';
+          let imageHTML = film.ImageURL ? `<img src="${film.ImageURL}" alt="Poster for ${film.FilmTitle}" class="event-image">` : '';
+
+          const title = document.createElement("div");
+          title.className = "event-title";
+          title.innerHTML = `${imageHTML}${film.FilmTitle} <span style="font-weight: normal;">(${film.ReleaseYear || "n/a"})</span>${notesIndicator}`;
+          event.appendChild(title);
+
+          const details = document.createElement("div");
+          details.className = "event-details";
+          details.innerHTML = `
+            <b>Period:</b> ${film.Period}<br>
+            <b>Format:</b> ${film.Format} &nbsp; &nbsp;
+            <b>Classification:</b> ${film.Classification || "N/A"}<br>
+            <b>Running Time:</b> ${film.Running_Time || "N/A"}<br>
+            <b>Accuracy:</b> ${film.HistoricalAccuracy || "N/A"}<br>
+            <b>Description:</b> ${film.ShortDescription || "N/A"}<br>
+            <b>Watch On:</b> ${film.WatchOn || "N/A"} ${getPlatformIcons(film.WatchOn)}<br>
+            <b>Link:</b> ${film.Link ? `<a href="${film.Link}" target="_blank">View Link</a>` : "N/A"}<br>
+            <b>Watched:</b> ${watchedStatus} &nbsp; &nbsp;
+            <b>Rating:</b> ${renderStars(film.Rating || 0)}
+          `;
+          event.appendChild(details);
+
+          if (film.Notes) {
+            const notes = document.createElement("div");
+            notes.className = "notes";
+            notes.textContent = `Notes: ${film.Notes}`;
+            event.appendChild(notes);
+            event.addEventListener("click", (e) => {
+              if (e.target.tagName !== 'A') {
+                notes.classList.toggle("show");
+              }
+            });
+          }
+
+          yearGroup.appendChild(event);
+        });
+
+        timelineContainer.appendChild(yearGroup);
+      });
+    }
+
+    async function fetchAndRenderData() {
+      initialPrompt.textContent = "Loading data via Web App...";
+      try {
+        const response = await fetch("https://script.google.com/macros/s/AKfycbwuMhkWNZI71HWbZr18pe56ekjCVrn0SCliiFHOzIW60odC3CsOstRgUeMIEbg03xbeNA/exec");
+        const sheetData = await response.json();
+        data = sheetData;
+        populateDropdowns(data);
+        toggleControls(true);
+        renderTimeline(data);
+      } catch (error) {
+        console.error("Fetch error:", error);
+        initialPrompt.textContent = `ERROR: Failed to load data. ${error.message}`;
+        toggleControls(false);
+      }
+    }
+
+    toggleControls(false);
+    renderTimeline([]);
+    fetchAndRenderData();
+
+    clearFilters.addEventListener("click", () => {
+      searchInput.value = "";
+      watchedFilter.value = "";
+      formatFilter.value = "";
+      classificationFilter.value = "";
+      applyFilters();
+    });
+
+    searchInput.addEventListener("input", applyFilters);
+    watchedFilter.addEventListener("change", applyFilters);
+    formatFilter.addEventListener("change", applyFilters);
+    classificationFilter.addEventListener("change", applyFilters);
+  </script>
 </body>
 </html>
+
