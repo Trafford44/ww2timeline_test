@@ -292,6 +292,20 @@
           <tr><td><strong>1/5</strong></td><td>Fictional story with minimal historical grounding.</td></tr>
         </table>
       </div>
+      <h3>Platform/s</h3>
+      <table>
+        <tr><td><span class="platform-icon icon-Netflix"></span></td><td>Netflix</td></tr>
+        <tr><td><span class="platform-icon icon-Prime"></span></td><td>Prime Video</td></tr>
+        <tr><td><span class="platform-icon icon-YouTube"></span></td><td>YouTube</td></tr>
+        <tr><td><span class="platform-icon icon-Apple"></span></td><td>Apple TV</td></tr>
+        <tr><td><span class="platform-icon icon-TVNZ"></span></td><td>TVNZ</td></tr>
+        <tr><td><span class="platform-icon icon-Neon"></span></td><td>Neon</td></tr>
+        <tr><td><span class="platform-icon icon-Beamafilm"></span></td><td>Beamafilm</td></tr>
+        <tr><td><span class="platform-icon icon-AroVision"></span></td><td>AroVision</td></tr>
+        <tr><td><span class="platform-icon icon-Plex"></span></td><td>Plex</td></tr>
+        <tr><td><span class="platform-icon icon-MUBI"></span></td><td>MUBI</td></tr>
+        <tr><td><span class="platform-icon icon-Disney"></span></td><td>Disney+</td></tr>
+      </table>      
       <div class="legend-group">
         <h3>Other Symbols</h3>
         <table>
@@ -315,6 +329,9 @@
     <select id="classificationFilter" disabled>
       <option value="">Classification: All</option>
     </select>
+    <select id="platformFilter" disabled>
+      <option value="">Platform/s: All</option>
+    </select>    
     <button id="clearFilters" disabled>Clear Filters</button>
   </div>
 
@@ -380,7 +397,7 @@
     }
 
     function toggleControls(enable) {
-      [searchInput, watchedFilter, formatFilter, classificationFilter, clearFilters].forEach(el => {
+      [searchInput, watchedFilter, formatFilter, classificationFilter, platformFilter, clearFilters].forEach(el => {
         el.disabled = !enable;
       });
     }
@@ -388,7 +405,11 @@
     function populateDropdowns(fullData) {
       const formats = [...new Set(fullData.map(f => f.Format).filter(Boolean).sort())];
       const classifications = [...new Set(fullData.map(f => f.Classification).filter(Boolean).sort())];
-
+      const platforms = [...new Set(
+        fullData.flatMap(f => f.WatchOn?.split(',').map(p => p.trim()) || [])
+      )].sort();
+      
+      platformFilter.innerHTML = '<option value="">Platform/s: All</option>' + platforms.map(p => `<option value="${p}">${p}</option>`).join("");
       formatFilter.innerHTML = '<option value="">Format: All</option>' + formats.map(f => `<option value="${f}">${f}</option>`).join("");
       classificationFilter.innerHTML = '<option value="">Classification: All</option>' + classifications.map(c => `<option value="${c}">${c}</option>`).join("");
     }
@@ -398,7 +419,8 @@
       const watched = watchedFilter.value;
       const format = formatFilter.value;
       const classification = classificationFilter.value;
-
+      const platform = platformFilter.value;
+      
       const filtered = data.filter(film => {
         let match = true;
         if (keyword) {
@@ -407,8 +429,10 @@
         if (watched && film.Watched !== watched) return false;
         if (format && film.Format !== format) return false;
         if (classification && film.Classification !== classification) return false;
+        if (platform && !(film.WatchOn || "").toLowerCase().includes(platform.toLowerCase())) return false;
         return match;
       });
+
 
       renderTimeline(filtered);
     }
@@ -539,6 +563,7 @@
     searchInput.addEventListener("input", applyFilters);
     watchedFilter.addEventListener("change", applyFilters);
     formatFilter.addEventListener("change", applyFilters);
+    platformFilter.addEventListener("change", applyFilters);
     classificationFilter.addEventListener("change", applyFilters);
   </script>
 </body>
