@@ -234,6 +234,11 @@
       font-weight: bold;
       cursor: help;
     }
+    .rating-stars {
+      color: #f5b301;
+      font-size: 1.2em;
+      letter-spacing: 1px;
+    }    
     @media screen and (max-width: 600px) {
       .legend-content {
         flex-direction: column;
@@ -285,11 +290,11 @@
       <div class="legend-group">
         <h3>Historical Accuracy Rating</h3>
         <table>
-          <tr><td><strong>5/5</strong></td><td>Highly accurate, closely follows historical records with minimal dramatization.</td></tr>
-          <tr><td><strong>4/5</strong></td><td>Mostly accurate, with some dramatized elements or composite characters.</td></tr>
-          <tr><td><strong>3/5</strong></td><td>Balanced mix of fact and fiction; key events are real but heavily dramatized.</td></tr>
-          <tr><td><strong>2/5</strong></td><td>Loosely based on history; significant liberties taken.</td></tr>
-          <tr><td><strong>1/5</strong></td><td>Fictional story with minimal historical grounding.</td></tr>
+          <tr><td><span class="rating-stars">★★★★★</span></td><td>Highly accurate, closely follows historical records with minimal dramatization.</td></tr>
+          <tr><td><span class="rating-stars">★★★★☆</span></td><td>Mostly accurate, with some dramatized elements or composite characters.</td></tr>
+          <tr><td><span class="rating-stars">★★★☆☆</span></td><td>Balanced mix of fact and fiction; key events are real but heavily dramatized.</td></tr>
+          <tr><td><span class="rating-stars">★★☆☆☆</span></td><td>Loosely based on history; significant liberties taken.</td></tr>
+          <tr><td><span class="rating-stars">★☆☆☆☆</span></td><td>Fictional story with minimal historical grounding.</td></tr>
         </table>
       </div>
       <h3>Platform/s</h3>
@@ -390,11 +395,13 @@
     }
 
 
-    function renderStars(rating) {
-      if (!rating || isNaN(Date.parse(rating))) return "N/A";
-      const score = 5; // Placeholder: you can extract rating from date if needed
+    function renderStars(value) {
+      const match = String(value).match(/^([1-5])\/5$/);
+      if (!match) return "N/A";
+      const score = parseInt(match[1]);
       return `<span class="rating-stars">${"★".repeat(score)}${"☆".repeat(5 - score)}</span>`;
     }
+
 
     function toggleControls(enable) {
       [searchInput, watchedFilter, formatFilter, classificationFilter, platformFilter, clearFilters].forEach(el => {
@@ -494,18 +501,18 @@
 
           const title = document.createElement("div");
           title.className = "event-title";
-          title.innerHTML = `${imageHTML}${film.FilmTitle} <span style="font-weight: normal;">(${film.ReleaseYear || "n/a"})</span>${notesIndicator}`;
+          ${film.FilmTitle}${film.ReleaseYear ? ` <span style="font-weight: normal;">(${film.ReleaseYear})</span>` : ""}
           event.appendChild(title);
 
           const details = document.createElement("div");
           details.className = "event-details";
           details.innerHTML = `
             <b>Period:</b> ${film.Period}<br>
-            <b>Format:</b> ${film.Format} &nbsp; &nbsp;
+            <b>Format:</b> ${film.Format}<br>
             <b>Classification:</b> ${film.Classification || "N/A"}<br>
-            <b>Running Time:</b> ${film.Running_Time || "N/A"}<br>
-            <b>Accuracy:</b> ${film.HistoricalAccuracy || "N/A"}<br>
-            <b>Description:</b> ${film.ShortDescription || "N/A"}<br>
+            <b>Running Time:</b> ${film.RunningTime || "N/A"}<br>
+            <b>Historical Accuracy:</b> ${renderStars(film.HistoricalAccuracy)}<br>
+            <b>Short Description:</b> ${film.ShortDescription || "N/A"}<br>
             <b>Watch On:</b> ${film.WatchOn || "N/A"} ${getPlatformIcons(film.WatchOn)}<br>
             <b>Link:</b> ${film.Link ? `<a href="${film.Link}" target="_blank">View Link</a>` : "N/A"}<br>
             <b>Watched:</b> ${watchedStatus} &nbsp; &nbsp;
