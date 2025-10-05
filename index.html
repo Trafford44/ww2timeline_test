@@ -498,11 +498,15 @@
 
           let notesIndicator = film.Notes ? `<span class="notes-indicator" title="Click to view notes!">&#9999;</span>` : '';
           let imageHTML = film.ImageURL ? `<img src="${film.ImageURL}" alt="Poster for ${film.FilmTitle}" class="event-image">` : '';
-
+          
           const title = document.createElement("div");
           title.className = "event-title";
-          ${film.FilmTitle}${film.ReleaseYear ? ` <span style="font-weight: normal;">(${film.ReleaseYear})</span>` : ""};
+          title.innerHTML = `
+            ${imageHTML}${film.FilmTitle}${film.ReleaseYear ? `<span style="font-weight: normal;"> (${film.ReleaseYear})</span>` : ""}
+            ${notesIndicator}
+          `;
           event.appendChild(title);
+
 
           const details = document.createElement("div");
           details.className = "event-details";
