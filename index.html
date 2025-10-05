@@ -209,6 +209,18 @@
     .icon-Prime { background-color: #00A8E1; border-radius: 2px; }
     .icon-YouTube { background-color: #FF0000; border-radius: 2px; }
     .icon-Apple { background-color: #555; border-radius: 50%; }
+    .icon-TVNZ { background-color: #0057B8; border-radius: 2px; }
+    .icon-Neon { background-color: #8A2BE2; border-radius: 2px; }
+    .icon-Beamafilm { background-color: #FF6600; border-radius: 2px; }
+    .icon-AroVision { background-color: #006400; border-radius: 2px; }
+    .icon-Plex { background-color: #E5A00D; border-radius: 2px; }
+    .icon-MUBI { background-color: #000; border-radius: 2px; }
+    .icon-Disney { background-color: #113CCF; border-radius: 2px; }
+    .icon-Microsoft { background-color: #F25022; border-radius: 2px; }
+    .icon-Google { background-color: #4285F4; border-radius: 2px; }
+    .icon-Archive { background-color: #666; border-radius: 2px; }
+    .icon-DVD { background-color: #999; border-radius: 2px; }
+    
     .watched-status-icon {
       font-size: 1.1em;
       color: #0d6efd;
@@ -323,15 +335,43 @@
 
     function getPlatformIcons(watchOnText) {
       if (!watchOnText) return '';
-      const platforms = ['Netflix', 'Prime', 'YouTube', 'Apple', 'TVNZ', 'Neon', 'Beamafilm', 'AroVision'];
+    
+      const platformMap = {
+        netflix: 'Netflix',
+        prime: 'Prime',
+        youtube: 'YouTube',
+        apple: 'Apple',
+        tvnz: 'TVNZ',
+        tvnzplus: 'TVNZ',
+        neon: 'Neon',
+        beamafilm: 'Beamafilm',
+        arovision: 'AroVision',
+        plex: 'Plex',
+        mubi: 'MUBI',
+        disney: 'Disney',
+        microsoft: 'Microsoft',
+        google: 'Google',
+        archive: 'Archive',
+        dvd: 'DVD'
+      };
+    
       const seen = new Set();
-      return watchOnText.split(',').map(p => p.trim()).filter(p => {
-        const key = p.toLowerCase();
-        if (seen.has(key)) return false;
-        seen.add(key);
-        return platforms.some(pl => key.includes(pl.toLowerCase()));
-      }).map(p => `<span class="platform-icon icon-${p}" title="Available on ${p}"></span>`).join('');
+      const icons = [];
+    
+      watchOnText.split(',').forEach(entry => {
+        const clean = entry.trim().toLowerCase().replace(/[^a-z0-9+]/gi, '');
+        for (const key in platformMap) {
+          if (clean.includes(key) && !seen.has(key)) {
+            seen.add(key);
+            icons.push(`<span class="platform-icon icon-${platformMap[key]}" title="Available on ${platformMap[key]}"></span>`);
+            break;
+          }
+        }
+      });
+    
+      return icons.join('');
     }
+
 
     function renderStars(rating) {
       if (!rating || isNaN(Date.parse(rating))) return "N/A";
