@@ -50,6 +50,14 @@
     .filter-panel[open] summary::before {
       content: '▼';
     }
+    details.config-panel,
+    details.stats-panel {
+      margin-bottom: 1em;
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      padding: 10px;
+    }   
     .legend-content {
       display: flex;
       flex-wrap: wrap;
@@ -338,10 +346,10 @@
       <button id="clearFilters" disabled>Clear Filters</button>
     </div>
   </details>
-  <details class="stats-panel">
-    <summary>Stats</summary>
-    <div id="statsContent" style="padding: 10px; font-size: 0.95em;"></div>
-  </details>
+<details class="stats-panel">
+  <summary>Stats</summary>
+  <div id="statsContent" style="padding: 10px; font-size: 0.95em;"></div>
+</details>
 
   <div class="timeline" id="timeline">
     <div class="initial-prompt" id="initialPrompt">Loading data...</div>
@@ -638,7 +646,8 @@
       data = sheetData;
       populateDropdowns(data);
       toggleControls(true);
-      renderTimeline(data);
+      applyFilters();        // ✅ Apply filters and render timeline
+      updateStats(data);     // ✅ Populate stats immediately
     } catch (error) {
       console.error("Fetch error:", error);
       initialPrompt.textContent = `ERROR: Failed to load data. ${error.message}`;
