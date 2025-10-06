@@ -26,24 +26,38 @@
       border: 1px solid #ccc;
       border-radius: 4px;
     }
-    .timeline-legend, .filter-panel {
-      max-width: 900px;
-      margin: 0 auto 20px;
-      padding: 10px 20px;
-      background: #fff;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-    }
+
+
+    /* COMBINE AND SIMPLIFY PANEL STYLES */
+    .timeline-legend, 
+    .filter-panel,
     details.config-panel,
     details.stats-panel {
-      max-width: 900px;
-      margin: 0 auto 20px;
-      padding: 10px 20px;
-      background: #fff;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 1em;
+        max-width: 900px;
+        margin: 0 auto 20px;
+        /* CRITICAL CHANGE: Remove the padding that was causing the inconsistency.
+           The padding will now be managed by the Summary's wrapper. 
+        */
+        padding: 0 0; 
+        background: #fff;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 1em; /* Keep font-size here for consistency */
     }
+    
+    /* ADD PADDING BACK TO THE SUMMARY TO BALANCE THE HEIGHT */
+    .timeline-legend summary, 
+    .filter-panel summary,
+    .config-panel summary, /* ADD THIS CLASS */
+    .stats-panel summary { /* ADD THIS CLASS */
+        font-weight: bold;
+        cursor: pointer;
+        /* Add padding back to the summary/title element */
+        padding: 10px 20px; 
+        list-style: none;
+    }
+
+    
     #statsContent {
       font-size: 1em !important;
       padding: 10px 20px !important;
