@@ -28,23 +28,23 @@
     }
 
 
-/* --- 1. UNIFIED PANEL CONTAINER STYLES --- */
-.timeline-legend, 
-.filter-panel,
-details.config-panel,
-details.stats-panel {
-    max-width: 900px;
-    margin: 0 auto 20px;
-    
-    /* *** CRITICAL FIX: Set padding to 0 on the outer container *** */
-    padding: 0; 
-    
-    background: #fff;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    /* Ensure consistent font size for all */
-    font-size: 1em; 
-}
+    /* --- 1. UNIFIED PANEL CONTAINER STYLES --- */
+    .timeline-legend, 
+    .filter-panel,
+    details.config-panel,
+    details.stats-panel {
+        max-width: 900px;
+        margin: 0 auto 20px;
+        
+        /* *** CRITICAL FIX: Set padding to 0 on the outer container *** */
+        padding: 0; 
+        
+        background: #fff;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        /* Ensure consistent font size for all */
+        font-size: 1em; 
+    }
 
     
     #statsContent {
@@ -53,54 +53,55 @@ details.stats-panel {
     }
 
     
-/* --- 2. UNIFIED SUMMARY STYLING --- */
-.timeline-legend summary, 
-.filter-panel summary,
-.config-panel summary,   /* <-- NEW: Includes Config/Stats */
-.stats-panel summary {    /* <-- NEW: Includes Config/Stats */
-    font-weight: bold;
-    cursor: pointer;
-    
-    /* *** CRITICAL FIX: Set consistent padding on the summary element *** */
-    padding: 10px 20px; 
-    
-    /* Removes the browser's native arrow marker */
-    list-style: none;
-}
-
-
-
-    
-/* --- 3a. UNIFIED ARROW ICON STYLING (CLOSED) --- */
-.timeline-legend summary::before, 
-.filter-panel summary::before,
-.config-panel summary::before,  /* <-- NEW: Includes Config/Stats */
-.stats-panel summary::before {   /* <-- NEW: Includes Config/Stats */
-    content: '▶';
-    margin-right: 8px;
-    display: inline-block;
-    transition: transform 0.2s;
-}
-
-/* --- 3b. UNIFIED ARROW ICON STYLING (OPEN) --- */
-.timeline-legend[open] summary::before,
-.filter-panel[open] summary::before,
-.config-panel[open] summary::before,  /* <-- NEW: Includes Config/Stats */
-.stats-panel[open] summary::before {   /* <-- NEW: Includes Config/Stats */
-    content: '▼';
-}
-
-
-
-
-    
-    .legend-content {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 30px;
-      padding-top: 10px;
-      border-top: 1px dashed #eee;
+    /* --- 2. UNIFIED SUMMARY STYLING --- */
+    .timeline-legend summary, 
+    .filter-panel summary,
+    .config-panel summary,   /* <-- NEW: Includes Config/Stats */
+    .stats-panel summary {    /* <-- NEW: Includes Config/Stats */
+        font-weight: bold;
+        cursor: pointer;
+        
+        /* *** CRITICAL FIX: Set consistent padding on the summary element *** */
+        padding: 10px 20px; 
+        
+        /* Removes the browser's native arrow marker */
+        list-style: none;
     }
+
+    
+    /* --- 3a. UNIFIED ARROW ICON STYLING (CLOSED) --- */
+    .timeline-legend summary::before, 
+    .filter-panel summary::before,
+    .config-panel summary::before,  /* <-- NEW: Includes Config/Stats */
+    .stats-panel summary::before {   /* <-- NEW: Includes Config/Stats */
+        content: '▶';
+        margin-right: 8px;
+        display: inline-block;
+        transition: transform 0.2s;
+    }
+
+    /* --- 3b. UNIFIED ARROW ICON STYLING (OPEN) --- */
+    .timeline-legend[open] summary::before,
+    .filter-panel[open] summary::before,
+    .config-panel[open] summary::before,  /* <-- NEW: Includes Config/Stats */
+    .stats-panel[open] summary::before {   /* <-- NEW: Includes Config/Stats */
+        content: '▼';
+    }
+
+
+.legend-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    
+    /* *** CRITICAL FIX: Add padding back to the content area *** */
+    /* Padding: 10px top, 20px right, 10px bottom, 20px left */
+    padding: 10px 20px 10px 20px; 
+    
+    border-top: 1px dashed #eee;
+}
+
+    
     .legend-group h3 {
       font-size: 1.1em;
       margin-top: 0;
