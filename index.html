@@ -28,54 +28,72 @@
     }
 
 
-    .timeline-legend, .filter-panel {
-        max-width: 900px;
-        margin: 0 auto 20px;
-        padding: 10px 20px; /* <--- REMOVE THIS PADDING */
-        background: #fff;
-        border: 1px solid #ccc;
-        border-radius: 6px;
-    }
-    details.config-panel,
-    details.stats-panel {
-        max-width: 900px;
-        margin: 0 auto 20px;
-        padding: 10px 20px; /* <--- REMOVE THIS PADDING */
-        background: #fff;
-        border: 1px solid #ccc;
-        border-radius: 6px;
-        font-size: 1em;
-    }
+/* --- 1. UNIFIED PANEL CONTAINER STYLES --- */
+.timeline-legend, 
+.filter-panel,
+details.config-panel,
+details.stats-panel {
+    max-width: 900px;
+    margin: 0 auto 20px;
+    
+    /* *** CRITICAL FIX: Set padding to 0 on the outer container *** */
+    padding: 0; 
+    
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    /* Ensure consistent font size for all */
+    font-size: 1em; 
+}
 
     
     #statsContent {
       font-size: 1em !important;
       padding: 10px 20px !important;
     }
-    .timeline-legend summary, .filter-panel summary {
-      font-weight: bold;
-      cursor: pointer;
-      padding: 5px 0;
-      list-style: none;
-    }
-    .timeline-legend summary::before, .filter-panel summary::before {
-      content: '▶';
-      margin-right: 8px;
-      display: inline-block;
-      transition: transform 0.2s;
-    }
-    .timeline-legend[open] summary::before,
-    .filter-panel[open] summary::before {
-      content: '▼';
-    }
-    details.config-panel,
-    details.stats-panel {
-      margin-bottom: 1em;
-      background: #fff;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      padding: 10px;
-    }   
+
+    
+/* --- 2. UNIFIED SUMMARY STYLING --- */
+.timeline-legend summary, 
+.filter-panel summary,
+.config-panel summary,   /* <-- NEW: Includes Config/Stats */
+.stats-panel summary {    /* <-- NEW: Includes Config/Stats */
+    font-weight: bold;
+    cursor: pointer;
+    
+    /* *** CRITICAL FIX: Set consistent padding on the summary element *** */
+    padding: 10px 20px; 
+    
+    /* Removes the browser's native arrow marker */
+    list-style: none;
+}
+
+
+
+    
+/* --- 3a. UNIFIED ARROW ICON STYLING (CLOSED) --- */
+.timeline-legend summary::before, 
+.filter-panel summary::before,
+.config-panel summary::before,  /* <-- NEW: Includes Config/Stats */
+.stats-panel summary::before {   /* <-- NEW: Includes Config/Stats */
+    content: '▶';
+    margin-right: 8px;
+    display: inline-block;
+    transition: transform 0.2s;
+}
+
+/* --- 3b. UNIFIED ARROW ICON STYLING (OPEN) --- */
+.timeline-legend[open] summary::before,
+.filter-panel[open] summary::before,
+.config-panel[open] summary::before,  /* <-- NEW: Includes Config/Stats */
+.stats-panel[open] summary::before {   /* <-- NEW: Includes Config/Stats */
+    content: '▼';
+}
+
+
+
+
+    
     .legend-content {
       display: flex;
       flex-wrap: wrap;
