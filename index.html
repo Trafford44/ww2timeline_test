@@ -1,444 +1,442 @@
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>WW2 Film Timeline Test Site</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f4f4f4;
-      margin: 20px;
-    }
-    h1 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    .controls {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 20px;
-      justify-content: center;
-      padding: 0 10px;
-    }
-    input[type="text"], select, button {
-      padding: 8px;
-      font-size: 14px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WW2 Film Timeline Test Site</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      margin: 20px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+      justify-content: center;
+      padding: 0 10px;
+    }
+    input[type="text"], select, button {
+      padding: 8px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
 
 
-    /* --- 1. UNIFIED PANEL CONTAINER STYLES (Cleaned and unified) --- */
-    .timeline-legend, 
-    .filter-panel,
-    details.config-panel,
-    details.stats-panel {
-        max-width: 900px;
-        margin: 0 auto 20px;
-        
-        /* Fix: Removes all outer padding for consistent width */
-        padding: 0; 
-        
-        background: #fff;
-        border: 1px solid #ccc;
-        border-radius: 6px;
-        font-size: 1em; 
-    }
+    /* --- 1. UNIFIED PANEL CONTAINER STYLES --- */
+    .timeline-legend, 
+    .filter-panel,
+    details.config-panel,
+    details.stats-panel {
+        max-width: 900px;
+        margin: 0 auto 20px;
+        
+        /* *** CRITICAL FIX: Set padding to 0 on the outer container *** */
+        padding: 0; 
+        
+        background: #fff;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        /* Ensure consistent font size for all */
+        font-size: 1em; 
+    }
 
-    
-    /* --- 2. UNIFIED SUMMARY STYLING (Fixed height and arrow removal) --- */
-    .timeline-legend summary, 
-    .filter-panel summary,
-    .config-panel summary, 
-    .stats-panel summary { 
-        font-weight: bold;
-        cursor: pointer;
-        
-        /* Fix: Sets consistent padding/height for the title bar */
-        padding: 10px 20px; 
-        
-        /* Fix: Removes the default browser arrow/marker */
-        list-style: none;
-    }
+    
+    #statsContent {
+      font-size: 1em !important;
+      padding: 10px 20px !important;
+    }
 
-    
-    /* --- 3a. UNIFIED ARROW ICON STYLING (CLOSED) --- */
-    .timeline-legend summary::before, 
-    .filter-panel summary::before,
-    .config-panel summary::before, 
-    .stats-panel summary::before {   
-        content: '▶';
-        margin-right: 8px;
-        display: inline-block;
-        transition: transform 0.2s;
-    }
+    
+    /* --- 2. UNIFIED SUMMARY STYLING --- */
+    .timeline-legend summary, 
+    .filter-panel summary,
+    .config-panel summary,   /* <-- NEW: Includes Config/Stats */
+    .stats-panel summary {    /* <-- NEW: Includes Config/Stats */
+        font-weight: bold;
+        cursor: pointer;
+        
+        /* *** CRITICAL FIX: Set consistent padding on the summary element *** */
+        padding: 10px 20px; 
+        
+        /* Removes the browser's native arrow marker */
+        list-style: none;
+    }
 
-    /* --- 3b. UNIFIED ARROW ICON STYLING (OPEN) --- */
-    .timeline-legend[open] summary::before,
-    .filter-panel[open] summary::before,
-    .config-panel[open] summary::before, 
-    .stats-panel[open] summary::before {   
-        content: '▼';
-    }
+    
+    /* --- 3a. UNIFIED ARROW ICON STYLING (CLOSED) --- */
+    .timeline-legend summary::before, 
+    .filter-panel summary::before,
+    .config-panel summary::before,  /* <-- NEW: Includes Config/Stats */
+    .stats-panel summary::before {   /* <-- NEW: Includes Config/Stats */
+        content: '▶';
+        margin-right: 8px;
+        display: inline-block;
+        transition: transform 0.2s;
+    }
 
-/* --- DEFINITIVE MOBILE FONT SCALING FIX FOR ANDROID CHROME --- */
+    /* --- 3b. UNIFIED ARROW ICON STYLING (OPEN) --- */
+    .timeline-legend[open] summary::before,
+    .filter-panel[open] summary::before,
+    .config-panel[open] summary::before,  /* <-- NEW: Includes Config/Stats */
+    .stats-panel[open] summary::before {   /* <-- NEW: Includes Config/Stats */
+        content: '▼';
+    }
 
-/* 1. Target the summary elements to disable 'tap zoom' on all panels */
-.timeline-legend summary, 
-.filter-panel summary,
-.config-panel summary, 
-.stats-panel summary {
-    /* Prevents the browser from zooming the area on tap/click */
-    touch-action: manipulation; 
+/* --- NEW FIX: PREVENT FONT SIZE INCREASE ON CLICK/OPEN --- */
+.timeline-legend[open], 
+.filter-panel[open],
+details.config-panel[open],
+details.stats-panel[open] {
+    /* CRITICAL FIX: Explicitly enforce the standard panel font size 
+       when the panel is open, overriding any browser zoom/size change. */
+    font-size: 1em !important; 
+    
+    /* Good practice to include the zoom/size adjust properties for full consistency */
+    zoom: 1 !important; 
+    -moz-text-size-adjust: none !important;
+    -webkit-text-size-adjust: none !important;
+    text-size-adjust: none !important;
+}
+
+/* --- CRITICAL REVERSION FIX FOR MOBILE (Content Containers) --- */
+
+/* Target the content containers when the panel is OPEN */
+.timeline-legend[open] .legend-content,
+.filter-panel[open] .controls,
+details.config-panel[open] .controls,
+details.stats-panel[open] #statsContent {
+    
+    /* Lock the size of the inner content container to the panel's base size (1em) */
+    font-size: 1em !important; 
+
+    /* Resetting the zoom property can sometimes clear the sticky mobile zoom state */
+    zoom: 1 !important; 
+
+    /* Re-apply the anti-adjustment rule specifically to the open content */
+    -webkit-text-size-adjust: none !important;
+    text-size-adjust: none !important;
 }
 
 
-@media screen and (max-width: 768px) {
-    /* 2. AGGRESSIVE ROOT RESET: Prevents global scaling initiated by complex content */
-    html {
-        font-size: 100% !important; 
-        /* The single most important rule for Android Chrome scaling */
-        -webkit-text-size-adjust: 100% !important; 
-        text-size-adjust: 100% !important;
-    }
     
-    /* 3. LOCK THE TRIGGER: Aggressively lock the Stats content (the problem source) and its children */
-    .controls#statsContent,
-    .controls#statsContent * {
-        font-size: 1em !important; 
-        -webkit-text-size-adjust: none !important;
-        text-size-adjust: none !important;
-    }
 
-    /* 4. LOCK ALL PANELS WHEN OPEN: Safety net to ensure all panels revert immediately */
-    .timeline-legend[open], 
-    .filter-panel[open],
-    details.config-panel[open],
-    details.stats-panel[open] {
-        font-size: 1em !important; 
-        zoom: 1 !important;
-    }
-    
-    /* 5. LOCK ALL INNER CONTENT: Lock all content containers when open */
-    .timeline-legend[open] .legend-content,
-    .filter-panel[open] .controls,
-    details.config-panel[open] .controls,
-    details.stats-panel[open] .controls {
-        font-size: 1em !important; 
-    }
-    
-    /* 6. LOCK FORM ELEMENTS: Ensure inputs/selects in the controls areas revert to 14px */
-    .filter-panel[open] .controls input, 
-    .filter-panel[open] .controls select,
-    .config-panel[open] .controls input, 
-    .config-panel[open] .controls select {
-        font-size: 14px !important;
-    }
+/* Also, ensure any nested controls inside the open content also revert */
+.timeline-legend[open] .legend-content input, 
+.timeline-legend[open] .legend-content select, 
+.filter-panel[open] .controls input, 
+.filter-panel[open] .controls select {
+    font-size: 14px !important; /* Lock the size of form elements */
 }
 
-
-/* --- END OF MOBILE FIXES --- */
-    
+    
 .legend-content {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 30px;
-    
-    /* Fix: Adds internal padding back to the legend content */
-    padding: 10px 20px 10px 20px; 
-    
-    border-top: 1px dashed #eee;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    
+    /* *** CRITICAL FIX: Add padding back to the content area *** */
+    /* Padding: 10px top, 20px right, 10px bottom, 20px left */
+    padding: 10px 20px 10px 20px; 
+    
+    border-top: 1px dashed #eee;
 }
 
-    
-    .legend-group h3 {
-      font-size: 1.1em;
-      margin-top: 0;
-      margin-bottom: 5px;
-      color: #333;
-    }
-    .legend-group table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.9em;
-    }
-    .legend-group td {
-      padding: 4px 8px 4px 0;
-      vertical-align: top;
-    }
-    .legend-box {
-      width: 20px;
-      padding: 0 !important;
-      border-left: 5px solid;
-      height: 1.2em;
-      background: #f9f9f9;
-    }
-    .timeline {
-      position: relative;
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 20px 0;
-    }
-    .timeline::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 50%;
-      width: 4px;
-      background: #555;
-      transform: translateX(-50%);
-    }
-    .year-group {
-      position: relative;
-      margin-bottom: 80px;
-      width: 100%;
-      padding-top: 30px;
-    }
-    .year-group::after {
-      content: "";
-      display: table;
-      clear: both;
-    }
-    .year-marker {
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 1.5em;
-      font-weight: bold;
-      color: #333;
-      top: 0;
-      background: #dcdcdc;
-      padding: 4px 12px;
-      border-radius: 4px;
-      z-index: 10;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-    .timeline-event {
-      position: relative;
-      width: 45%;
-      padding: 15px;
-      background: #fff;
-      border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      margin-bottom: 20px;
-      cursor: pointer;
-      transition: transform 0.2s, background-color 0.2s;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      border-left: 5px solid #ccc;
-    }
-    .timeline-event.left {
-      float: left;
-      clear: both;
-      margin-right: auto;
-    }
-    .timeline-event.right {
-      float: right;
-      clear: both;
-      margin-left: auto;
-    }
-    .timeline-event:hover {
-      transform: translateY(-3px);
-      background-color: #eaf1f9;
-    }
-    .timeline-event.pinned {
-      background-color: #fffbe6;
-      box-shadow: inset 0 0 0 4px #f5b301;
-    }
-    .classification-Documentary { border-left-color: #1a8754; }
-    .classification-Dramatisation { border-left-color: #ffc107; }
-    .classification-Fiction { border-left-color: #dc3545; }
-    .timeline-event.watched {
-      border-left-width: 5px;
-      border-left-style: solid;
-      box-shadow: inset 0 0 0 2px #0d6efd;
-    }
-    .event-title {
-      font-weight: bold;
-      font-size: 1.1em;
-      line-height: 1.3;
-    }
-    .event-image {
-      max-width: 60px;
-      height: auto;
-      border-radius: 4px;
-      margin-right: 10px;
-      float: left;
-      object-fit: cover;
-    }
-    .event-details {
-      margin-top: 5px;
-      color: #555;
-      font-size: 0.9em;
-    }
-    .notes {
-      display: none;
-      margin-top: 10px;
-      padding-top: 10px;
-      border-top: 1px dashed #ccc;
-      color: #444;
-      font-style: italic;
-      font-size: 0.9em;
-    }
-    .notes.show { display: block; }
-    .rating-stars {
-      color: #f5b301;
-      font-size: 1.2em;
-      letter-spacing: 1px;
-    }
-    .initial-prompt {
-      text-align: center;
-      margin-top: 50px;
-      font-size: 1.2em;
-      color: #777;
-    }
-    .platform-icon {
-      display: inline-block;
-      width: 16px;
-      height: 16px;
-      margin-left: 4px;
-      vertical-align: middle;
-      background-size: cover;
-    }
-    .icon-Netflix { background-color: #E50914; border-radius: 2px; }
-    .icon-Prime { background-color: #00A8E1; border-radius: 2px; }
-    .icon-YouTube { background-color: #FF0000; border-radius: 2px; }
-    .icon-Apple { background-color: #555; border-radius: 50%; }
-    .icon-TVNZ { background-color: #0057B8; border-radius: 2px; }
-    .icon-Neon { background-color: #8A2BE2; border-radius: 2px; }
-    .icon-Beamafilm { background-color: #FF6600; border-radius: 2px; }
-    .icon-AroVision { background-color: #006400; border-radius: 2px; }
-    .icon-Plex { background-color: #E5A00D; border-radius: 2px; }
-    .icon-MUBI { background-color: #000; border-radius: 2px; }
-    .icon-Disney { background-color: #113CCF; border-radius: 2px; }
-    .icon-Microsoft { background-color: #F25022; border-radius: 2px; }
-    .icon-Google { background-color: #4285F4; border-radius: 2px; }
-    .icon-Archive { background-color: #666; border-radius: 2px; }
-    .icon-DVD { background-color: #999; border-radius: 2px; }
-    .watched-status-icon {
-      font-size: 1.1em;
-      color: #0d6efd;
-      margin-left: 5px;
-      font-weight: bold;
-    }
-    .notes-indicator {
-      font-size: 1em;
-      color: #4CAF50;
-      margin-left: 5px;
-      font-weight: bold;
-      cursor: help;
-    }
-    .pin-icon {
-      font-size: 1em;
-      cursor: pointer;
-      vertical-align: middle;
-      margin-left: 10px;
-    }
-    @media screen and (max-width: 768px) {
-      .timeline-event {
-        width: 90%;
-        left: 0 !important;
-        margin: 0 auto 20px;
-      }
-    }
-  </style>
+    
+    .legend-group h3 {
+      font-size: 1.1em;
+      margin-top: 0;
+      margin-bottom: 5px;
+      color: #333;
+    }
+    .legend-group table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9em;
+    }
+    .legend-group td {
+      padding: 4px 8px 4px 0;
+      vertical-align: top;
+    }
+    .legend-box {
+      width: 20px;
+      padding: 0 !important;
+      border-left: 5px solid;
+      height: 1.2em;
+      background: #f9f9f9;
+    }
+    .timeline {
+      position: relative;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px 0;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 4px;
+      background: #555;
+      transform: translateX(-50%);
+    }
+    .year-group {
+      position: relative;
+      margin-bottom: 80px;
+      width: 100%;
+      padding-top: 30px;
+    }
+    .year-group::after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+    .year-marker {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 1.5em;
+      font-weight: bold;
+      color: #333;
+      top: 0;
+      background: #dcdcdc;
+      padding: 4px 12px;
+      border-radius: 4px;
+      z-index: 10;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .timeline-event {
+      position: relative;
+      width: 45%;
+      padding: 15px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+      cursor: pointer;
+      transition: transform 0.2s, background-color 0.2s;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      border-left: 5px solid #ccc;
+    }
+    .timeline-event.left {
+      float: left;
+      clear: both;
+      margin-right: auto;
+    }
+    .timeline-event.right {
+      float: right;
+      clear: both;
+      margin-left: auto;
+    }
+    .timeline-event:hover {
+      transform: translateY(-3px);
+      background-color: #eaf1f9;
+    }
+    .timeline-event.pinned {
+      background-color: #fffbe6;
+      box-shadow: inset 0 0 0 4px #f5b301;
+    }
+    .classification-Documentary { border-left-color: #1a8754; }
+    .classification-Dramatisation { border-left-color: #ffc107; }
+    .classification-Fiction { border-left-color: #dc3545; }
+    .timeline-event.watched {
+      border-left-width: 5px;
+      border-left-style: solid;
+      box-shadow: inset 0 0 0 2px #0d6efd;
+    }
+    .event-title {
+      font-weight: bold;
+      font-size: 1.1em;
+      line-height: 1.3;
+    }
+    .event-image {
+      max-width: 60px;
+      height: auto;
+      border-radius: 4px;
+      margin-right: 10px;
+      float: left;
+      object-fit: cover;
+    }
+    .event-details {
+      margin-top: 5px;
+      color: #555;
+      font-size: 0.9em;
+    }
+    .notes {
+      display: none;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px dashed #ccc;
+      color: #444;
+      font-style: italic;
+      font-size: 0.9em;
+    }
+    .notes.show { display: block; }
+    .rating-stars {
+      color: #f5b301;
+      font-size: 1.2em;
+      letter-spacing: 1px;
+    }
+    .initial-prompt {
+      text-align: center;
+      margin-top: 50px;
+      font-size: 1.2em;
+      color: #777;
+    }
+    .platform-icon {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      margin-left: 4px;
+      vertical-align: middle;
+      background-size: cover;
+    }
+    .icon-Netflix { background-color: #E50914; border-radius: 2px; }
+    .icon-Prime { background-color: #00A8E1; border-radius: 2px; }
+    .icon-YouTube { background-color: #FF0000; border-radius: 2px; }
+    .icon-Apple { background-color: #555; border-radius: 50%; }
+    .icon-TVNZ { background-color: #0057B8; border-radius: 2px; }
+    .icon-Neon { background-color: #8A2BE2; border-radius: 2px; }
+    .icon-Beamafilm { background-color: #FF6600; border-radius: 2px; }
+    .icon-AroVision { background-color: #006400; border-radius: 2px; }
+    .icon-Plex { background-color: #E5A00D; border-radius: 2px; }
+    .icon-MUBI { background-color: #000; border-radius: 2px; }
+    .icon-Disney { background-color: #113CCF; border-radius: 2px; }
+    .icon-Microsoft { background-color: #F25022; border-radius: 2px; }
+    .icon-Google { background-color: #4285F4; border-radius: 2px; }
+    .icon-Archive { background-color: #666; border-radius: 2px; }
+    .icon-DVD { background-color: #999; border-radius: 2px; }
+    .watched-status-icon {
+      font-size: 1.1em;
+      color: #0d6efd;
+      margin-left: 5px;
+      font-weight: bold;
+    }
+    .notes-indicator {
+      font-size: 1em;
+      color: #4CAF50;
+      margin-left: 5px;
+      font-weight: bold;
+      cursor: help;
+    }
+    .pin-icon {
+      font-size: 1em;
+      cursor: pointer;
+      vertical-align: middle;
+      margin-left: 10px;
+    }
+    @media screen and (max-width: 768px) {
+      .timeline-event {
+        width: 90%;
+        left: 0 !important;
+        margin: 0 auto 20px;
+      }
+    }
+  </style>
 </head>
 <body>
-  <details class="timeline-legend">
-    <summary>Timeline Legend</summary>
-    <div class="legend-content">
-      <div class="legend-group">
-        <h3>Classification Color</h3>
-        <table>
-          <tr><td class="legend-box classification-Documentary"></td><td><strong>Documentary</strong> (Solid Green line)</td></tr>
-          <tr><td class="legend-box classification-Dramatisation"></td><td><strong>Dramatisation</strong> (Solid Amber line)</td></tr>
-          <tr><td class="legend-box classification-Fiction"></td><td><strong>Fiction</strong> (Solid Red line)</td></tr>
-        </table>
-      </div>
-      <div class="legend-group">
-        <h3>Historical Accuracy Rating</h3>
-        <table>
-          <tr><td><span class="rating-stars">★★★★★</span></td><td>Highly accurate, closely follows historical records with minimal dramatization.</td></tr>
-          <tr><td><span class="rating-stars">★★★★☆</span></td><td>Mostly accurate, with some dramatized elements or composite characters.</td></tr>
-          <tr><td><span class="rating-stars">★★★☆☆</span></td><td>Balanced mix of fact and fiction; key events are real but heavily dramatized.</td></tr>
-          <tr><td><span class="rating-stars">★★☆☆☆</span></td><td>Loosely based on history; significant liberties taken.</td></tr>
-          <tr><td><span class="rating-stars">★☆☆☆☆</span></td><td>Fictional story with minimal historical grounding.</td></tr>
-        </table>
-      </div>
-      <h3>Platform/s</h3>
-      <table>
-        <tr><td><span class="platform-icon icon-Netflix"></span></td><td>Netflix</td></tr>
-        <tr><td><span class="platform-icon icon-Prime"></span></td><td>Prime Video</td></tr>
-        <tr><td><span class="platform-icon icon-YouTube"></span></td><td>YouTube</td></tr>
-        <tr><td><span class="platform-icon icon-Apple"></span></td><td>Apple TV</td></tr>
-        <tr><td><span class="platform-icon icon-TVNZ"></span></td><td>TVNZ</td></tr>
-        <tr><td><span class="platform-icon icon-Neon"></span></td><td>Neon</td></tr>
-        <tr><td><span class="platform-icon icon-Beamafilm"></span></td><td>Beamafilm</td></tr>
-        <tr><td><span class="platform-icon icon-AroVision"></span></td><td>AroVision</td></tr>
-        <tr><td><span class="platform-icon icon-Plex"></span></td><td>Plex</td></tr>
-        <tr><td><span class="platform-icon icon-MUBI"></span></td><td>MUBI</td></tr>
-        <tr><td><span class="platform-icon icon-Disney"></span></td><td>Disney+</td></tr>
-      </table>
-      <div class="legend-group">
-        <h3>Other Symbols</h3>
-        <table>
-          <tr><td><span class="watched-status-icon">✔</span></td><td>Film has been <strong>Watched</strong></td></tr>
-          <tr><td><span class="notes-indicator">&#9999;</span></td><td>Film has <strong>Notes</strong> (Click card to view)</td></tr>
-          <tr><td><span class="pin-icon">📌</span></td><td>Film is <strong>Pinned</strong> as a favorite</td></tr>
-        </table>
-      </div>
-    </div>
-  </details>
-  <details class="config-panel">
-    <summary>Config</summary>
-    <div class="controls">
-      <label><input type="checkbox" id="hideWatchedToggle"> Hide Watched Films</label>
-      <label><input type="checkbox" id="hidePinnedToggle"> Hide Pinned Films</label>
-      <label><input type="checkbox" id="challengeModeToggle"> Challenge Mode (Unwatched + Unpinned)</label>
-    </div>
-  </details>
+  <details class="timeline-legend">
+    <summary>Timeline Legend</summary>
+    <div class="legend-content">
+      <div class="legend-group">
+        <h3>Classification Color</h3>
+        <table>
+          <tr><td class="legend-box classification-Documentary"></td><td><strong>Documentary</strong> (Solid Green line)</td></tr>
+          <tr><td class="legend-box classification-Dramatisation"></td><td><strong>Dramatisation</strong> (Solid Amber line)</td></tr>
+          <tr><td class="legend-box classification-Fiction"></td><td><strong>Fiction</strong> (Solid Red line)</td></tr>
+        </table>
+      </div>
+      <div class="legend-group">
+        <h3>Historical Accuracy Rating</h3>
+        <table>
+          <tr><td><span class="rating-stars">★★★★★</span></td><td>Highly accurate, closely follows historical records with minimal dramatization.</td></tr>
+          <tr><td><span class="rating-stars">★★★★☆</span></td><td>Mostly accurate, with some dramatized elements or composite characters.</td></tr>
+          <tr><td><span class="rating-stars">★★★☆☆</span></td><td>Balanced mix of fact and fiction; key events are real but heavily dramatized.</td></tr>
+          <tr><td><span class="rating-stars">★★☆☆☆</span></td><td>Loosely based on history; significant liberties taken.</td></tr>
+          <tr><td><span class="rating-stars">★☆☆☆☆</span></td><td>Fictional story with minimal historical grounding.</td></tr>
+        </table>
+      </div>
+      <h3>Platform/s</h3>
+      <table>
+        <tr><td><span class="platform-icon icon-Netflix"></span></td><td>Netflix</td></tr>
+        <tr><td><span class="platform-icon icon-Prime"></span></td><td>Prime Video</td></tr>
+        <tr><td><span class="platform-icon icon-YouTube"></span></td><td>YouTube</td></tr>
+        <tr><td><span class="platform-icon icon-Apple"></span></td><td>Apple TV</td></tr>
+        <tr><td><span class="platform-icon icon-TVNZ"></span></td><td>TVNZ</td></tr>
+        <tr><td><span class="platform-icon icon-Neon"></span></td><td>Neon</td></tr>
+        <tr><td><span class="platform-icon icon-Beamafilm"></span></td><td>Beamafilm</td></tr>
+        <tr><td><span class="platform-icon icon-AroVision"></span></td><td>AroVision</td></tr>
+        <tr><td><span class="platform-icon icon-Plex"></span></td><td>Plex</td></tr>
+        <tr><td><span class="platform-icon icon-MUBI"></span></td><td>MUBI</td></tr>
+        <tr><td><span class="platform-icon icon-Disney"></span></td><td>Disney+</td></tr>
+      </table>
+      <div class="legend-group">
+        <h3>Other Symbols</h3>
+        <table>
+          <tr><td><span class="watched-status-icon">✔</span></td><td>Film has been <strong>Watched</strong></td></tr>
+          <tr><td><span class="notes-indicator">&#9999;</span></td><td>Film has <strong>Notes</strong> (Click card to view)</td></tr>
+          <tr><td><span class="pin-icon">📌</span></td><td>Film is <strong>Pinned</strong> as a favorite</td></tr>
+        </table>
+      </div>
+    </div>
+  </details>
+  <details class="config-panel">
+    <summary>Config</summary>
+    <div class="controls">
+      <label><input type="checkbox" id="hideWatchedToggle"> Hide Watched Films</label>
+      <label><input type="checkbox" id="hidePinnedToggle"> Hide Pinned Films</label>
+      <label><input type="checkbox" id="challengeModeToggle"> Challenge Mode (Unwatched + Unpinned)</label>
+    </div>
+  </details>
 
-  <details class="filter-panel">
-    <summary>Filter Options</summary>
-    <div class="controls">
-      <input type="text" id="searchInput" placeholder="Search..." disabled>
-      <select id="watchedFilter" disabled>
-        <option value="">Watched: All</option>
-        <option value="Yes">Watched: Yes</option>
-        <option value="No">Watched: No</option>
-      </select>
-      <select id="formatFilter" disabled>
-        <option value="">Format: All</option>
-      </select>
-      <select id="classificationFilter" disabled>
-        <option value="">Classification: All</option>
-      </select>
-      <select id="platformFilter" disabled>
-        <option value="">Platform/s: All</option>
-      </select>
-      <select id="eventYearFilter" disabled>
-        <option value="">Event Year: All</option>
-      </select>
-      <select id="periodFilter" disabled>
-        <option value="">Period: All</option>
-      </select>
-      <select id="pinnedFilter" disabled>
-        <option value="">Pinned: All</option>
-        <option value="Yes">Pinned: Yes</option>
-        <option value="No">Pinned: No</option>
-      </select>
-      <button id="clearFilters" disabled>Clear Filters</button>
-    </div>
-  </details>
+  <details class="filter-panel">
+    <summary>Filter Options</summary>
+    <div class="controls">
+      <input type="text" id="searchInput" placeholder="Search..." disabled>
+      <select id="watchedFilter" disabled>
+        <option value="">Watched: All</option>
+        <option value="Yes">Watched: Yes</option>
+        <option value="No">Watched: No</option>
+      </select>
+      <select id="formatFilter" disabled>
+        <option value="">Format: All</option>
+      </select>
+      <select id="classificationFilter" disabled>
+        <option value="">Classification: All</option>
+      </select>
+      <select id="platformFilter" disabled>
+        <option value="">Platform/s: All</option>
+      </select>
+      <select id="eventYearFilter" disabled>
+        <option value="">Event Year: All</option>
+      </select>
+      <select id="periodFilter" disabled>
+        <option value="">Period: All</option>
+      </select>
+      <select id="pinnedFilter" disabled>
+        <option value="">Pinned: All</option>
+        <option value="Yes">Pinned: Yes</option>
+        <option value="No">Pinned: No</option>
+      </select>
+      <button id="clearFilters" disabled>Clear Filters</button>
+    </div>
+  </details>
 <details class="stats-panel">
-  <summary>Stats</summary>
-  <div class="controls" id="statsContent"></div> </details>
+  <summary>Stats</summary>
+  <div id="statsContent"></div>
+</details>
 
-  <div class="timeline" id="timeline">
-    <div class="initial-prompt" id="initialPrompt">Loading data...</div>
-  </div>
+  <div class="timeline" id="timeline">
+    <div class="initial-prompt" id="initialPrompt">Loading data...</div>
+  </div>
 <script>
   let data = [];
 
