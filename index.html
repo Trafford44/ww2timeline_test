@@ -105,7 +105,7 @@
       content: "";
       display: table;
       clear: both;
-    }    
+    }
     .year-marker {
       position: absolute;
       left: 50%;
@@ -140,20 +140,18 @@
       clear: both;
       margin-right: auto;
     }
-    
     .timeline-event.right {
       float: right;
       clear: both;
       margin-left: auto;
     }
-
     .timeline-event:hover {
       transform: translateY(-3px);
       background-color: #eaf1f9;
     }
     .timeline-event.pinned {
       background-color: #fffbe6;
-      border-left-color: #f5b301 !important;
+      box-shadow: inset 0 0 0 4px #f5b301;
     }
     .classification-Documentary { border-left-color: #1a8754; }
     .classification-Dramatisation { border-left-color: #ffc107; }
@@ -161,6 +159,7 @@
     .timeline-event.watched {
       border-left-width: 5px;
       border-left-style: solid;
+      box-shadow: inset 0 0 0 2px #0d6efd;
     }
     .event-title {
       font-weight: bold;
@@ -238,10 +237,10 @@
       cursor: help;
     }
     .pin-icon {
-      font-size: 1.2em;
+      font-size: 1em;
       cursor: pointer;
-      margin-left: auto;
-      align-self: flex-end;
+      vertical-align: middle;
+      margin-left: 10px;
     }
     @media screen and (max-width: 768px) {
       .timeline-event {
@@ -250,7 +249,6 @@
         margin: 0 auto 20px;
       }
     }
-  
   </style>
 </head>
 <body>
@@ -288,7 +286,7 @@
         <tr><td><span class="platform-icon icon-Plex"></span></td><td>Plex</td></tr>
         <tr><td><span class="platform-icon icon-MUBI"></span></td><td>MUBI</td></tr>
         <tr><td><span class="platform-icon icon-Disney"></span></td><td>Disney+</td></tr>
-      </table>      
+      </table>
       <div class="legend-group">
         <h3>Other Symbols</h3>
         <table>
@@ -376,7 +374,7 @@
 
   function renderStars(value) {
     const match = String(value).match(/^([1-5])\/5$/);
-    if (!match) return "N/A";
+    if (!match) return "";
     const score = parseInt(match[1]);
     return `<span class="rating-stars">${"★".repeat(score)}${"☆".repeat(5 - score)}</span>`;
   }
@@ -417,7 +415,14 @@
       if (format && film.Format !== format) return false;
       if (classification && film.Classification !== classification) return false;
       if (platform && !(film.WatchOn || "").toLowerCase().includes(platform.toLowerCase())) return false;
-      if (eventYear && film.EventYear !== eventYear) return false;
+
+      if (eventYear) {
+        const filmYear = String(film.EventYear || "").trim();
+        const selectedYear = eventYear.trim();
+        console.log("Comparing EventYear:", filmYear, "vs", selectedYear);
+        if (filmYear !== selectedYear) return false;
+      }
+
       if (period && film.Period !== period) return false;
       if (pinned === "Yes" && !film.Pinned) return false;
       if (pinned === "No" && film.Pinned) return false;
@@ -494,32 +499,31 @@
         `;
         event.appendChild(title);
 
-        const pinToggle = document.createElement("span");
-        pinToggle.className = "pin-icon";
-        pinToggle.title = "Click to pin/unpin this film";
-        pinToggle.innerHTML = film.Pinned ? "📌" : "📍";
-        pinToggle.addEventListener("click", (e) => {
+        const details = document.createElement("div");
+        details.className = "event-details";
+        details.innerHTML = `
+          <b>Period:</b> ${film.Period || ""}<br>
+          <b>Format:</b> ${film.Format || ""}<br>
+          <b>Classification:</b> ${film.Classification || ""}<br>
+          <b>Running Time:</b> ${film.RunningTime || ""}<br>
+          <b>Historical Accuracy:</b> ${renderStars(film.HistoricalAccuracy)}<br>
+          <b>Short Description:</b> ${film.ShortDescription || ""}<br>
+          <b>Watch On:</b> ${film.WatchOn || ""} ${getPlatformIcons(film.WatchOn)}<br>
+          <b>Link:</b> ${film.Link ? `<a href="${film.Link}" target="_blank">View Link</a>` : ""}<br>
+          <b>Watched:</b> ${watchedStatus}
+          <b>Rating:</b> ${renderStars(film.Rating || 0)}
+          <span class="pin-icon" title="Click to pin/unpin this film" style="margin-left: 10px; font-size: 1em; vertical-align: middle; cursor: pointer;">
+            ${film.Pinned ? "📌" : "📍"}
+          </span>
+        `;
+        event.appendChild(details);
+
+        const pinSpan = details.querySelector(".pin-icon");
+        pinSpan.addEventListener("click", (e) => {
           e.stopPropagation();
           film.Pinned = !film.Pinned;
           applyFilters();
         });
-        event.appendChild(pinToggle);
-
-        const details = document.createElement("div");
-        details.className = "event-details";
-        details.innerHTML = `
-          <b>Period:</b> ${film.Period}<br>
-          <b>Format:</b> ${film.Format}<br>
-          <b>Classification:</b> ${film.Classification || "N/A"}<br>
-          <b>Running Time:</b> ${film.RunningTime || "N/A"}<br>
-          <b>Historical Accuracy:</b> ${renderStars(film.HistoricalAccuracy)}<br>
-          <b>Short Description:</b> ${film.ShortDescription || "N/A"}<br>
-          <b>Watch On:</b> ${film.WatchOn || "N/A"} ${getPlatformIcons(film.WatchOn)}<br>
-          <b>Link:</b> ${film.Link ? `<a href="${film.Link}" target="_blank">View Link</a>` : "N/A"}<br>
-          <b>Watched:</b> ${watchedStatus} &nbsp; &nbsp;
-          <b>Rating:</b> ${renderStars(film.Rating || 0)}
-        `;
-        event.appendChild(details);
 
         if (film.Notes) {
           const notes = document.createElement("div");
@@ -583,4 +587,3 @@
 </script>
 </body>
 </html>
-
