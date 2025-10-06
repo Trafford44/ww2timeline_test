@@ -88,21 +88,52 @@
         content: '▼';
     }
 
-    /* --- NEW FIX: PREVENT FONT SIZE INCREASE ON CLICK/OPEN --- */
-    .timeline-legend[open], 
-    .filter-panel[open],
-    details.config-panel[open],
-    details.stats-panel[open] {
-        /* CRITICAL FIX: Explicitly enforce the standard panel font size 
-           when the panel is open, overriding any browser zoom/size change. */
-        font-size: 1em !important; 
-        
-        /* Good practice to include the zoom/size adjust properties for full consistency */
-        zoom: 1 !important; 
-        -moz-text-size-adjust: none !important;
-        -webkit-text-size-adjust: none !important;
-        text-size-adjust: none !important;
-    }
+/* --- NEW FIX: PREVENT FONT SIZE INCREASE ON CLICK/OPEN --- */
+.timeline-legend[open], 
+.filter-panel[open],
+details.config-panel[open],
+details.stats-panel[open] {
+    /* CRITICAL FIX: Explicitly enforce the standard panel font size 
+       when the panel is open, overriding any browser zoom/size change. */
+    font-size: 1em !important; 
+    
+    /* Good practice to include the zoom/size adjust properties for full consistency */
+    zoom: 1 !important; 
+    -moz-text-size-adjust: none !important;
+    -webkit-text-size-adjust: none !important;
+    text-size-adjust: none !important;
+}
+
+/* --- CRITICAL REVERSION FIX FOR MOBILE (Content Containers) --- */
+
+/* Target the content containers when the panel is OPEN */
+.timeline-legend[open] .legend-content,
+.filter-panel[open] .controls,
+details.config-panel[open] .controls,
+details.stats-panel[open] #statsContent {
+    
+    /* Lock the size of the inner content container to the panel's base size (1em) */
+    font-size: 1em !important; 
+
+    /* Resetting the zoom property can sometimes clear the sticky mobile zoom state */
+    zoom: 1 !important; 
+
+    /* Re-apply the anti-adjustment rule specifically to the open content */
+    -webkit-text-size-adjust: none !important;
+    text-size-adjust: none !important;
+}
+
+
+    
+
+/* Also, ensure any nested controls inside the open content also revert */
+.timeline-legend[open] .legend-content input, 
+.timeline-legend[open] .legend-content select, 
+.filter-panel[open] .controls input, 
+.filter-panel[open] .controls select {
+    font-size: 14px !important; /* Lock the size of form elements */
+}
+
     
 .legend-content {
     display: flex;
