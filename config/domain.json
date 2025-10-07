@@ -1,0 +1,26 @@
+{
+  // Subject-specific configuration
+  "subject": "WWII Films",
+  "fieldMap": {
+    "title": "FilmTitle",
+    "year": "ReleaseYear",
+    "notes": "Notes",
+    "location": "Setting",
+    "pinned": "Pinned",
+    "watched": "Watched"
+  },
+  "labels": {
+    "titleLabel": "Film Title",
+    "yearLabel": "Release Year",
+    "notesLabel": "Synopsis",
+    "locationLabel": "Setting"
+  },
+  "defaultFilters": {
+    "classification": ["Documentary", "Dramatisation"],
+    "platform": ["Netflix", "Prime"]
+  },
+  "externalSources": {
+    "wikipedia": true,
+    "mapThumb": true
+  }
+}
