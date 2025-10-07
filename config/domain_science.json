@@ -1,0 +1,25 @@
+{
+  "subject": "Scientific Discoveries",
+  "fieldMap": {
+    "title": "DiscoveryName",
+    "year": "DiscoveryYear",
+    "notes": "Notes",
+    "location": "Location",
+    "pinned": "Pinned",
+    "watched": "Reviewed"
+  },
+  "labels": {
+    "titleLabel": "Discovery Name",
+    "yearLabel": "Discovery Year",
+    "notesLabel": "Research Notes",
+    "locationLabel": "Location"
+  },
+  "defaultFilters": {
+    "classification": ["Physics", "Biology", "Chemistry"],
+    "platform": ["Archive", "Google Scholar"]
+  },
+  "externalSources": {
+    "wikipedia": true,
+    "mapThumb": true
+  }
+}
