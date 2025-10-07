@@ -1,0 +1,28 @@
+{
+  // App identity and UI text
+  "appTitle": "Scientific Discoveries Timeline",
+  "searchPlaceholder": "Search by discovery, scientist, field...",
+  "noDataMessage": "No discoveries found or all records filtered out.",
+
+  // Icon settings
+  "pinIcon": {
+    "active": "⭐",
+    "inactive": "☆"
+  },
+  "notesIndicator": "🧪",
+  "watchedIcon": "🔬",
+
+  // UI behavior
+  "defaultSortOrder": "chronological",
+  "defaultPanelState": {
+    "legend": false,
+    "filters": true,
+    "config": true,
+    "stats": true
+  },
+
+  // Layout tweaks
+  "maxTimelineWidth": "1000px",
+  "defaultZoom": 1,
+  "fontSize": "1em"
+}
