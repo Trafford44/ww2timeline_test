@@ -1,8 +1,31 @@
-import { fetchAndRenderData } from './data.js';
-import { applyFilters, toggleControls } from './filters.js';
-import { renderTimeline } from './timeline.js';
-import { updateStats } from './stats.js';
+async function initApp() {
+  await loadConfigs();
+  applyTheme();
 
-toggleControls(false);
-renderTimeline([]);
-fetchAndRenderData();
+  const { fetchAndRenderData } = await import('./data.js');
+  fetchAndRenderData(features, domain);
+
+  if (features.enableWikipedia) {
+    import('./wiki.js').then(({ loadWikipediaSummaries }) => {
+      loadWikipediaSummaries();
+    });
+  }
+
+  if (features.enableMapThumb) {
+    import('./map.js').then(({ renderMapThumbs }) => {
+      renderMapThumbs();
+    });
+  }
+
+  if (features.enableExport) {
+    import('./export.js').then(({ setupExport }) => {
+      setupExport();
+    });
+  }
+
+  if (features.enableLocalStorage) {
+    import('./storage.js').then(({ syncLocalState }) => {
+      syncLocalState();
+    });
+  }
+}
