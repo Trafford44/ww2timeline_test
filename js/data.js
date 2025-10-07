@@ -7,7 +7,7 @@ export async function fetchAndRenderData(features, domain, settings) {
   try {
     // Load dataset based on domain
     const datasetMap = {
-      "WWII Films": "../testdata/ww2films.json",
+      "WWII Films": "../testdata/ww2_infilm.json",
       "Scientific Discoveries": "../testdata/science.json"
     };
     const datasetURL = datasetMap[domain.subject] || "../testdata/default.json";
