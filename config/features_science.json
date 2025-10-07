@@ -1,0 +1,23 @@
+{
+  // Core modules
+  "enableWikipedia": true,
+  "enableMapThumb": true,
+  "enableExport": true,
+  "enableStatsPanel": true,
+  "enableMiniMap": false,
+  "enableThemeToggle": true,
+  "enableUserLogin": false,
+  "enableCloudSync": false,
+  "enableLocalStorage": true,
+  "enableImageThumb": false,
+
+  // UI Feature Toggles
+  "enableFilterPanel": true,
+  "enableSearch": true,
+  "enableConfigPanel": true,
+  "enablePinning": false,
+  "enableLegendPanel": false,
+  "enableClassificationColors": true,
+  "enablePlatformIcons": false,
+  "enableNotesToggle": true
+}
