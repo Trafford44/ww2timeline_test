@@ -1,5 +1,4 @@
 {
-  // Toggle individual features on or off
   "enableWikipedia": true,
   "enableMapThumb": true,
   "enableExport": true,
@@ -7,5 +6,17 @@
   "enableMiniMap": false,
   "enableThemeToggle": true,
   "enableUserLogin": false,
-  "enableCloudSync": false
+  "enableCloudSync": false,
+  "enableLocalStorage": true,
+  "enableImageThumb": true,
+
+  // UI Feature Toggles
+  "enableFilterPanel": true,
+  "enableSearch": true,
+  "enableConfigPanel": true,
+  "enablePinning": true,
+  "enableLegendPanel": true,
+  "enableClassificationColors": true,
+  "enablePlatformIcons": true,
+  "enableNotesToggle": true
 }
