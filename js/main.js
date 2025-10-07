@@ -5,11 +5,11 @@ let settings = {};
 
 async function loadConfigs() {
   const [featuresRes, themeRes, domainRes, settingsRes] = await Promise.all([
-    fetch('../config/features.json'),
+    fetch('../config/features_ww2infilm.json'),
     fetch('../config/theme_ww2infilm.json'),
     fetch('../config/domain_ww2infilm.json'),
     fetch('../config/settings_ww2infilm.json')
-    //change above lines (theme, domain, settings) to new settings file when changing domain to, for example, science (settings_science.json)
+    //change above lines (features, theme, domain, settings) to new settings file when changing domain to, for example, science (settings_science.json)
   ]);
   features = await featuresRes.json();
   theme = await themeRes.json();
