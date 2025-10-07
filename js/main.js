@@ -8,7 +8,8 @@ async function loadConfigs() {
     fetch('../config/features.json'),
     fetch('../config/theme.json'),
     fetch('../config/domain.json'),
-    fetch('../config/settings.json')
+    fetch('../config/settings_ww2infilm.json')
+    //change above line to new settings file when changing doma.  also check the domain.json
   ]);
   features = await featuresRes.json();
   theme = await themeRes.json();
