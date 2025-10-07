@@ -1,16 +1,19 @@
 let features = {};
 let theme = {};
 let domain = {};
+let settings = {};
 
 async function loadConfigs() {
-  const [featuresRes, themeRes, domainRes] = await Promise.all([
+  const [featuresRes, themeRes, domainRes, settingsRes] = await Promise.all([
     fetch('../config/features.json'),
     fetch('../config/theme.json'),
-    fetch('../config/domain.json')
+    fetch('../config/domain.json'),
+    fetch('../config/settings.json')
   ]);
   features = await featuresRes.json();
   theme = await themeRes.json();
   domain = await domainRes.json();
+  settings = await settingsRes.json();
 }
 
 function applyTheme() {
@@ -20,6 +23,18 @@ function applyTheme() {
 
   const root = document.documentElement;
   root.style.setProperty('--primary-color', theme.primaryColor || "#0d6efd");
+}
+
+function applySettings() {
+  document.title = settings.appTitle || "Timeline App";
+  const searchInput = document.getElementById("searchInput");
+  const initialPrompt = document.getElementById("initialPrompt");
+  if (searchInput && settings.searchPlaceholder) {
+    searchInput.placeholder = settings.searchPlaceholder;
+  }
+  if (initialPrompt && settings.noDataMessage) {
+    initialPrompt.textContent = settings.noDataMessage;
+  }
 }
 
 function applyFeatureVisibility() {
@@ -32,10 +47,11 @@ function applyFeatureVisibility() {
 async function initApp() {
   await loadConfigs();
   applyTheme();
+  applySettings();
   applyFeatureVisibility();
 
   const { fetchAndRenderData } = await import('./data.js');
-  fetchAndRenderData(features, domain);
+  fetchAndRenderData(features, domain, settings);
 
   if (features.enableWikipedia) {
     import('./wiki.js').then(({ loadWikipediaSummaries }) => {
