@@ -340,6 +340,9 @@ details.stats-panel[open] #statsContent {
         margin: 0 auto 20px;
       }
     }
+    .release-year {
+      font-weight: normal;
+    }    
   </style>
 </head>
 <body>
@@ -636,7 +639,7 @@ details.stats-panel[open] #statsContent {
         const title = document.createElement("div");
         title.className = "event-title";
         title.innerHTML = `
-          ${imageHTML}${film.FilmTitle}${film.ReleaseYear ? `<span style="font-weight: normal;"> (${film.ReleaseYear})</span>` : ""}
+          ${imageHTML}${film.FilmTitle}${film.ReleaseYear ? `<span class="release-year"> (${film.ReleaseYear})</span>` : ""}
           ${notesIndicator}
         `;
         event.appendChild(title);
@@ -654,7 +657,7 @@ details.stats-panel[open] #statsContent {
           <b>Link:</b> ${film.Link ? `<a href="${film.Link}" target="_blank">View Link</a>` : ""}<br>
           <b>Watched:</b> ${watchedStatus}
           <b>Rating:</b> ${renderStars(film.Rating || 0)}
-          <span class="pin-icon" title="Click to pin/unpin this film" style="margin-left: 10px; font-size: 1em; vertical-align: middle; cursor: pointer;">
+          <span class="pin-icon" title="Click to pin/unpin this film">
             ${film.Pinned ? "📌" : "📍"}
           </span>
         `;
