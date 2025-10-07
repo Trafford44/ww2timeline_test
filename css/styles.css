@@ -1,0 +1,207 @@
+/* === Base Styles === */
+body {
+  font-family: Arial, sans-serif;
+  background: #f4f4f4;
+  margin: 20px;
+}
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+  justify-content: center;
+  padding: 0 10px;
+}
+input[type="text"], select, button {
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* === Unified Panel Container Styles === */
+.timeline-legend, 
+.filter-panel,
+details.config-panel,
+details.stats-panel {
+  max-width: 900px;
+  margin: 0 auto 20px;
+  padding: 0;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1em;
+}
+#statsContent {
+  font-size: 1em !important;
+  padding: 10px 20px !important;
+}
+
+/* === Unified Summary Styling === */
+.timeline-legend summary, 
+.filter-panel summary,
+.config-panel summary,
+.stats-panel summary {
+  font-weight: bold;
+  cursor: pointer;
+  padding: 10px 20px;
+  list-style: none;
+}
+
+/* === Arrow Icon Styling === */
+.timeline-legend summary::before, 
+.filter-panel summary::before,
+.config-panel summary::before,
+.stats-panel summary::before {
+  content: '▶';
+  margin-right: 8px;
+  display: inline-block;
+  transition: transform 0.2s;
+}
+.timeline-legend[open] summary::before,
+.filter-panel[open] summary::before,
+.config-panel[open] summary::before,
+.stats-panel[open] summary::before {
+  content: '▼';
+}
+
+/* === Font Size Fixes on Open Panels === */
+.timeline-legend[open], 
+.filter-panel[open],
+details.config-panel[open],
+details.stats-panel[open] {
+  font-size: 1em !important;
+  zoom: 1 !important;
+  -moz-text-size-adjust: none !important;
+  -webkit-text-size-adjust: none !important;
+  text-size-adjust: none !important;
+}
+.timeline-legend[open] .legend-content,
+.filter-panel[open] .controls,
+details.config-panel[open] .controls,
+details.stats-panel[open] #statsContent {
+  font-size: 1em !important;
+  zoom: 1 !important;
+  -webkit-text-size-adjust: none !important;
+  text-size-adjust: none !important;
+}
+.timeline-legend[open] .legend-content input, 
+.timeline-legend[open] .legend-content select, 
+.filter-panel[open] .controls input, 
+.filter-panel[open] .controls select {
+  font-size: 14px !important;
+}
+
+/* === Legend Content === */
+.legend-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  padding: 10px 20px;
+  border-top: 1px dashed #eee;
+}
+.legend-group h3 {
+  font-size: 1.1em;
+  margin-top: 0;
+  margin-bottom: 5px;
+  color: #333;
+}
+.legend-group table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9em;
+}
+.legend-group td {
+  padding: 4px 8px 4px 0;
+  vertical-align: top;
+}
+.legend-box {
+  width: 20px;
+  padding: 0 !important;
+  border-left: 5px solid;
+  height: 1.2em;
+  background: #f9f9f9;
+}
+
+/* === Timeline Layout === */
+.timeline {
+  position: relative;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px 0;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 4px;
+  background: #555;
+  transform: translateX(-50%);
+}
+.year-group {
+  position: relative;
+  margin-bottom: 80px;
+  width: 100%;
+  padding-top: 30px;
+}
+.year-group::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.year-marker {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #333;
+  top: 0;
+  background: #dcdcdc;
+  padding: 4px 12px;
+  border-radius: 4px;
+  z-index: 10;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* === Timeline Events === */
+.timeline-event {
+  position: relative;
+  width: 45%;
+  padding: 15px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+  cursor: pointer;
+  transition: transform 0.2s, background-color 0.2s;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-left: 5px solid #ccc;
+}
+.timeline-event.left {
+  float: left;
+  clear: both;
+  margin-right: auto;
+}
+.timeline-event.right {
+  float: right;
+  clear: both;
+  margin-left: auto;
+}
+.timeline-event:hover {
+  transform: translateY(-3px);
+  background-color: #eaf1f9;
+}
+.timeline-event.pinned {
+  background-color: #fffbe6;
+  box-shadow: inset 0 0 0 4px #f5b301;
+}
+.classification-Documentary { border-left-color: #1a
