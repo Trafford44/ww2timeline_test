@@ -1,0 +1,10 @@
+{
+  // Visual styling and layout preferences
+  "mode": "light", // Options: "light", "dark"
+  "primaryColor": "#0d6efd",
+  "backgroundColor": "#ffffff",
+  "textColor": "#333333",
+  "cardStyle": "film", // Options: "film", "event", "discovery"
+  "fontFamily": "Arial, sans-serif",
+  "iconSet": "default" // Options: "default", "military", "science"
+}
