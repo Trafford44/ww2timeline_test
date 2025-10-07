@@ -1,0 +1,11 @@
+{
+  // Toggle individual features on or off
+  "enableWikipedia": true,
+  "enableMapThumb": true,
+  "enableExport": true,
+  "enableStatsPanel": true,
+  "enableMiniMap": false,
+  "enableThemeToggle": true,
+  "enableUserLogin": false,
+  "enableCloudSync": false
+}
