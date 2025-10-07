@@ -1,15 +1,25 @@
-import { populateDropdowns } from './filters.js';
-import { applyFilters } from './filters.js';
-import { updateStats } from './stats.js';
-
 export let data = [];
 
-export async function fetchAndRenderData() {
+export async function fetchAndRenderData(features, domain, settings) {
   const initialPrompt = document.getElementById("initialPrompt");
-  initialPrompt.textContent = "Loading data via Web App...";
+  initialPrompt.textContent = `Loading data for ${domain.subject}...`;
+
   try {
-    const response = await fetch("https://script.google.com/macros/s/AKfycbwuMhkWNZI71HWbZr18pe56ekjCVrn0SCliiFHOzIW60odC3CsOstRgUeMIEbg03xbeNA/exec");
+    // Load dataset based on domain
+    const datasetMap = {
+      "WWII Films": "../testdata/ww2films.json",
+      "Scientific Discoveries": "../testdata/science.json"
+    };
+    const datasetURL = datasetMap[domain.subject] || "../testdata/default.json";
+    const response = await fetch(datasetURL);
     data = await response.json();
+
+    // Lazy-load filters and stats modules
+    const [{ populateDropdowns, applyFilters, toggleControls }, { updateStats }] = await Promise.all([
+      import('./filters.js'),
+      import('./stats.js')
+    ]);
+
     populateDropdowns(data);
     toggleControls(true);
     applyFilters();
@@ -17,6 +27,5 @@ export async function fetchAndRenderData() {
   } catch (error) {
     console.error("Fetch error:", error);
     initialPrompt.textContent = `ERROR: Failed to load data. ${error.message}`;
-    toggleControls(false);
   }
 }
