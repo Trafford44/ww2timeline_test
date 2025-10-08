@@ -1,10 +1,10 @@
 {
-  // App identity and UI text
+  "_comment": "App identity and UI text",
   "appTitle": "WWII Film Timeline",
   "searchPlaceholder": "Search by title, platform, classification...",
   "noDataMessage": "No films found or all records filtered out.",
 
-  // Icon settings
+  "_comment": "Icon settings",
   "pinIcon": {
     "active": "📌",
     "inactive": "📍"
@@ -12,7 +12,7 @@
   "notesIndicator": "📝",
   "watchedIcon": "✔",
 
-  // UI behavior
+  "_comment": "UI behavior",
   "defaultSortOrder": "chronological", // Options: chronological, reverse, alphabetical
   "defaultPanelState": {
     "legend": true,
@@ -21,7 +21,7 @@
     "stats": false
   },
 
-  // Optional: layout tweaks
+  "_comment": "Optional: layout tweaks",
   "maxTimelineWidth": "900px",
   "defaultZoom": 1,
   "fontSize": "1em"
