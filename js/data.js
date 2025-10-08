@@ -23,7 +23,7 @@ export async function fetchAndRenderData(features, domain, settings) {
     if (!datasetMap[domain.subject]) {
       throw new Error(`No dataset mapped for domain: ${domain.subject}`);
     }
-    const datasetURL = datasetMap[domain.subject];
+    //const datasetURL = datasetMap[domain.subject];
 
     const response = await fetch(datasetURL);
     data = await response.json();
