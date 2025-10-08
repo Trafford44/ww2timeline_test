@@ -13,7 +13,8 @@
   "watchedIcon": "✔",
 
   "_comment": "UI behavior",
-  "defaultSortOrder": "chronological", // Options: chronological, reverse, alphabetical
+  "defaultSortOrder": "chronological", 
+  "_comment": "Options: chronological, reverse, alphabetical",
   "defaultPanelState": {
     "legend": true,
     "filters": true,
