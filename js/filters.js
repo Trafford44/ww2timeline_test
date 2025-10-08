@@ -1,6 +1,6 @@
 import { renderTimeline } from './timeline.js';
 import { updateStats } from './stats.js';
-import { data } from './data.js';
+import { fetchAndRenderData } from './data.js';
 
 export const searchInput = document.getElementById('searchInput');
 export const watchedFilter = document.getElementById('watchedFilter');
