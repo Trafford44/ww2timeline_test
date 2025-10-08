@@ -8,6 +8,6 @@
   "cardStyle": "film", 
   "_comment": "Options: film, event, discovery",
   "fontFamily": "Arial, sans-serif",
-  "iconSet": "default" 
+  "iconSet": "default",
   "_comment": "Options: default, military, science"
 }
