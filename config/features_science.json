@@ -1,5 +1,5 @@
 {
-  // Core modules
+  "_comment": "Core modules",
   "enableWikipedia": true,
   "enableMapThumb": true,
   "enableExport": true,
@@ -11,7 +11,7 @@
   "enableLocalStorage": true,
   "enableImageThumb": false,
 
-  // UI Feature Toggles
+  "_comment": "UI Feature Toggles",
   "enableFilterPanel": true,
   "enableSearch": true,
   "enableConfigPanel": true,
