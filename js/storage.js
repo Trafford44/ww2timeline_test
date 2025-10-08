@@ -34,5 +34,6 @@ export function syncLocalState(records) {
     console.log("Loaded sort order from localStorage:", sortOrder);
     import('./sort.js').then(({ applySort }) => {
       applySort(records, sortOrder); // ✅ apply sort to data
+    });      
   }
 }
