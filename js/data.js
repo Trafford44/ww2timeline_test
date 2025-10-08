@@ -5,10 +5,6 @@ export async function fetchAndRenderData(features, domain, settings) {
   initialPrompt.textContent = `Loading data for ${domain.subject}...`;
 
   try {
-    const domain = {
-      subject: "WWII Films"
-    };
-
     // Load dataset based on domain
     const datasetMap = {
       "WWII Films": "../testdata/ww2_infilm.json",
