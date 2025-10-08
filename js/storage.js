@@ -16,7 +16,7 @@ export function loadFromLocal(key) {
   }
 }
 
-export function syncLocalState() {
+export function syncLocalState(records) {
   console.log("💾 syncLocalState() called");
 
   // Example usage — replace with your actual keys
@@ -25,11 +25,14 @@ export function syncLocalState() {
 
   if (filters) {
     console.log("Loaded filters from localStorage:", filters);
-    // applyFilters(filters); // if you have a function for this
+    import('./filters.js').then(({ applyFilters }) => {
+      applyFilters(records, filters); // ✅ apply filters to data
+    });
   }
 
   if (sortOrder) {
     console.log("Loaded sort order from localStorage:", sortOrder);
-    // applySort(sortOrder); // if you have a function for this
+    import('./sort.js').then(({ applySort }) => {
+      applySort(records, sortOrder); // ✅ apply sort to data
   }
 }
