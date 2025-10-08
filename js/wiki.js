@@ -1,5 +1,7 @@
 // wiki.js
 export async function loadWikipediaSummaries(records) {
+  console.log("✅ loadWikipediaSummaries() called");
+  
   const summaries = {};
 
   for (const record of records) {
