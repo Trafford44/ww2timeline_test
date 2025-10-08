@@ -1,4 +1,6 @@
 export function updateStats(filteredData) {
+  console.log("✅ updateStats called with", filteredData.length, "items");
+
   const statsContent = document.getElementById("statsContent");
   const total = filteredData.length;
   const byClassification = {};
