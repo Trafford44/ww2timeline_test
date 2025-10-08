@@ -91,3 +91,16 @@ export function applyFilters() {
   renderTimeline(filtered);
   updateStats(filtered);
 }
+
+formatFilter.addEventListener("change", applyFilters);
+classificationFilter.addEventListener("change", applyFilters);
+platformFilter.addEventListener("change", applyFilters);
+eventYearFilter.addEventListener("change", applyFilters);
+periodFilter.addEventListener("change", applyFilters);
+watchedFilter.addEventListener("change", applyFilters);
+pinnedFilter.addEventListener("change", applyFilters);
+hideWatchedToggle?.addEventListener("change", applyFilters);
+hidePinnedToggle?.addEventListener("change", applyFilters);
+challengeModeToggle?.addEventListener("change", applyFilters);
+searchInput.addEventListener("input", applyFilters);
+
