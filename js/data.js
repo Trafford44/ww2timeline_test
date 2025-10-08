@@ -7,8 +7,8 @@ export async function fetchAndRenderData(features, domain, settings) {
   try {
     // Load dataset based on domain
     const datasetMap = {
-      "WWII Films": "testdata/ww2_infilm.json",
-      "Scientific Discoveries": "testdata/science.json"
+      "WWII Films": "../testdata/ww2_infilm.json",
+      "Scientific Discoveries": "../testdata/science.json"
     };
     const subject = domain?.subject || "WWII Films";
     if (!datasetMap[subject]) {
