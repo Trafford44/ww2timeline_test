@@ -1,4 +1,4 @@
-export async function loadOptions(domainKey = "ww2infilm") {
+export async function loadConfig(domainKey = "ww2infilm") {
   const [featuresRes, themeRes, domainRes, settingsRes] = await Promise.all([
     fetch(`config/features_${domainKey}.json`),
     fetch(`config/theme_${domainKey}.json`),
