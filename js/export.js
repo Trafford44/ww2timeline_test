@@ -1,5 +1,7 @@
 // export.js
-export function exportToCSV(records) {
+export function setupExport(records) {
+  console.log("📤 setupExport() called");
+  
   const headers = Object.keys(records[0]);
   const rows = records.map(r => headers.map(h => `"${r[h] || ''}"`).join(','));
   const csv = [headers.join(','), ...rows].join('\n');
