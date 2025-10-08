@@ -10,7 +10,11 @@ export async function fetchAndRenderData(features, domain, settings) {
       "WWII Films": "../testdata/ww2_infilm.json",
       "Scientific Discoveries": "../testdata/science.json"
     };
-    const datasetURL = datasetMap[domain.subject] || "../testdata/default.json";
+    if (!datasetMap[domain.subject]) {
+      throw new Error(`No dataset mapped for domain: ${domain.subject}`);
+    }
+    const datasetURL = datasetMap[domain.subject];
+
     const response = await fetch(datasetURL);
     data = await response.json();
 
