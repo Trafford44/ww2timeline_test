@@ -1,5 +1,6 @@
 // map.js
-export function mapLocations(records) {
+export function enableMapThumb(records) {
+  console.log("🗺️ renderMapThumbs() called");
   return records
     .filter(r => r.Location)
     .map(r => ({
