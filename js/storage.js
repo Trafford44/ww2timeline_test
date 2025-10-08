@@ -1,4 +1,3 @@
-// storage.js
 export function saveToLocal(key, value) {
   try {
     localStorage.setItem(key, JSON.stringify(value));
@@ -14,5 +13,23 @@ export function loadFromLocal(key) {
   } catch (e) {
     console.error("Failed to load from localStorage:", e);
     return null;
+  }
+}
+
+export function syncLocalState() {
+  console.log("💾 syncLocalState() called");
+
+  // Example usage — replace with your actual keys
+  const filters = loadFromLocal("timelineFilters");
+  const sortOrder = loadFromLocal("timelineSort");
+
+  if (filters) {
+    console.log("Loaded filters from localStorage:", filters);
+    // applyFilters(filters); // if you have a function for this
+  }
+
+  if (sortOrder) {
+    console.log("Loaded sort order from localStorage:", sortOrder);
+    // applySort(sortOrder); // if you have a function for this
   }
 }
