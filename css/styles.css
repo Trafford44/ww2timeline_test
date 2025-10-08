@@ -26,7 +26,7 @@ input[type="text"], select, button {
 /* === Unified Panel Container Styles === */
 .timeline-legend, 
 .filter-panel,
-details.config-panel,
+details.options-panel,
 details.stats-panel {
   max-width: 900px;
   margin: 0 auto 20px;
@@ -44,7 +44,7 @@ details.stats-panel {
 /* === Unified Summary Styling === */
 .timeline-legend summary, 
 .filter-panel summary,
-.config-panel summary,
+.options-panel summary,
 .stats-panel summary {
   font-weight: bold;
   cursor: pointer;
@@ -55,7 +55,7 @@ details.stats-panel {
 /* === Arrow Icon Styling === */
 .timeline-legend summary::before, 
 .filter-panel summary::before,
-.config-panel summary::before,
+.options-panel summary::before,
 .stats-panel summary::before {
   content: '▶';
   margin-right: 8px;
@@ -64,7 +64,7 @@ details.stats-panel {
 }
 .timeline-legend[open] summary::before,
 .filter-panel[open] summary::before,
-.config-panel[open] summary::before,
+.options-panel[open] summary::before,
 .stats-panel[open] summary::before {
   content: '▼';
 }
@@ -72,7 +72,7 @@ details.stats-panel {
 /* === Font Size Fixes on Open Panels === */
 .timeline-legend[open], 
 .filter-panel[open],
-details.config-panel[open],
+details.options-panel[open],
 details.stats-panel[open] {
   font-size: 1em !important;
   zoom: 1 !important;
@@ -82,7 +82,7 @@ details.stats-panel[open] {
 }
 .timeline-legend[open] .legend-content,
 .filter-panel[open] .controls,
-details.config-panel[open] .controls,
+details.options-panel[open] .controls,
 details.stats-panel[open] #statsContent {
   font-size: 1em !important;
   zoom: 1 !important;
