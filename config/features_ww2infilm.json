@@ -10,7 +10,7 @@
   "enableLocalStorage": true,
   "enableImageThumb": true,
 
-  // UI Feature Toggles
+  "_comment": "UI Feature Toggles"
   "enableFilterPanel": true,
   "enableSearch": true,
   "enableConfigPanel": true,
