@@ -59,31 +59,32 @@ async function initApp() {
   applyFeatureVisibility();
 
   const { fetchAndRenderData } = await import('./data.js');
-  fetchAndRenderData(features, domain, settings);
-
+  const data = await fetchAndRenderData(features, domain, settings); // ✅ capture returned data
+  
   if (features.enableWikipedia) {
     import('./wiki.js').then(({ loadWikipediaSummaries }) => {
-      loadWikipediaSummaries();
+      loadWikipediaSummaries(data);
     });
   }
-
+  
   if (features.enableMapThumb) {
     import('./map.js').then(({ renderMapThumbs }) => {
-      renderMapThumbs();
+      renderMapThumbs(data); // ✅ pass data
     });
   }
-
+  
   if (features.enableExport) {
     import('./export.js').then(({ setupExport }) => {
-      setupExport();
+      setupExport(data); // ✅ pass data
+    });
+  }
+  
+  if (features.enableLocalStorage) {
+    import('./storage.js').then(({ syncLocalState }) => {
+      syncLocalState(data); // ✅ pass data
     });
   }
 
-  if (features.enableLocalStorage) {
-    import('./storage.js').then(({ syncLocalState }) => {
-      syncLocalState();
-    });
-  }
 }
 
 initApp();
