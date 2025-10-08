@@ -17,8 +17,7 @@
   },
   "defaultFilters": {
     "classification": ["Documentary", "Dramatisation", "Fiction"],
-    "platform": ["Apple", "Prime", "Netflix", "AroVision", "DVD", "TVNZ", "Hulu", "YouTube", "Not available for free", "China platforms", "Apple overseas", "Māori+", "Neon", "Beamafilm NZ", "MUBI", "Roadshow Licensing (NZ)", "Plex (Free Overseas)", "Archive.org (Free)", "Prime Overseas", "Google", "Microsoft", "Disney"
-    ]  },
+    "platform": ["Apple", "Prime", "Netflix", "AroVision", "DVD", "TVNZ", "Hulu", "YouTube", "Not available for free", "China platforms", "Apple overseas", "Māori+", "Neon", "Beamafilm NZ", "MUBI", "Roadshow Licensing (NZ)", "Plex (Free Overseas)", "Archive.org (Free)", "Prime Overseas", "Google", "Microsoft", "Disney"]  },
   "externalSources": {
     "wikipedia": true,
     "mapThumb": true
