@@ -1,11 +1,8 @@
-export let data = [];
-
 export async function fetchAndRenderData(features, domain, settings) {
   const initialPrompt = document.getElementById("initialPrompt");
   initialPrompt.textContent = `Loading data for ${domain.subject}...`;
 
   try {
-    // Load dataset based on domain
     const datasetMap = {
       "WWII Films": "../testdata/ww2_infilm.json",
       "Scientific Discoveries": "../testdata/science.json"
@@ -16,15 +13,9 @@ export async function fetchAndRenderData(features, domain, settings) {
     }
     const datasetURL = datasetMap[subject];
 
-    if (!datasetMap[domain.subject]) {
-      throw new Error(`No dataset mapped for domain: ${domain.subject}`);
-    }
-    //const datasetURL = datasetMap[domain.subject];
-
     const response = await fetch(datasetURL);
-    data = await response.json();
+    const data = await response.json(); // ✅ use local variable
 
-    // Lazy-load filters and stats modules
     const [{ populateDropdowns, applyFilters, toggleControls }, { updateStats }] = await Promise.all([
       import('./filters.js'),
       import('./stats.js')
@@ -34,8 +25,11 @@ export async function fetchAndRenderData(features, domain, settings) {
     toggleControls(true);
     applyFilters();
     updateStats(data);
+
+    return data; // ✅ return the dataset
   } catch (error) {
     console.error("Fetch error:", error);
     initialPrompt.textContent = `ERROR: Failed to load data. ${error.message}`;
+    return []; // ✅ return empty array on failure
   }
 }
