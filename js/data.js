@@ -18,7 +18,7 @@ export async function fetchAndRenderData(features, domain, settings) {
 
     return data; // ✅ return the dataset
   } catch (error) {
-    console.error("Fetch error:", error);
+    console.error("❌ Fetch error:", error);
     initialPrompt.textContent = `ERROR: Failed to load data. ${error.message}`;
     return []; // ✅ return empty array on failure
   }
