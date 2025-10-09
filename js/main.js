@@ -1,28 +1,8 @@
+import { loadConfigs } from './config.js';
 let features = {};
 let theme = {};
 let domain = {};
 let settings = {};
-
-async function loadConfigs() {
-  const [featuresRes, themeRes, domainRes, settingsRes] = await Promise.all([
-    fetch('config/features_ww2infilm.json'),
-    fetch('config/theme_ww2infilm.json'),
-    fetch('config/domain_ww2infilm.json'),
-    fetch('config/settings_ww2infilm.json')
-    //change above lines (features, theme, domain, settings) to new settings file when changing domain to, for example, science (settings_science.json)
-    // was gettoing 404 when '../config/features_ww2infilm.json'
-    // From co-pilot:
-    // When you use: fetch('/config/features_ww2infilm.json')
-    // …the browser interprets that as:  http://yourdomain.com/config/features_ww2infilm.json
-    // But if your project is actually served from: http://yourdomain.com/ww2timeline_test/
-    // Then the correct path is: fetch('config/features_ww2infilm.json')
-
-  ]);
-  features = await featuresRes.json();
-  theme = await themeRes.json();
-  domain = await domainRes.json();
-  settings = await settingsRes.json();
-}
 
 function applyTheme() {
   document.body.style.backgroundColor = theme.backgroundColor || "#f4f4f4";
@@ -53,7 +33,12 @@ function applyFeatureVisibility() {
 }
 
 async function initApp() {
-  await loadConfigs();
+  const config = await loadConfigs("ww2infilm");
+  features = config.features;
+  theme = config.theme;
+  domain = config.domain;
+  settings = config.settings;
+  
   applyTheme();
   applySettings();
   applyFeatureVisibility();
