@@ -52,7 +52,7 @@ export function parseSearchQuery(query) {
   return { filters, keywords };
 }
 
-export function applyFilters() {
+export function applyFilters(data) {
   const { filters, keywords } = parseSearchQuery(searchInput.value.trim());
   const watched = watchedFilter.value;
   const format = formatFilter.value;
@@ -65,7 +65,7 @@ export function applyFilters() {
   const hidePinned = hidePinnedToggle?.checked;
   const challengeMode = challengeModeToggle?.checked;
 
-  const filtered = fetchAndRenderData.filter(film => {
+  const filtered = data.filter(film => {
     const text = Object.values(film).join(" ").toLowerCase();
     if (keywords.length && !keywords.every(k => text.includes(k))) return false;
     if (filters.title && !(film.FilmTitle || "").toLowerCase().includes(filters.title)) return false;
