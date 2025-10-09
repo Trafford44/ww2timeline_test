@@ -27,7 +27,7 @@ function applySettings() {
 
 function applyFeatureVisibility() {
   if (!features.enableFilterPanel) document.querySelector('.filter-panel')?.remove();
-  if (!features.enableConfigPanel) document.querySelector('.config-panel')?.remove();
+  if (!features.enableOptionsPanel) document.querySelector('.config-panel')?.remove();
   if (!features.enableLegendPanel) document.querySelector('.timeline-legend')?.remove();
   if (!features.enableStatsPanel) document.querySelector('.stats-panel')?.remove();
 }
@@ -49,7 +49,7 @@ async function initApp() {
   const { fetchAndRenderData } = await import('./data.js');
   const data = await fetchAndRenderData(features, domain, settings); // ✅ capture returned data
 
-  if (features.enableConfigPanel) {
+  if (features.enableOptionsPanel) {
     const { setupOptions } = await import('./options.js');
     const { applyFilters } = await import('./filters.js');
     setupOptions(applyFilters, features); // ✅ wire up config panel toggles
