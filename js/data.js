@@ -12,19 +12,8 @@ export async function fetchAndRenderData(features, domain, settings) {
       throw new Error(`No dataset mapped for domain: ${subject}`);
     }
     const datasetURL = datasetMap[subject];
-
     const response = await fetch(datasetURL);
     const data = await response.json(); // ✅ use local variable
-
-    const [{ populateDropdowns, applyFilters, toggleControls }, { updateStats }] = await Promise.all([
-      import('./filters.js'),
-      import('./stats.js')
-    ]);
-
-    populateDropdowns(data);
-    toggleControls(true);
-    applyFilters();
-    updateStats(data);
 
     return data; // ✅ return the dataset
   } catch (error) {
