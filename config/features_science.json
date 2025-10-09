@@ -14,7 +14,7 @@
   "_comment": "UI Feature Toggles",
   "enableFilterPanel": true,
   "enableSearch": true,
-  "enableConfigPanel": true,
+  "enableOptionsPanel": true,
   "enablePinning": false,
   "enableLegendPanel": false,
   "enableClassificationColors": true,
