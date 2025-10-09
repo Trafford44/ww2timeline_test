@@ -1,4 +1,4 @@
-import { loadConfigs } from './config.js';
+import { loadConfig } from './config.js';
 let features = {};
 let theme = {};
 let domain = {};
