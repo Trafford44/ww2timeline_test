@@ -124,6 +124,7 @@ summary {
   vertical-align: middle;
 }
 
+/*
 .icon-Netflix { background-image: url('icons/netflix.png'); }
 .icon-Prime { background-image: url('icons/prime.png'); }
 .icon-YouTube { background-image: url('icons/youtube.png'); }
@@ -135,6 +136,41 @@ summary {
 .icon-Plex { background-image: url('icons/plex.png'); }
 .icon-MUBI { background-image: url('icons/mubi.png'); }
 .icon-Disney { background-image: url('icons/disney.png'); }
+*/
+
+.icon-Netflix {
+  background-color: #e50914; /* Netflix red */
+}
+.icon-Prime {
+  background-color: #00a8e1; /* Prime Video blue */
+}
+.icon-YouTube {
+  background-color: #ff0000; /* YouTube red */
+}
+.icon-Apple {
+  background-color: #a2aaad; /* Apple gray */
+}
+.icon-TVNZ {
+  background-color: #0057b8; /* TVNZ blue (approximate) */
+}
+.icon-Neon {
+  background-color: #8e44ad; /* Neon purple (stylized) */
+}
+.icon-Beamafilm {
+  background-color: #009688; /* Teal fallback */
+}
+.icon-AroVision {
+  background-color: #3f51b5; /* Indigo fallback */
+}
+.icon-Plex {
+  background-color: #fbbf24; /* Plex gold */
+}
+.icon-MUBI {
+  background-color: #000000; /* MUBI black */
+}
+.icon-Disney {
+  background-color: #113ccf; /* Disney+ blue */
+}
 
 @media screen and (max-width: 768px) {
   .controls {
