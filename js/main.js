@@ -37,23 +37,32 @@ import { applyFilters } from './filters.js';
 import { updateStats } from './stats.js';
 
 async function initApp() {
-  const config = await loadConfig("ww2infilm");
+  const config = await loadConfigs("ww2infilm");
   features = config.features;
   theme = config.theme;
   domain = config.domain;
   settings = config.settings;
-  
+
   applyTheme();
   applySettings();
   applyFeatureVisibility();
 
-  const { fetchAndRenderData } = await import('./data.js');
-  const data = await fetchAndRenderData(features, domain, settings); // ✅ capture returned data
+  const data = await fetchAndRenderData(features, domain, settings);
 
-  if (features.enableOptionsPanel) {
-    const { setupOptions } = await import('./options.js');
-    const { applyFilters } = await import('./filters.js');
-    setupOptions(applyFilters, features); // ✅ wire up config panel toggles
+  populateDropdowns(data);
+  toggleControls(true);
+
+  if (features.enableConfigPanel) {
+    setupOptions(applyFilters, features);
+  }
+
+  applyFilters(data);
+  updateStats(data);
+
+  if (features.enableWikipedia) {
+    import('./wiki.js').then(({ loadWikipediaSummaries }) => {
+      loadWikipediaSummaries(data);
+    });
   }
   
   if (features.enableWikipedia) {
