@@ -35,6 +35,8 @@ function applyFeatureVisibility() {
 import { setupOptions } from './options.js';
 import { applyFilters } from './filters.js';
 import { updateStats } from './stats.js';
+import { fetchAndRenderData } from './data.js';
+
 
 async function initApp() {
   const config = await loadConfig("ww2infilm");
