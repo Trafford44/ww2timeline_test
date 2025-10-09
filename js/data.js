@@ -14,6 +14,7 @@ export async function fetchAndRenderData(features, domain, settings) {
     const datasetURL = datasetMap[subject];
     const response = await fetch(datasetURL);
     const data = await response.json(); // ✅ use local variable
+    console.log("📦 Loaded dataset:", data);
 
     return data; // ✅ return the dataset
   } catch (error) {
