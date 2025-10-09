@@ -37,7 +37,7 @@ import { applyFilters } from './filters.js';
 import { updateStats } from './stats.js';
 
 async function initApp() {
-  const config = await loadConfigs("ww2infilm");
+  const config = await loadConfig("ww2infilm");
   features = config.features;
   theme = config.theme;
   domain = config.domain;
