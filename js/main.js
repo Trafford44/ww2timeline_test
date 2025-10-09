@@ -32,6 +32,9 @@ function applyFeatureVisibility() {
   if (!features.enableStatsPanel) document.querySelector('.stats-panel')?.remove();
 }
 
+import { setupOptions } from './options.js';
+import { applyFilters } from './filters.js';
+
 async function initApp() {
   const config = await loadConfigs("ww2infilm");
   features = config.features;
@@ -45,6 +48,12 @@ async function initApp() {
 
   const { fetchAndRenderData } = await import('./data.js');
   const data = await fetchAndRenderData(features, domain, settings); // ✅ capture returned data
+
+  if (features.enableConfigPanel) {
+    const { setupOptions } = await import('./options.js');
+    const { applyFilters } = await import('./filters.js');
+    setupOptions(applyFilters, features); // ✅ wire up config panel toggles
+  }
   
   if (features.enableWikipedia) {
     import('./wiki.js').then(({ loadWikipediaSummaries }) => {
