@@ -361,13 +361,13 @@ details.stats-panel[open] #statsContent {
 }
 /* were missing */
 .classification-Documentary {
-  background-color: green;
+  border-left-color: green;
 }
 
 .classification-Dramatisation {
-  background-color: orange;
+  border-left-color: orange;
 }
 
 .classification-Fiction {
-  background-color: red;
+  border-left-color: red;
 }
