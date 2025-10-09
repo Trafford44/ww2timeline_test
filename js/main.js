@@ -33,11 +33,11 @@ function applyFeatureVisibility() {
 }
 
 import { setupOptions } from './options.js';
-import { applyFilters } from './filters.js';
 import { updateStats } from './stats.js';
 import { fetchAndRenderData } from './data.js';
-import { populateDropdowns, applyFilters, toggleControls } from './filters.js';
-
+import { applyFilters } from './filters.js';
+import { populateDropdowns } from './filters.js';
+import { toggleControls } from './filters.js';
 
 
 async function initApp() {
