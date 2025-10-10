@@ -54,11 +54,11 @@ export function parseSearchQuery(query) {
 
 import { dataset } from './data.js';
 
-export function applyFilters(data) {
-  console.log("Sample item:", data[0]); // Step 1: Check structure
-  console.log("Data type:", typeof data);
-  console.log("Is array?", Array.isArray(data));
-  console.log("Data contents:", data);
+export function applyFilters(dataset) {
+  console.log("Sample item:", dataset[0]); // Step 1: Check structure
+  console.log("Data type:", typeof dataset);
+  console.log("Is array?", Array.isArray(dataset));
+  console.log("Data contents:", dataset);
   
   const { filters, keywords } = parseSearchQuery(searchInput.value.trim());
   const watched = watchedFilter.value;
@@ -72,13 +72,9 @@ export function applyFilters(data) {
   const hidePinned = hidePinnedToggle?.checked;
   const challengeMode = challengeModeToggle?.checked;
 
-  console.log("Data type:", typeof data);
-  console.log("Is array?", Array.isArray(data));
-  console.log("Data contents:", data);
-
-  const filtered = data.filter(film => {
-    console.log("Passing WatchOn:", film.WatchOn);
-    console.log("Passing Classification:", film.Classification);
+  const filtered = dataset.filter(film => {
+    /* console.log("Passing WatchOn:", film.WatchOn);
+    console.log("Passing Classification:", film.Classification); */
     
     const text = Object.values(film).join(" ").toLowerCase();
   
@@ -136,15 +132,15 @@ export function applyFilters(data) {
   updateStats(filtered);
 }
 
-formatFilter.addEventListener("change", applyFilters);
-classificationFilter.addEventListener("change", applyFilters);
-platformFilter.addEventListener("change", applyFilters);
-eventYearFilter.addEventListener("change", applyFilters);
-periodFilter.addEventListener("change", applyFilters);
-watchedFilter.addEventListener("change", applyFilters(dataset));
-pinnedFilter.addEventListener("change", applyFilters);
-hideWatchedToggle?.addEventListener("change", applyFilters);
-hidePinnedToggle?.addEventListener("change", applyFilters);
-challengeModeToggle?.addEventListener("change", applyFilters);
-searchInput.addEventListener("input", applyFilters);
+formatFilter.addEventListener("change", () => applyFilters(dataset));
+classificationFilter.addEventListener("change", () => applyFilters(dataset));
+platformFilter.addEventListener("change", () => applyFilters(dataset));
+eventYearFilter.addEventListener("change", () => applyFilters(dataset));
+periodFilter.addEventListener("change", () => applyFilters(dataset));
+watchedFilter.addEventListener("change", () => applyFilters(dataset));
+pinnedFilter.addEventListener("change", () => applyFilters(dataset));
+hideWatchedToggle?.addEventListener("change", () => applyFilters(dataset));
+hidePinnedToggle?.addEventListener("change", () => applyFilters(dataset));
+challengeModeToggle?.addEventListener("change", () => applyFilters(dataset));
+searchInput.addEventListener("input", () => applyFilters(dataset));
 
