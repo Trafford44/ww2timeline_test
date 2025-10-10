@@ -338,8 +338,8 @@ details.stats-panel[open] #statsContent {
   margin-bottom: 20px;
   cursor: pointer;
   transition: transform 0.2s, background-color 0.2s;
-  display: flex;
-  flex-direction: column;
+  /* display: flex;
+  flex-direction: column; */
   gap: 8px;
   border-left: 5px solid #ccc;
 }
@@ -351,7 +351,7 @@ details.stats-panel[open] #statsContent {
 .timeline-event.right {
   float: right;
   clear: both;
-  margin-left: auto;
+  /* margin-left: auto; */
 }
     /* this is new */
 .timeline-event:hover {
