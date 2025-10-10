@@ -9,11 +9,11 @@ body {
   box-sizing: border-box;
 }
     /* this is new */
-/*
+
 h1 {
   text-align: center;
   margin-bottom: 20px;
-} */
+}
     /* has a few new things in it */
 .controls {
   display: flex;
@@ -177,6 +177,7 @@ get from here, if required: https://simpleicons.org/?q=netflix
   background-color: #113ccf; /* Disney+ blue */
 }
 
+/*
 @media screen and (max-width: 768px) {
   .controls {
     flex-direction: column;
@@ -186,7 +187,30 @@ get from here, if required: https://simpleicons.org/?q=netflix
     display: block;
     margin: 10px auto;
   }
+} 
+*/
+
+@media screen and (max-width: 768px) {
+  .timeline-event {
+    float: none !important;
+    margin: 0 auto !important;
+    width: 90% !important;
+    clear: both;
+  }
+
+  .timeline-event.left,
+  .timeline-event.right {
+    float: none !important;
+    margin: 0 auto !important;
+  }
+
+  .event-image {
+    float: none;
+    display: block;
+    margin: 10px auto;
+  }
 }
+
     /* down to here */
 
 #statsContent {
