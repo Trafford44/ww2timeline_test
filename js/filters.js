@@ -101,7 +101,7 @@ export function applyFilters(data) {
   
   console.log("Filtered results:", filtered);
   console.log("Number of results:", filtered.length);
-  document.body.innerHTML = `<pre>${JSON.stringify(filtered, null, 2)}</pre>`;
+  /* document.body.innerHTML = `<pre>${JSON.stringify(filtered, null, 2)}</pre>`;*/ 
   
   renderTimeline(filtered);
   updateStats(filtered);
