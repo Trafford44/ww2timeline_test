@@ -338,15 +338,16 @@ details.stats-panel[open] #statsContent {
   margin-bottom: 20px;
   cursor: pointer;
   transition: transform 0.2s, background-color 0.2s;
-  /* display: flex;
-  flex-direction: column; */
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
   gap: 8px;
   border-left: 5px solid #ccc;
 }
 .timeline-event.left {
   float: left;
   clear: both;
-  margin-right: auto;
+  /* margin-right: auto; */
 }
 .timeline-event.right {
   float: right;
