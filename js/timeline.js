@@ -91,12 +91,14 @@ export function renderTimeline(filteredData) {
         </span>
       `;
       event.appendChild(details);
-
+      
+      import { dataset } from './data.js';
+      
       const pinSpan = details.querySelector(".pin-icon");
       pinSpan.addEventListener("click", (e) => {
         e.stopPropagation();
         film.Pinned = !film.Pinned;
-        applyFilters();
+        applyFilters(dataset);
       });
 
       if (film.Notes) {
