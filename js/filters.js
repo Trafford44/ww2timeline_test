@@ -77,29 +77,55 @@ export function applyFilters(data) {
   console.log("Data contents:", data);
 
   const filtered = data.filter(film => {
+    console.log("Passing film:", film.FilmTitle);
+
     const text = Object.values(film).join(" ").toLowerCase();
-    if (keywords.length && !keywords.every(k => text.includes(k))) return false;
-    if (filters.title && !(film.FilmTitle || "").toLowerCase().includes(filters.title)) return false;
-    if (filters.platform && !(film.WatchOn || "").toLowerCase().includes(filters.platform)) return false;
-    if (filters.classification && !(film.Classification || "").toLowerCase().includes(filters.classification)) return false;
-    if (filters.period && !(film.Period || "").toLowerCase().includes(filters.period)) return false;
-    if (filters.year && String(film.EventYear || "").trim() !== filters.year.trim()) return false;
-    if (filters.watched && String(film.Watched || "").toLowerCase() !== filters.watched) return false;
-    if (watched && film.Watched !== watched) return false;
-    if (format && film.Format !== format) return false;
-    if (classification && film.Classification !== classification) return false;
+  
+    // Keyword search
+    if (keywords.length && !keywords.every(k => text.includes(k.toLowerCase()))) return false;
+  
+    // Title match
+    if (filters.title && !(film.FilmTitle || "").toLowerCase().includes(filters.title.toLowerCase())) return false;
+  
+    // Platform match
+    if (filters.platform && !(film.WatchOn || "").toLowerCase().includes(filters.platform.toLowerCase())) return false;
     if (platform && !(film.WatchOn || "").toLowerCase().includes(platform.toLowerCase())) return false;
+  
+    // Classification match
+    if (filters.classification && !(film.Classification || "").toLowerCase().includes(filters.classification.toLowerCase())) return false;
+    if (classification && (film.Classification || "").toLowerCase() !== classification.toLowerCase()) return false;
+  
+    // Period match
+    if (filters.period && !(film.Period || "").toLowerCase().includes(filters.period.toLowerCase())) return false;
+    if (period && (film.Period || "").toLowerCase() !== period.toLowerCase()) return false;
+  
+    // Year match
+    if (filters.year && String(film.EventYear || "").trim() !== filters.year.trim()) return false;
     if (eventYear && String(film.EventYear || "").trim() !== eventYear.trim()) return false;
-    if (period && film.Period !== period) return false;
+  
+    // Watched match
+    if (filters.watched && String(film.Watched || "").toLowerCase() !== filters.watched.toLowerCase()) return false;
+    if (watched && String(film.Watched || "").toLowerCase() !== watched.toLowerCase()) return false;
+  
+    // Format match
+    if (format && (film.Format || "").toLowerCase() !== format.toLowerCase()) return false;
+  
+    // Pinned logic — skip if not present
     if ("Pinned" in film) {
       if (pinned === "Yes" && !film.Pinned) return false;
       if (pinned === "No" && film.Pinned) return false;
       if (hidePinned && film.Pinned) return false;
-    }  
+      if (challengeMode && (film.Watched === "Yes" || film.Pinned)) return false;
+    } else {
+      if (challengeMode && film.Watched === "Yes") return false;
+    }
+  
+    // Hide watched
     if (hideWatched && film.Watched === "Yes") return false;
-    if (challengeMode && (film.Watched === "Yes" || film.Pinned)) return false;
+  
     return true;
   });
+
   
   console.log("Filtered results:", filtered);
   console.log("Number of results:", filtered.length);
