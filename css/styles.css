@@ -5,6 +5,9 @@ body {
   padding: 20px;
   background: #f5f5f5;
 }
+* {
+  box-sizing: border-box;
+}
     /* this is new */
 h1 {
   text-align: center;
@@ -177,11 +180,6 @@ get from here, if required: https://simpleicons.org/?q=netflix
   .controls {
     flex-direction: column;
   }
-  .timeline-event {
-    float: none;
-    width: 90%;
-    margin: 10px auto;
-  }  
   .event-image {
     float: none;
     display: block;
