@@ -1,3 +1,7 @@
+// data.js
+
+export let dataset = [];
+
 export async function fetchAndRenderData(features, domain, settings) {
   const initialPrompt = document.getElementById("initialPrompt");
   initialPrompt.textContent = `Loading data for ${domain.subject}...`;
@@ -13,13 +17,15 @@ export async function fetchAndRenderData(features, domain, settings) {
     }
     const datasetURL = datasetMap[subject];
     const response = await fetch(datasetURL);
-    const data = await response.json(); // ✅ use local variable
+    const data = await response.json();
     console.log("📦 Loaded dataset:", data);
 
-    return data; // ✅ return the dataset
+    dataset = data; // ✅ store globally
+    return data;
   } catch (error) {
     console.error("❌ Fetch error:", error);
     initialPrompt.textContent = `ERROR: Failed to load data. ${error.message}`;
-    return []; // ✅ return empty array on failure
+    dataset = [];
+    return [];
   }
 }
