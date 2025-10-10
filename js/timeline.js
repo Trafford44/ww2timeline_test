@@ -5,16 +5,17 @@ import { applyFilters } from './filters.js';
 export function renderTimeline(filteredData) {
   const timelineContainer = document.getElementById("timeline");
   const initialPrompt = document.getElementById("initialPrompt");
+  
   timelineContainer.innerHTML = "";
-
+  
   if (filteredData.length === 0) {
-    timelineContainer.appendChild(initialPrompt);
     initialPrompt.style.display = 'block';
     initialPrompt.textContent = "No data found or all records filtered out.";
     return;
   }
-
+  
   initialPrompt.style.display = 'none';
+
   const grouped = {};
 
   filteredData.forEach(film => {
