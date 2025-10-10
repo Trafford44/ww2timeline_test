@@ -55,7 +55,6 @@ export function parseSearchQuery(query) {
 import { dataset } from './data.js';
 
 export function applyFilters(data) {
-  const filtered = data.filter(...);
   const { filters, keywords } = parseSearchQuery(searchInput.value.trim());
   const watched = watchedFilter.value;
   const format = formatFilter.value;
