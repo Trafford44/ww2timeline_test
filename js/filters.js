@@ -55,10 +55,10 @@ export function parseSearchQuery(query) {
 import { dataset } from './data.js';
 
 export function applyFilters(dataset) {
-  console.log("Sample item:", dataset[0]); // Step 1: Check structure
+  /* console.log("Sample item:", dataset[0]); // Step 1: Check structure
   console.log("Data type:", typeof dataset);
   console.log("Is array?", Array.isArray(dataset));
-  console.log("Data contents:", dataset);
+  console.log("Data contents:", dataset); */
   
   const { filters, keywords } = parseSearchQuery(searchInput.value.trim());
   const watched = watchedFilter.value;
