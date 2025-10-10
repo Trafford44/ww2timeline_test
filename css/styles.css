@@ -123,10 +123,12 @@ summary {
   width: 20px;
   height: 20px;
   margin-right: 4px;
-  background-size: contain;margin: 0 auto 20px !important;
+  margin-bottom: 20px;
+  background-size: contain;
   background-repeat: no-repeat;
   vertical-align: middle;
 }
+
 
 /*
 get from here, if required: https://simpleicons.org/?q=netflix
