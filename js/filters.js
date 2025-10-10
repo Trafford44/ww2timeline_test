@@ -77,8 +77,9 @@ export function applyFilters(data) {
   console.log("Data contents:", data);
 
   const filtered = data.filter(film => {
-    console.log("Passing film:", film.FilmTitle);
-
+    console.log("Passing WatchOn:", film.WatchOn);
+    console.log("Passing Classification:", film.Classification);
+    
     const text = Object.values(film).join(" ").toLowerCase();
   
     // Keyword search
