@@ -31,7 +31,7 @@ input[type="text"], select, button {
 }
     /* this is new */
 /* === Unified Panel Container Styles === */
-.timeline-legend, 
+/*.timeline-legend, 
 .filter-panel,
 details.options-panel,
 details.stats-panel {
@@ -42,7 +42,7 @@ details.stats-panel {
   border: 1px solid #ccc;
   border-radius: 6px;
   font-size: 1em;
-}
+} */
 
 
     /* added from old (not in new */
@@ -340,19 +340,18 @@ details.stats-panel[open] #statsContent {
   transition: transform 0.2s, background-color 0.2s;
   display: flex;
   flex-direction: column;
-  box-sizing: border-box;
   gap: 8px;
   border-left: 5px solid #ccc;
 }
 .timeline-event.left {
   float: left;
   clear: both;
-  /* margin-right: auto; */
+  margin-right: auto;
 }
 .timeline-event.right {
   float: right;
   clear: both;
-  /* margin-left: auto; */
+  margin-left: auto;
 }
     /* this is new */
 .timeline-event:hover {
