@@ -1,6 +1,7 @@
 import { renderStars } from './stars.js';
 import { getPlatformIcons } from './platforms.js';
 import { applyFilters } from './filters.js';
+import { dataset } from './data.js';
 
 export function renderTimeline(filteredData) {
   const timelineContainer = document.getElementById("timeline");
@@ -90,10 +91,8 @@ export function renderTimeline(filteredData) {
           ${film.Pinned ? "📌" : "📍"}
         </span>
       `;
-      event.appendChild(details);
-      
-      import { dataset } from './data.js';
-      
+      event.appendChild(details);      
+    
       const pinSpan = details.querySelector(".pin-icon");
       pinSpan.addEventListener("click", (e) => {
         e.stopPropagation();
