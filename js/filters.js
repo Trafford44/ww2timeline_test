@@ -103,7 +103,7 @@ classificationFilter.addEventListener("change", applyFilters);
 platformFilter.addEventListener("change", applyFilters);
 eventYearFilter.addEventListener("change", applyFilters);
 periodFilter.addEventListener("change", applyFilters);
-watchedFilter.addEventListener("change", applyFilters);
+watchedFilter.addEventListener("change", applyFilters(dataset));
 pinnedFilter.addEventListener("change", applyFilters);
 hideWatchedToggle?.addEventListener("change", applyFilters);
 hidePinnedToggle?.addEventListener("change", applyFilters);
