@@ -125,6 +125,7 @@ summary {
 }
 
 /*
+get from here, if required: https://simpleicons.org/?q=netflix
 .icon-Netflix { background-image: url('icons/netflix.png'); }
 .icon-Prime { background-image: url('icons/prime.png'); }
 .icon-YouTube { background-image: url('icons/youtube.png'); }
@@ -176,6 +177,11 @@ summary {
   .controls {
     flex-direction: column;
   }
+  .timeline-event {
+    float: none;
+    width: 90%;
+    margin: 10px auto;
+  }  
   .event-image {
     float: none;
     display: block;
