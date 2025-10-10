@@ -91,10 +91,12 @@ export function applyFilters(data) {
     if (platform && !(film.WatchOn || "").toLowerCase().includes(platform.toLowerCase())) return false;
     if (eventYear && String(film.EventYear || "").trim() !== eventYear.trim()) return false;
     if (period && film.Period !== period) return false;
-    if (pinned === "Yes" && !film.Pinned) return false;
-    if (pinned === "No" && film.Pinned) return false;
+    if ("Pinned" in film) {
+      if (pinned === "Yes" && !film.Pinned) return false;
+      if (pinned === "No" && film.Pinned) return false;
+      if (hidePinned && film.Pinned) return false;
+    }  
     if (hideWatched && film.Watched === "Yes") return false;
-    if (hidePinned && film.Pinned) return false;
     if (challengeMode && (film.Watched === "Yes" || film.Pinned)) return false;
     return true;
   });
