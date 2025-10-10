@@ -144,3 +144,21 @@ hidePinnedToggle?.addEventListener("change", () => applyFilters(dataset));
 challengeModeToggle?.addEventListener("change", () => applyFilters(dataset));
 searchInput.addEventListener("input", () => applyFilters(dataset));
 
+const clearButton = document.getElementById("clearFilters");
+clearButton.addEventListener("click", () => {
+  // Reset all filter inputs
+  watchedFilter.value = "";
+  formatFilter.value = "";
+  classificationFilter.value = "";
+  platformFilter.value = "";
+  eventYearFilter.value = "";
+  periodFilter.value = "";
+  searchInput.value = "";
+
+  // Reset toggles if you have them
+  hideWatchedToggle.checked = false;
+  challengeModeToggle.checked = false;
+
+  // Reapply filters with default state
+  applyFilters(dataset);
+});
