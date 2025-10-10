@@ -105,9 +105,15 @@ export function applyFilters(dataset) {
     if (watched && String(film.Watched || "").toLowerCase() !== watched.toLowerCase()) return false; */
 
     const watchedValue = String(film.Watched || "").trim().toLowerCase();
-
+    
+    // Search query filter
     if (filters.watched === "yes" && watchedValue !== "yes") return false;
     if (filters.watched === "no" && watchedValue === "yes") return false;
+    
+    // Dropdown filter
+    if (watched === "Yes" && watchedValue !== "yes") return false;
+    if (watched === "No" && watchedValue === "yes") return false;
+
 
     // Format match
     if (format && (film.Format || "").toLowerCase() !== format.toLowerCase()) return false;
