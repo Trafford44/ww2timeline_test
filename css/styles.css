@@ -177,23 +177,10 @@ get from here, if required: https://simpleicons.org/?q=netflix
   background-color: #113ccf; /* Disney+ blue */
 }
 
-/*
-@media screen and (max-width: 768px) {
-  .controls {
-    flex-direction: column;
-  }
-  .event-image {
-    float: none;
-    display: block;
-    margin: 10px auto;
-  }
-} 
-*/
-
 @media screen and (max-width: 768px) {
   .timeline-event {
     float: none !important;
-    margin: 0 auto !important;
+    margin: 0 auto 20px !important; /* adds bottom gap */
     width: 90% !important;
     clear: both;
   }
