@@ -154,6 +154,7 @@ clearButton.addEventListener("click", () => {
   eventYearFilter.value = "";
   periodFilter.value = "";
   searchInput.value = "";
+  pinnedFilter.value = "";
 
   // Reset toggles if you have them
   hideWatchedToggle.checked = false;
