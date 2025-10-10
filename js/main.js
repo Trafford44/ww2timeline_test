@@ -52,6 +52,8 @@ async function initApp() {
   applyFeatureVisibility();
 
   const data = await fetchAndRenderData(features, domain, settings);
+  console.log("Sample item:", dataset[0]);
+
 
   populateDropdowns(data);
   toggleControls(true);
