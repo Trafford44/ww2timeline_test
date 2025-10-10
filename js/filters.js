@@ -101,9 +101,14 @@ export function applyFilters(dataset) {
     if (eventYear && String(film.EventYear || "").trim() !== eventYear.trim()) return false;
   
     // Watched match
-    if (filters.watched && String(film.Watched || "").toLowerCase() !== filters.watched.toLowerCase()) return false;
-    if (watched && String(film.Watched || "").toLowerCase() !== watched.toLowerCase()) return false;
-  
+    /* if (filters.watched && String(film.Watched || "").toLowerCase() !== filters.watched.toLowerCase()) return false;
+    if (watched && String(film.Watched || "").toLowerCase() !== watched.toLowerCase()) return false; */
+
+    const watchedValue = String(film.Watched || "").trim().toLowerCase();
+
+    if (filters.watched === "yes" && watchedValue !== "yes") return false;
+    if (filters.watched === "no" && watchedValue === "yes") return false;
+
     // Format match
     if (format && (film.Format || "").toLowerCase() !== format.toLowerCase()) return false;
   
