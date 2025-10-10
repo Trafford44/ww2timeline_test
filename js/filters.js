@@ -107,15 +107,12 @@ export function applyFilters(dataset) {
     // Format match
     if (format && (film.Format || "").toLowerCase() !== format.toLowerCase()) return false;
   
-    // Pinned logic — skip if not present
-    if ("Pinned" in film) {
-      if (pinned === "Yes" && !film.Pinned) return false;
-      if (pinned === "No" && film.Pinned) return false;
-      if (hidePinned && film.Pinned) return false;
-      if (challengeMode && (film.Watched === "Yes" || film.Pinned)) return false;
-    } else {
-      if (challengeMode && film.Watched === "Yes") return false;
-    }
+    const isPinned = Boolean(film.Pinned);
+    
+    if (pinned === "Yes" && !isPinned) return false;
+    if (pinned === "No" && isPinned) return false;
+    if (hidePinned && isPinned) return false;
+    if (challengeMode && (film.Watched === "Yes" || isPinned)) return false;
   
     // Hide watched
     if (hideWatched && film.Watched === "Yes") return false;
