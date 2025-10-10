@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WWII Timeline Viewer</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+
+    details {
+      margin-bottom: 1em;
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      padding: 10px;
+    }
+
+    summary {
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .controls input[type="text"],
+    .controls select,
+    .controls button {
+      padding: 6px;
+      font-size: 0.9em;
+    }
+
+    .timeline {
+      margin-top: 20px;
+    }
+
+    .initial-prompt {
+      font-style: italic;
+      color: #666;
+    }
+
+    .year-group {
+      margin-bottom: 30px;
+    }
+
+    .year-marker {
+      font-size: 1.5em;
+      font-weight: bold;
+      margin-bottom: 10px;
+      border-bottom: 2px solid #ccc;
+      padding-bottom: 5px;
+    }
+
+    .timeline-event {
+      background: #fff;
+      border-left: 5px solid #999;
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 6px;
+      position: relative;
+    }
+
+    .timeline-event.left {
+      margin-right: auto;
+    }
+
+    .timeline-event.right {
+      margin-left: auto;
+    }
+
+    .timeline-event.pinned {
+      box-shadow: 0 0 0 2px #ffcc00;
+    }
+
+    .timeline-event.watched {
+      border-left-width: 5px;
+      border-left-style: solid;
+    }
+
+    .event-title {
+      font-size: 1.2em;
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+
+    .event-details {
+      font-size: 0.9em;
+      line-height: 1.4;
+    }
+
+    .event-image {
+      float: right;
+      max-height: 100px;
+      margin-left: 10px;
+      border-radius: 4px;
+    }
+
+    .notes {
+      margin-top: 8px;
+      padding: 8px;
+      background: #f0f8ff;
+      border-left: 3px solid #0077cc;
+      display: none;
+    }
+
+    .notes.show {
+      display: block;
+    }
+
+    .rating-stars {
+      color: #f5a623;
+      font-size: 1.1em;
+    }
+
+    .pin-icon {
+      cursor: pointer;
+      font-size: 1.2em;
+    }
+
+    .watched-status-icon {
+      color: green;
+      font-weight: bold;
+      margin-left: 5px;
+    }
+
+    .notes-indicator {
+      margin-left: 8px;
+      font-size: 1.1em;
+      color: #0077cc;
+    }
+
+    .legend-box {
+      width: 20px;
+      height: 20px;
+      display: inline-block;
+      margin-right: 8px;
+      border: 1px solid #ccc;
+    }
+
+    .classification-Documentary {
+      background-color: green;
+    }
+
+    .classification-Dramatisation {
+      background-color: orange;
+    }
+
+    .classification-Fiction {
+      background-color: red;
+    }
+
+    .platform-icon {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      margin-right: 4px;
+      background-size: contain;
+      background-repeat: no-repeat;
+      vertical-align: middle;
+    }
+
+    .icon-Netflix { background-image: url('icons/netflix.png'); }
+    .icon-Prime { background-image: url('icons/prime.png'); }
+    .icon-YouTube { background-image: url('icons/youtube.png'); }
+    .icon-Apple { background-image: url('icons/apple.png'); }
+    .icon-TVNZ { background-image: url('icons/tvnz.png'); }
+    .icon-Neon { background-image: url('icons/neon.png'); }
+    .icon-Beamafilm { background-image: url('icons/beamafilm.png'); }
+    .icon-AroVision { background-image: url('icons/arovision.png'); }
+    .icon-Plex { background-image: url('icons/plex.png'); }
+    .icon-MUBI { background-image: url('icons/mubi.png'); }
+    .icon-Disney { background-image: url('icons/disney.png'); }
+
+    @media screen and (max-width: 768px) {
+      .controls {
+        flex-direction: column;
+      }
+      .event-image {
+        float: none;
+        display: block;
+        margin: 10px auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <details class="config-panel">
+    <summary>Config</summary>
+    <div class="controls">
+      <label><input type="checkbox" id="hideWatchedToggle"> Hide Watched Films</label>
+      <label><input type="checkbox" id="hidePinnedToggle"> Hide Pinned Films</label>
+      <label><input type="checkbox" id="challengeModeToggle"> Challenge Mode (Unwatched + Unpinned)</label>
+    </div>
+  </details>
+
+  <details class="stats-panel">
+    <summary>Stats</summary>
+    <div id="statsContent" style="padding: 10px; font-size: 0.95em;"></div>
+  </details>
+
+  <details class="filter-panel">
+    <summary>Filter Options</summary>
+    <div class="controls">
+      <input type="text" id="searchInput" placeholder="Search..." disabled>
+      <select id="watchedFilter" disabled>
+        <option value="">Watched: All</option>
+        <option value="Yes">Watched: Yes</option>
+        <option value="No">Watched: No</option>
+      </select>
+      <select id="formatFilter" disabled>
+        <option value="">Format: All</option>
+      </select>
+      <select id="classificationFilter" disabled>
+        <option value="">Classification: All</option>
+      </select>
+      <select id="platformFilter" disabled>
+        <option value="">Platform/s: All</option>
+      </select>
+      <select id="eventYearFilter" disabled>
+        <option value="">Event Year: All</option>
+      </select>
+      <select id="periodFilter" disabled>
+        <option value="">Period: All</option>
+      </select>
+      <select id="pinnedFilter" disabled>
+        <option value="">Pinned: All</option>
+        <option value="Yes">Pinned: Yes</option>
+        <option value="No">Pinned: No</option>
+      </select>
+      <button id="clearFilters" disabled>Clear Filters</button>
+    </div>
+  </details>
+
+  <details class="timeline-legend">
+    <summary>Timeline Legend</summary>
+    <div class="legend-content">
+      <div class="legend-group">
+        <h3>Classification Color</h3>
+        <table>
+          <tr><td class="legend-box classification-Documentary"></td><td><strong>Documentary</strong> (Solid Green line)</td></tr>
+          <tr><td class="legend-box classification-Dramatisation"></td><td><strong>Dramatisation</strong> (Solid Amber line)</td></tr>
+          <tr><td class="legend-box classification-Fiction"></td><td><strong>Fiction</strong> (Solid Red line)</td></tr>
+        </table>
+      </div>
+      <div class="legend-group">
+        <h3>Historical Accuracy Rating</h3>
+        <table>
+          <tr><td><span class="rating-stars">★★★★★</span></td><td>Highly accurate, closely follows historical records.</td></tr>
+          <tr><td><span class="rating-stars">★★★★☆</span></td><td>Mostly accurate, with some dramatized elements.</td></tr>
+          <tr><td><span class="rating-stars">★★★☆☆</span></td><td>Balanced mix of fact and fiction.</td></tr>
+          <tr><td><span class="rating-stars">★★☆☆☆</span></td><td>Loosely based on history.</td></tr>
+          <tr><td><span class="rating-stars">★☆☆☆☆</span></td><td>Fictional story with minimal historical grounding.</td></tr>
+        </table>
+      </div>
+      <h3>Platform/s</h3>
+      <table>
+        <tr><td><span class="platform-icon icon-Netflix"></span></td><td>Netflix</td></tr>
+        <tr><td><span class="platform-icon icon-Prime"></span></td><td>Prime Video</td></tr>
+        <tr><td><span class="platform-icon icon-YouTube"></span></td><td>YouTube</td></tr>
+        <tr><td><span class="platform-icon icon-Apple"></span></td><td>Apple TV</td></tr>
+        <tr><td><span class="platform-icon icon-TVNZ"></span></td><td>TVNZ</td></tr>
+        <tr><td><span class="platform-icon icon-Neon"></span></td><td>Neon</td></tr>
+        <tr><td><span class="platform-icon icon-Beamafilm"></span></td><td>Beamafilm</td></tr>
+        <tr><td><span class="platform-icon icon-AroVision"></span></td><td>AroVision</td></tr>
+        <tr><td><span class="platform-icon icon-Plex"></span></td><td>Plex</td></tr>
+        <tr><td><span class="platform-icon icon-MUBI"></span></td><td>MUBI</td></tr>
+        <tr><td><span class="platform-icon icon-Disney"></span></td><td>Disney+</td></tr>
+      </table>
+      <div class="legend-group">
+        <h3>Other Symbols</h3>
+        <table>
+          <tr><td><span class="watched-status-icon">✔</span></td><td>Film has been <strong>Watched</strong></td></tr>
+          <tr><td><span class="notes-indicator">&#9999;</span></td><td>Film has <strong>Notes</strong> (Click card to view)</td></tr>
+          <tr><td><span class="pin-icon">📌</span></td><td>Film is <strong>Pinned</strong> as a favorite</td></tr>
+        </table>
+      </div>
+    </div>
+  </details>
+
+  <div class="timeline" id="timeline">
+    <div class="initial-prompt" id="initialPrompt">Loading data...</div>
+  </div>
+
+<script>
+  let data = [];
+
+  const searchInput = document.getElementById('searchInput');
+  const watchedFilter = document.getElementById('watchedFilter');
+  const formatFilter = document.getElementById('formatFilter');
+  const classificationFilter = document.getElementById('classificationFilter');
+  const platformFilter = document.getElementById('platformFilter');
+  const eventYearFilter = document.getElementById('eventYearFilter');
+  const periodFilter = document.getElementById('periodFilter');
+  const pinnedFilter = document.getElementById('pinnedFilter');
+  const clearFilters = document.getElementById('clearFilters');
+  const timelineContainer = document.getElementById('timeline');
+  const initialPrompt = document.getElementById('initialPrompt');
+
+  const hideWatchedToggle = document.getElementById("hideWatchedToggle");
+  const hidePinnedToggle = document.getElementById("hidePinnedToggle");
+  const challengeModeToggle = document.getElementById("challengeModeToggle");
+  const statsContent = document.getElementById("statsContent");
+
+  function getPlatformIcons(watchOnText) {
+    if (!watchOnText) return '';
+    const platformMap = {
+      netflix: 'Netflix', prime: 'Prime', youtube: 'YouTube', apple: 'Apple',
+      tvnz: 'TVNZ', tvnzplus: 'TVNZ', neon: 'Neon', beamafilm: 'Beamafilm',
+      arovision: 'AroVision', plex: 'Plex', mubi: 'MUBI', disney: 'Disney',
+      microsoft: 'Microsoft', google: 'Google', archive: 'Archive', dvd: 'DVD'
+    };
+    const seen = new Set();
+    const icons = [];
+    watchOnText.split(',').forEach(entry => {
+      const clean = entry.trim().toLowerCase().replace(/[^a-z0-9+]/gi, '');
+      for (const key in platformMap) {
+        if (clean.includes(key) && !seen.has(key)) {
+          seen.add(key);
+          icons.push(`<span class="platform-icon icon-${platformMap[key]}" title="Available on ${platformMap[key]}"></span>`);
+          break;
+        }
+      }
+    });
+    return icons.join('');
+  }
+
+  function renderStars(value) {
+    const match = String(value).match(/^([1-5])\/5$/);
+    if (!match) return "";
+    const score = parseInt(match[1]);
+    return `<span class="rating-stars">${"★".repeat(score)}${"☆".repeat(5 - score)}</span>`;
+  }
+
+  function toggleControls(enable) {
+    [searchInput, watchedFilter, formatFilter, classificationFilter, platformFilter, eventYearFilter, periodFilter, pinnedFilter, clearFilters].forEach(el => {
+      el.disabled = !enable;
+    });
+  }
+
+  function populateDropdowns(fullData) {
+    const formats = [...new Set(fullData.map(f => f.Format).filter(Boolean))].sort();
+    const classifications = [...new Set(fullData.map(f => f.Classification).filter(Boolean))].sort();
+    const platforms = [...new Set(fullData.flatMap(f => f.WatchOn?.split(',').map(p => p.trim()) || []))].sort();
+    const eventYears = [...new Set(fullData.map(f => f.EventYear).filter(Boolean))].sort();
+    const periods = [...new Set(fullData.map(f => f.Period).filter(Boolean))].sort();
+
+    formatFilter.innerHTML = '<option value="">Format: All</option>' + formats.map(f => `<option value="${f}">${f}</option>`).join("");
+    classificationFilter.innerHTML = '<option value="">Classification: All</option>' + classifications.map(c => `<option value="${c}">${c}</option>`).join("");
+    platformFilter.innerHTML = '<option value="">Platform/s: All</option>' + platforms.map(p => `<option value="${p}">${p}</option>`).join("");
+    eventYearFilter.innerHTML = '<option value="">Event Year: All</option>' + eventYears.map(y => `<option value="${y}">${y}</option>`).join("");
+    periodFilter.innerHTML = '<option value="">Period: All</option>' + periods.map(p => `<option value="${p}">${p}</option>`).join("");
+  }
+
+  function parseSearchQuery(query) {
+    const terms = query.toLowerCase().split(/\s+/);
+    const filters = {};
+    const keywords = [];
+
+    terms.forEach(term => {
+      const [field, value] = term.split(":");
+      if (value && ["title", "platform", "classification", "period", "year", "watched"].includes(field)) {
+        filters[field] = value;
+      } else {
+        keywords.push(term);
+      }
+    });
+
+    return { filters, keywords };
+  }
+
+  function applyFilters() {
+    const rawQuery = searchInput.value.trim();
+    const { filters, keywords } = parseSearchQuery(rawQuery);
+
+    const watched = watchedFilter.value;
+    const format = formatFilter.value;
+    const classification = classificationFilter.value;
+    const platform = platformFilter.value;
+    const eventYear = eventYearFilter.value;
+    const period = periodFilter.value;
+    const pinned = pinnedFilter.value;
+
+    const hideWatched = hideWatchedToggle?.checked;
+    const hidePinned = hidePinnedToggle?.checked;
+    const challengeMode = challengeModeToggle?.checked;
+
+    const filtered = data.filter(film => {
+      const text = Object.values(film).join(" ").toLowerCase();
+
+      if (keywords.length && !keywords.every(k => text.includes(k))) return false;
+
+      if (filters.title && !(film.FilmTitle || "").toLowerCase().includes(filters.title)) return false;
+      if (filters.platform && !(film.WatchOn || "").toLowerCase().includes(filters.platform)) return false;
+      if (filters.classification && !(film.Classification || "").toLowerCase().includes(filters.classification)) return false;
+      if (filters.period && !(film.Period || "").toLowerCase().includes(filters.period)) return false;
+      if (filters.year && String(film.EventYear || "").trim() !== filters.year.trim()) return false;
+      if (filters.watched && String(film.Watched || "").toLowerCase() !== filters.watched) return false;
+
+      if (watched && film.Watched !== watched) return false;
+      if (format && film.Format !== format) return false;
+      if (classification && film.Classification !== classification) return false;
+      if (platform && !(film.WatchOn || "").toLowerCase().includes(platform.toLowerCase())) return false;
+      if (eventYear && String(film.EventYear || "").trim() !== eventYear.trim()) return false;
+      if (period && film.Period !== period) return false;
+      if (pinned === "Yes" && !film.Pinned) return false;
+      if (pinned === "No" && film.Pinned) return false;
+
+      if (hideWatched && film.Watched === "Yes") return false;
+      if (hidePinned && film.Pinned) return false;
+      if (challengeMode && (film.Watched === "Yes" || film.Pinned)) return false;
+
+      return true;
+    });
+
+    renderTimeline(filtered);
+    updateStats(filtered);
+  }
+  function updateStats(filteredData) {
+    const total = filteredData.length;
+    const byClassification = {};
+    const watchedCount = filteredData.filter(f => f.Watched === "Yes").length;
+    const pinnedCount = filteredData.filter(f => f.Pinned).length;
+
+    filteredData.forEach(f => {
+      const key = f.Classification || "Unclassified";
+      byClassification[key] = (byClassification[key] || 0) + 1;
+    });
+
+    const topPlatforms = {};
+    filteredData.forEach(f => {
+      (f.WatchOn || "").split(",").forEach(p => {
+        const key = p.trim();
+        if (key) topPlatforms[key] = (topPlatforms[key] || 0) + 1;
+      });
+    });
+
+    const topPlatformList = Object.entries(topPlatforms)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 5)
+      .map(([p, count]) => `${p} (${count})`)
+      .join(", ");
+
+    statsContent.innerHTML = `
+      <b>Total Films:</b> ${total}<br>
+      <b>Watched:</b> ${watchedCount}<br>
+      <b>Pinned:</b> ${pinnedCount}<br>
+      <b>By Classification:</b><br>
+      ${Object.entries(byClassification).map(([k, v]) => `&nbsp;&nbsp;${k}: ${v}`).join("<br>")}
+      <br><b>Top Platforms:</b> ${topPlatformList}
+    `;
+  }
+
+  function renderTimeline(filteredData) {
+    timelineContainer.innerHTML = "";
+    if (filteredData.length === 0) {
+      timelineContainer.innerHTML = "<p>No matching films found.</p>";
+      return;
+    }
+
+    const grouped = {};
+    filteredData.forEach(f => {
+      const year = f.EventYear || "Unknown";
+      if (!grouped[year]) grouped[year] = [];
+      grouped[year].push(f);
+    });
+
+    const sortedYears = Object.keys(grouped).sort((a, b) => parseInt(a) - parseInt(b));
+    sortedYears.forEach((year, index) => {
+      const group = grouped[year];
+      const yearBlock = document.createElement("div");
+      yearBlock.className = "year-group";
+
+      const yearHeader = document.createElement("div");
+      yearHeader.className = "year-marker";
+      yearHeader.textContent = year;
+      yearBlock.appendChild(yearHeader);
+
+      group.forEach((film, i) => {
+        const card = document.createElement("div");
+        card.className = `timeline-event ${i % 2 === 0 ? "left" : "right"}`;
+        if (film.Pinned) card.classList.add("pinned");
+        if (film.Watched === "Yes") card.classList.add("watched");
+        if (film.Classification) card.classList.add(`classification-${film.Classification}`);
+
+        const title = document.createElement("div");
+        title.className = "event-title";
+        title.innerHTML = `${film.FilmTitle || "Untitled"} ${renderStars(film.Accuracy || "")}`;
+
+        const details = document.createElement("div");
+        details.className = "event-details";
+        details.innerHTML = `
+          ${film.Format || ""} ${film.Classification || ""} ${film.Period || ""}<br>
+          ${getPlatformIcons(film.WatchOn)}
+          ${film.Watched === "Yes" ? '<span class="watched-status-icon">✔</span>' : ""}
+          ${film.Notes ? '<span class="notes-indicator">&#9999;</span>' : ""}
+          ${film.Pinned ? '<span class="pin-icon">📌</span>' : ""}
+        `;
+
+        const notes = document.createElement("div");
+        notes.className = "notes";
+        notes.textContent = film.Notes || "";
+
+        card.appendChild(title);
+        card.appendChild(details);
+        card.appendChild(notes);
+
+        card.addEventListener("click", () => {
+          notes.classList.toggle("show");
+        });
+
+        yearBlock.appendChild(card);
+      });
+
+      timelineContainer.appendChild(yearBlock);
+    });
+  }
+
+  async function fetchAndRenderData() {
+    initialPrompt.textContent = "Loading data via Web App...";
+    try {
+      const response = await fetch("https://script.google.com/macros/s/AKfycbwuMhkWNZI71HWbZr18/exec");
+      const json = await response.json();
+      data = json.data.map(f => ({
+        ...f,
+        Pinned: f.Pinned === "Yes"
+      }));
+      initialPrompt.style.display = "none";
+      toggleControls(true);
+      populateDropdowns(data);
+      applyFilters();
+    } catch (error) {
+      initialPrompt.textContent = "Failed to load data.";
+      console.error("Data fetch error:", error);
+    }
+  }
+
+  [searchInput, watchedFilter, formatFilter, classificationFilter, platformFilter, eventYearFilter, periodFilter, pinnedFilter].forEach(el => {
+    el.addEventListener("input", applyFilters);
+  });
+
+  clearFilters.addEventListener("click", () => {
+    searchInput.value = "";
+    watchedFilter.value = "";
+    formatFilter.value = "";
+    classificationFilter.value = "";
+    platformFilter.value = "";
+    eventYearFilter.value = "";
+    periodFilter.value = "";
+    pinnedFilter.value = "";
+    applyFilters();
+  });
+
+  [hideWatchedToggle, hidePinnedToggle, challengeModeToggle].forEach(el => {
+    el?.addEventListener("change", applyFilters);
+  });
+
+  fetchAndRenderData();
+</script>
+</body>
+</html>
+
+
