@@ -98,7 +98,11 @@ export function applyFilters(data) {
     if (challengeMode && (film.Watched === "Yes" || film.Pinned)) return false;
     return true;
   });
-
+  
+  console.log("Filtered results:", filtered);
+  console.log("Number of results:", filtered.length);
+  document.body.innerHTML = `<pre>${JSON.stringify(filtered, null, 2)}</pre>`;
+  
   renderTimeline(filtered);
   updateStats(filtered);
 }
