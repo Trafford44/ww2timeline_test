@@ -9,10 +9,11 @@ body {
   box-sizing: border-box;
 }
     /* this is new */
+/*
 h1 {
   text-align: center;
   margin-bottom: 20px;
-}
+} */
     /* has a few new things in it */
 .controls {
   display: flex;
@@ -31,7 +32,7 @@ input[type="text"], select, button {
 }
     /* this is new */
 /* === Unified Panel Container Styles === */
-/*.timeline-legend, 
+.timeline-legend, 
 .filter-panel,
 details.options-panel,
 details.stats-panel {
@@ -42,7 +43,7 @@ details.stats-panel {
   border: 1px solid #ccc;
   border-radius: 6px;
   font-size: 1em;
-} */
+}
 
 
     /* added from old (not in new */
