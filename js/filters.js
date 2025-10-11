@@ -133,11 +133,7 @@ export function applyFilters(dataset) {
     const watchedValue = String(film.Watched || "").trim().toLowerCase();
     
     // Search query filter
-    iconst countDisplay = document.getElementById("filterCount");
-if (countDisplay) {
-  countDisplay.textContent = `Showing ${filtered.length} record${filtered.length !== 1 ? "s" : ""}`;
-}
-f (filters.watched === "yes" && watchedValue !== "yes") return false;
+    if (filters.watched === "yes" && watchedValue !== "yes") return false;
     if (filters.watched === "no" && watchedValue === "yes") return false;
     
     // Dropdown filter
