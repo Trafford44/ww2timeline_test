@@ -48,6 +48,13 @@ export function renderTimeline(filteredData) {
     const yearMarker = document.createElement("div");
     yearMarker.className = "year-marker";
     yearMarker.textContent = year;
+    
+    const count = filmsInYear.length;
+    const countSpan = document.createElement("span");
+    countSpan.className = "year-count";
+    countSpan.textContent = `(${count} film${count !== 1 ? 's' : ''})`;
+    yearMarker.appendChild(countSpan);
+
     yearGroup.appendChild(yearMarker);
 
     filmsInYear.forEach((film, index) => {
