@@ -71,16 +71,20 @@ export function parseSearchQuery(query) {
   return { filters, keywords };
 }
 
-function setupExportButton(filtered) {
-  const exportButton = document.getElementById("exportButton");
-  if (exportButton) {
-    exportButton.addEventListener("click", () => {
-      import('./export.js').then(({ setupExport }) => {
-        setupExport(filtered);
-      });
+export function setupExportButton(filtered) {
+  const oldButton = document.getElementById("exportButton");
+  if (!oldButton) return;
+
+  const newButton = oldButton.cloneNode(true);
+  oldButton.parentNode.replaceChild(newButton, oldButton);
+
+  newButton.addEventListener("click", () => {
+    import('./export.js').then(({ setupExport }) => {
+      setupExport(filtered);
     });
-  }
+  });
 }
+
 
 import { dataset } from './data.js';
 
