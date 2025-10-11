@@ -87,7 +87,7 @@ export function setupExportButton(filtered) {
 
 import { dataset } from './data.js';
 
-export function applyFilters(dataset) {
+export function applyFilters(data, features) {
   /* console.log("Sample item:", dataset[0]); // Step 1: Check structure
   console.log("Data type:", typeof dataset);
   console.log("Is array?", Array.isArray(dataset));
