@@ -45,9 +45,9 @@ export function renderTimeline(filteredData) {
     const yearGroup = document.createElement("div");
     yearGroup.className = "year-group";
 
+    
     const yearMarker = document.createElement("div");
     yearMarker.className = "year-marker";
-    yearMarker.textContent = year;
     
     const yearLabel = document.createElement("span");
     yearLabel.className = "year-label";
@@ -59,6 +59,11 @@ export function renderTimeline(filteredData) {
     
     yearMarker.appendChild(yearLabel);
     yearMarker.appendChild(countSpan);
+
+    yearMarker.addEventListener("click", () => {
+      yearGroup.classList.toggle("collapsed");
+    });
+
 
 
     yearGroup.appendChild(yearMarker);
