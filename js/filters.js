@@ -173,20 +173,6 @@ export function applyFilters(data) {
   renderTimeline(filtered);
   updateStats(filtered);
   setupExportButton(filtered);
-  /*
-  if (features.enableExport) {
-    const exportButton = document.getElementById("exportButton");
-    if (exportButton) {
-      exportButton.style.display = filtered.length > 0 ? 'inline-block' : 'none';
-    }
-    setupExportButton(filtered); // always exports what’s displayed
-  } else {
-    const exportPanel = document.querySelector('.export-button-panel');
-    if (exportPanel) {
-      exportPanel.style.display = 'none';
-    }
-  }
-  */
 
 }
 
