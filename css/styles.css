@@ -232,6 +232,13 @@ get from here, if required: https://simpleicons.org/?q=netflix
   }
 }
 
+@media (max-width: 480px) {
+  .year-marker {
+    font-size: 1.2em;
+    padding: 3px 8px;
+  }
+}
+
     /* down to here */
 
 #statsContent {
@@ -383,7 +390,8 @@ details.stats-panel[open] #statsContent {
   border-radius: 4px;
   z-index: 10;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-
+  white-space: nowrap;
+  
   display: flex;
   gap: 12px;
   align-items: center;
