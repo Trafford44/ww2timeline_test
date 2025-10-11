@@ -133,7 +133,11 @@ export function applyFilters(dataset) {
     const watchedValue = String(film.Watched || "").trim().toLowerCase();
     
     // Search query filter
-    if (filters.watched === "yes" && watchedValue !== "yes") return false;
+    iconst countDisplay = document.getElementById("filterCount");
+if (countDisplay) {
+  countDisplay.textContent = `Showing ${filtered.length} record${filtered.length !== 1 ? "s" : ""}`;
+}
+f (filters.watched === "yes" && watchedValue !== "yes") return false;
     if (filters.watched === "no" && watchedValue === "yes") return false;
     
     // Dropdown filter
@@ -149,7 +153,15 @@ export function applyFilters(dataset) {
     if (pinned === "Yes" && !isPinned) return false;
     if (pinned === "No" && isPinned) return false;
     if (hidePinned && isPinned) return false;
-    if (challengeMode && (film.Watched === "Yes" || isPinned)) return false;
+    iconst countDisplay = document.getElementById("filterCount");
+if (countDisplay) {
+  countDisplay.textContent = `Showing ${filtered.length} record${filtered.length !== 1 ? "s" : ""}`;
+}
+const countDisplay = document.getElementById("filterCount");
+if (countDisplay) {
+  countDisplay.textContent = `Showing ${filtered.length} record${filtered.length !== 1 ? "s" : ""}`;
+}
+f (challengeMode && (film.Watched === "Yes" || isPinned)) return false;
   
     // Hide watched
     if (hideWatched && film.Watched === "Yes") return false;
@@ -157,6 +169,10 @@ export function applyFilters(dataset) {
     return true;
   });
 
+  const countDisplay = document.getElementById("filterCount");
+  if (countDisplay) {
+    countDisplay.textContent = `Showing ${filtered.length} of ${dataset.length} record${dataset.length !== 1 ? "s" : ""}`;
+  }
   
   console.log("Filtered results:", filtered);
   console.log("Number of results:", filtered.length);
