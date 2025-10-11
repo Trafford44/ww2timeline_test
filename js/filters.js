@@ -59,7 +59,6 @@ export function parseSearchQuery(query) {
   const terms = query.toLowerCase().split(/\s+/);
   const filters = {};
   const keywords = [];
-setupExportButton(filtered);
   terms.forEach(term => {
     const [field, value] = term.split(":");
     if (value && ["title", "platform", "classification", "period", "year", "watched"].includes(field)) {
@@ -102,7 +101,6 @@ export function applyFilters(dataset) {
   const hideWatched = hideWatchedToggle?.checked;
   const hidePinned = hidePinnedToggle?.checked;
   const challengeMode = challengeModeToggle?.checked;
-setupExportButton(filtered);setupExportButton(filtered);setupExportButton(filtered);
   const filtered = dataset.filter(film => {
     /* console.log("Passing WatchOn:", film.WatchOn);
     console.log("Passing Classification:", film.Classification); */
