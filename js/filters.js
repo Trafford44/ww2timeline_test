@@ -59,7 +59,7 @@ export function parseSearchQuery(query) {
   const terms = query.toLowerCase().split(/\s+/);
   const filters = {};
   const keywords = [];
-
+setupExportButton(filtered);
   terms.forEach(term => {
     const [field, value] = term.split(":");
     if (value && ["title", "platform", "classification", "period", "year", "watched"].includes(field)) {
@@ -70,6 +70,17 @@ export function parseSearchQuery(query) {
   });
 
   return { filters, keywords };
+}
+
+function setupExportButton(filtered) {
+  const exportButton = document.getElementById("exportButton");
+  if (exportButton) {
+    exportButton.addEventListener("click", () => {
+      import('./export.js').then(({ setupExport }) => {
+        setupExport(filtered);
+      });
+    });
+  }
 }
 
 import { dataset } from './data.js';
@@ -91,7 +102,7 @@ export function applyFilters(dataset) {
   const hideWatched = hideWatchedToggle?.checked;
   const hidePinned = hidePinnedToggle?.checked;
   const challengeMode = challengeModeToggle?.checked;
-
+setupExportButton(filtered);setupExportButton(filtered);setupExportButton(filtered);
   const filtered = dataset.filter(film => {
     /* console.log("Passing WatchOn:", film.WatchOn);
     console.log("Passing Classification:", film.Classification); */
@@ -163,6 +174,7 @@ export function applyFilters(dataset) {
   
   renderTimeline(filtered);
   updateStats(filtered);
+  setupExportButton(filtered);
 }
 
 formatFilter.addEventListener("change", () => applyFilters(dataset));
