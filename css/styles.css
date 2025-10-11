@@ -339,31 +339,15 @@ details.stats-panel[open] #statsContent {
   clear: both;
 }
     /* has alot of new things in it */
-/*
 .year-marker {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
+  top: -1.0em; /* adjust this value as needed */
   font-size: 1.5em;
   font-weight: bold;
-  color: #333;
-  top: 0;
-  background: #dcdcdc;
-  padding: 4px 12px;
-  border-radius: 4px;
-  z-index: 10;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-*/
-.year-marker {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  top: -2.5em; /* adjust this value as needed */
-  font-size: 1.5em;
-  font-weight: bold;
-  color: #333;
-  background: #dcdcdc;
+  color: #fff;
+  background: #00a8e1;
   padding: 4px 12px;
   border-radius: 4px;
   z-index: 10;
