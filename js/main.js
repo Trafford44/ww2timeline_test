@@ -46,6 +46,7 @@ async function initApp() {
   // Use a dynamic key based on URL, user input, or fallback
   const urlParams = new URLSearchParams(window.location.search);
   const domainKey = urlParams.get("domain") || "ww2infilm";
+  console.log("🧩 Using domain key:", domainKey);
 
   const config = await loadConfig(domainKey);
   features = config.features;
