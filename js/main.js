@@ -89,6 +89,14 @@ async function initApp() {
     });
   }
 
+  if (!features.enableExport) {
+    const exportPanel = document.querySelector('.export-button-panel');
+    if (exportPanel) {
+      exportPanel.style.display = 'none';
+    }
+  }
+
+
 }
 
 initApp();
