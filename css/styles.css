@@ -45,6 +45,28 @@ details.stats-panel {
   border-radius: 6px;
   font-size: 1em;
 }
+/* Export button setup */
+.export-button-panel {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0.5em 1em;
+  border-top: 1px dashed #eee;
+}
+
+#exportButton {
+  padding: 0.4em 0.8em;
+  font-size: 0.9em;
+  background-color: var(--accent-color, #00a8e1);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#exportButton:hover {
+  background-color: var(--accent-color-hover, #0077cc);
+}
 
 
     /* added from old (not in new */
