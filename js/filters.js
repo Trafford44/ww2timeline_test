@@ -43,7 +43,7 @@ export function populateDropdowns(fullData) {
   /* platformFilter.innerHTML = '<option value="">Platform/s: All</option>' + platforms.map(p => `<option value="${p}">${p}</option>`).join(""); */
   platformFilter.innerHTML = `
     <option value="">Platform/s: All</option>
-    <option value="__none__">No Platform</option>
+    <option value="__none__">(none assigned)</option>
     ${platforms.map(p => `<option value="${p}">${p}</option>`).join("")}
   `;
 
@@ -103,8 +103,8 @@ export function applyFilters(dataset) {
     // Platform match
     /* if (filters.platform && !(film.WatchOn || "").toLowerCase().includes(filters.platform.toLowerCase())) return false;
     if (platform && !(film.WatchOn || "").toLowerCase().includes(platform.toLowerCase())) return false; */
-    if (platform === "(none)" && !film.WatchOn) return true;
-    if (platform && platform !== "(none)" && !(film.WatchOn || "").toLowerCase().includes(platform.toLowerCase())) return false;
+    if (platform === "__none__" && !film.WatchOn) return true;
+    if (platform && platform !== "__none__" && !(film.WatchOn || "").toLowerCase().includes(platform.toLowerCase())) return false;
 
   
     // Classification match
