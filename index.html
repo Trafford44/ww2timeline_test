@@ -65,8 +65,18 @@
       <summary>Options</summary>
       <div class="controls">
         <label><input type="checkbox" id="hideWatchedToggle"> Hide Watched Films</label>
-        <label><input type="checkbox" id="hidePinnedToggle"> Hide Pinned Films</label>
+        <label><input type="checkbox" id="hidePinnedToggle"  if (features.enableExport) {
+    import('./export.js').then(({ setupExport }) => {
+      const exportButton = document.getElementById("exportButton");
+      if (exportButton) {
+        exportButton.addEventListener("click", () => setupExport(data)); // ✅ only runs on click
+      }
+    });
+  }> Hide Pinned Films</label>
         <label><input type="checkbox" id="challengeModeToggle"> Challenge Mode (Unwatched + Unpinned)</label>
+      </div>
+      <div class="config-panel">
+        <button id="exportButton">Export</button>
       </div>
     </details>
 
@@ -103,9 +113,7 @@
     </div>    
     <div id="filterCount" class="filter-count">Showing 0 records</div>
   </details>
-  <button id="exportData">Export</button>
 
- 
 
   <div id="initialPrompt" class="initial-prompt">Loading data...</div>
   <!-- Timeline Container -->
