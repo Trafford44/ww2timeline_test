@@ -90,7 +90,7 @@ newButton.addEventListener("click", () => {
 
 import { dataset } from './data.js';
 
-export function applyFilters(data, features) {
+export function applyFilters(data) {
  
   const { filters, keywords } = parseSearchQuery(searchInput.value.trim());
   const watched = watchedFilter.value;
