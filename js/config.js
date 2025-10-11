@@ -15,8 +15,7 @@ export async function loadConfig(domainKey = "ww2infilm") {
   
   const features = await featuresRes.json();
   const theme = await themeRes.json();
-  const domain = domainRes.ok ? await domainRes.json() : {};
-
+  const domain = await domainRes.json();
   const settings = await settingsRes.json();
 
   return { features, theme, domain, settings };
