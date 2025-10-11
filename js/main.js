@@ -1,5 +1,5 @@
 import { loadConfig } from './config.js';
-let features = {};
+export let features = {};
 let theme = {};
 let domain = {};
 let settings = {};
