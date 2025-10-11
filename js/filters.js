@@ -80,11 +80,10 @@ export function setupExportButton(filtered) {
 
   newButton.addEventListener("click", () => {
     import('./export.js').then(({ setupExport }) => {
-      setupExport(filtered);
+      setupExport(filtered); // always current view
     });
   });
 }
-
 
 import { dataset } from './data.js';
 
@@ -177,8 +176,18 @@ export function applyFilters(dataset) {
   renderTimeline(filtered);
   updateStats(filtered);
   if (features.enableExport) {
-    setupExportButton(filtered);
+    const exportButton = document.getElementById("exportButton");
+    if (exportButton) {
+      exportButton.style.display = filtered.length > 0 ? 'inline-block' : 'none';
+    }
+    setupExportButton(filtered); // always exports what’s displayed
+  } else {
+    const exportPanel = document.querySelector('.export-button-panel');
+    if (exportPanel) {
+      exportPanel.style.display = 'none';
+    }
   }
+
 
 }
 
