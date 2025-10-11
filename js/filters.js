@@ -176,7 +176,10 @@ export function applyFilters(dataset) {
   
   renderTimeline(filtered);
   updateStats(filtered);
-  setupExportButton(filtered);
+  if (features.enableExport) {
+    setupExportButton(filtered);
+  }
+
 }
 
 formatFilter.addEventListener("change", () => applyFilters(dataset));
