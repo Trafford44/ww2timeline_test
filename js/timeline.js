@@ -2,6 +2,7 @@ import { renderStars } from './stars.js';
 import { getPlatformIcons } from './platforms.js';
 import { applyFilters } from './filters.js';
 import { dataset } from './data.js';
+import { features } from './config.js'; 
 
 export function renderTimeline(filteredData) {
   const timelineContainer = document.getElementById("timeline");
@@ -97,7 +98,7 @@ export function renderTimeline(filteredData) {
       pinSpan.addEventListener("click", (e) => {
         e.stopPropagation();
         film.Pinned = !film.Pinned;
-        applyFilters(dataset);
+        applyFilters(dataset, features);
       });
 
       if (film.Notes) {
