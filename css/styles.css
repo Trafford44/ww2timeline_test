@@ -407,6 +407,9 @@ details.stats-panel[open] #statsContent {
   transform: rotate(-90deg);
 }
 
+.year-group.collapsed .timeline-event {
+  display: none;
+}
 
 
     /* has a few new things in it */
