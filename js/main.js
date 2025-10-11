@@ -60,7 +60,7 @@ async function initApp() {
   applySettings();
   applyFeatureVisibility();
 
-  const data = await fetchAndRenderData(domain);
+  const data = await fetchAndRenderData(features, domain, settings);
   console.log("Sample item:", data[0]);
 
   populateDropdowns(data);
