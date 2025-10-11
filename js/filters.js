@@ -88,11 +88,7 @@ export function setupExportButton(filtered) {
 import { dataset } from './data.js';
 
 export function applyFilters(data, features) {
-  /* console.log("Sample item:", dataset[0]); // Step 1: Check structure
-  console.log("Data type:", typeof dataset);
-  console.log("Is array?", Array.isArray(dataset));
-  console.log("Data contents:", dataset); */
-  
+ 
   const { filters, keywords } = parseSearchQuery(searchInput.value.trim());
   const watched = watchedFilter.value;
   const format = formatFilter.value;
@@ -105,8 +101,6 @@ export function applyFilters(data, features) {
   const hidePinned = hidePinnedToggle?.checked;
   const challengeMode = challengeModeToggle?.checked;
   const filtered = dataset.filter(film => {
-    /* console.log("Passing WatchOn:", film.WatchOn);
-    console.log("Passing Classification:", film.Classification); */
     
     const text = Object.values(film).join(" ").toLowerCase();
   
