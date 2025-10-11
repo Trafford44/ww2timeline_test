@@ -100,7 +100,7 @@ export function applyFilters(data, features) {
   const hideWatched = hideWatchedToggle?.checked;
   const hidePinned = hidePinnedToggle?.checked;
   const challengeMode = challengeModeToggle?.checked;
-  const filtered = data.filter(film => {
+  const filtered = dataset.filter(film => {
     
     const text = Object.values(film).join(" ").toLowerCase();
   
