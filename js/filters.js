@@ -107,7 +107,7 @@ export function applyFilters(dataset) {
     // Platform match
     /* if (filters.platform && !(film.WatchOn || "").toLowerCase().includes(filters.platform.toLowerCase())) return false;
     if (platform && !(film.WatchOn || "").toLowerCase().includes(platform.toLowerCase())) return false; */
-    if (platform === "__none__" && !film.WatchOn) return true;
+    if (platform === "__none__" && !film.WatchOn) return false;
     if (platform && platform !== "__none__" && !(film.WatchOn || "").toLowerCase().includes(platform.toLowerCase())) return false;
 
   
