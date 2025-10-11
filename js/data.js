@@ -4,9 +4,7 @@ export let dataset = [];
 
 export async function fetchAndRenderData(features, domain, settings) {
   const initialPrompt = document.getElementById("initialPrompt");
-  if (initialPrompt) {
-    initialPrompt.textContent = `Loading data for ${domain.subject}...`;
-  }
+  initialPrompt.textContent = `Loading data for ${domain.subject}...`;
 
   try {
     const datasetMap = {
