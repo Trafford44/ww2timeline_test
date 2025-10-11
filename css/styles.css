@@ -265,13 +265,16 @@ details.stats-panel[open] #statsContent {
 
 .filter-count {
   font-size: 0.85rem;
-  color: #555;
+  color: #666;
   margin-top: 0.5em;
-  margin-left: 0.25em;
-  padding-left: 0.5em;
+  margin-left: 0;
   border-left: 2px solid #ccc;
+  padding-left: 0.5em;
   font-style: italic;
+  display: block;
+  text-align: left;
 }
+
 
 
     /* this is new */
