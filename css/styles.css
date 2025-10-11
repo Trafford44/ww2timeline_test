@@ -374,7 +374,7 @@ details.stats-panel[open] #statsContent {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  top: -1.0em; /* adjust this value as needed */
+  top: -1.0em;
   font-size: 1.5em;
   font-weight: bold;
   color: #fff;
@@ -383,7 +383,30 @@ details.stats-panel[open] #statsContent {
   border-radius: 4px;
   z-index: 10;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
 }
+
+.year-count {
+  font-size: 0.85em;
+  opacity: 0.8;
+}
+
+.year-marker::after {
+  content: "▼";
+  font-size: 0.8em;
+  margin-left: 8px;
+  transition: transform 0.2s ease;
+}
+
+.year-group.collapsed .year-marker::after {
+  transform: rotate(-90deg);
+}
+
 
 
     /* has a few new things in it */
