@@ -24,13 +24,9 @@ export function toggleControls(enable) {
 export function populateDropdowns(fullData) {
   const formats = [...new Set(fullData.map(f => f.Format).filter(Boolean))].sort();
   const classifications = [...new Set(fullData.map(f => f.Classification).filter(Boolean))].sort();
-  const platforms = [...new Set(fullData.flatMap(f => f.WatchOn?.split(',').map(p => p.trim()) || []))].sort();
+  /* const platforms = [...new Set(fullData.flatMap(f => f.WatchOn?.split(',').map(p => p.trim()) || []))].sort(); */
   const eventYears = [...new Set(fullData.map(f => f.EventYear).filter(Boolean))].sort();
   const periods = [...new Set(fullData.map(f => f.Period).filter(Boolean))].sort();
-
-  formatFilter.innerHTML = '<option value="">Format: All</option>' + formats.map(f => `<option value="${f}">${f}</option>`).join("");
-  classificationFilter.innerHTML = '<option value="">Classification: All</option>' + classifications.map(c => `<option value="${c}">${c}</option>`).join("");
-  /* platformFilter.innerHTML = '<option value="">Platform/s: All</option>' + platforms.map(p => `<option value="${p}">${p}</option>`).join(""); */
   const platforms = [...new Set(
     fullData
       .flatMap(f => 
@@ -41,6 +37,15 @@ export function populateDropdowns(fullData) {
       )
       .filter(p => p) // remove empty strings
   )].sort();
+
+  formatFilter.innerHTML = '<option value="">Format: All</option>' + formats.map(f => `<option value="${f}">${f}</option>`).join("");
+  classificationFilter.innerHTML = '<option value="">Classification: All</option>' + classifications.map(c => `<option value="${c}">${c}</option>`).join("");
+  /* platformFilter.innerHTML = '<option value="">Platform/s: All</option>' + platforms.map(p => `<option value="${p}">${p}</option>`).join(""); */
+  platformFilter.innerHTML = `
+    <option value="">Platform/s: All</option>
+    <option value="__none__">No Platform</option>
+    ${platforms.map(p => `<option value="${p}">${p}</option>`).join("")}
+  `;
 
   eventYearFilter.innerHTML = '<option value="">Event Year: All</option>' + eventYears.map(y => `<option value="${y}">${y}</option>`).join("");
   periodFilter.innerHTML = '<option value="">Period: All</option>' + periods.map(p => `<option value="${p}">${p}</option>`).join("");
