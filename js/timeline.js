@@ -98,7 +98,7 @@ export function renderTimeline(filteredData) {
       pinSpan.addEventListener("click", (e) => {
         e.stopPropagation();
         film.Pinned = !film.Pinned;
-        applyFilters(dataset, features);
+        applyFilters(dataset);
       });
 
       if (film.Notes) {
