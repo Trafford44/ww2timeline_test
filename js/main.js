@@ -5,13 +5,13 @@ let domain = {};
 let settings = {};
 
 function applyTheme() {
-  document.body.style.backgroundColor = theme.backgroundColor || "#f4f4f4";
-  document.body.style.color = theme.textColor || "#333";
-  document.body.style.fontFamily = theme.fontFamily || "Arial, sans-serif";
-
   const root = document.documentElement;
+  root.style.setProperty('--background-color', theme.backgroundColor || "#f5f5f5");
+  root.style.setProperty('--text-color', theme.textColor || "#333");
+  root.style.setProperty('--font-family', theme.fontFamily || "Arial, sans-serif");
   root.style.setProperty('--primary-color', theme.primaryColor || "#0d6efd");
 }
+
 
 function applySettings() {
   document.title = settings.appTitle || "Timeline App";
@@ -40,8 +40,14 @@ import { populateDropdowns } from './filters.js';
 import { toggleControls } from './filters.js';
 
 
+// main.js
+
 async function initApp() {
-  const config = await loadConfig("ww2infilm");
+  // Use a dynamic key based on URL, user input, or fallback
+  const urlParams = new URLSearchParams(window.location.search);
+  const domainKey = urlParams.get("domain") || "ww2infilm";
+
+  const config = await loadConfig(domainKey);
   features = config.features;
   theme = config.theme;
   domain = config.domain;
@@ -51,15 +57,14 @@ async function initApp() {
   applySettings();
   applyFeatureVisibility();
 
-  const data = await fetchAndRenderData(features, domain, settings);
+  const data = await fetchAndRenderData(domain);
   console.log("Sample item:", data[0]);
-
 
   populateDropdowns(data);
   toggleControls(true);
 
   if (features.enableConfigPanel) {
-    setupOptions(applyFilters, features);
+    setupOptions(applyFilters);
   }
 
   applyFilters(data);
@@ -70,22 +75,16 @@ async function initApp() {
       loadWikipediaSummaries(data);
     });
   }
-  
-  if (features.enableWikipedia) {
-    import('./wiki.js').then(({ loadWikipediaSummaries }) => {
-      loadWikipediaSummaries(data);
-    });
-  }
-  
+
   if (features.enableMapThumb) {
     import('./map.js').then(({ renderMapThumbs }) => {
-      renderMapThumbs(data); // ✅ pass data
+      renderMapThumbs(data);
     });
   }
-  
+
   if (features.enableLocalStorage) {
     import('./storage.js').then(({ syncLocalState }) => {
-      syncLocalState(data); // ✅ pass data
+      syncLocalState(data);
     });
   }
 
@@ -95,8 +94,7 @@ async function initApp() {
       exportPanel.style.display = 'none';
     }
   }
-
-
 }
+
 
 initApp();
