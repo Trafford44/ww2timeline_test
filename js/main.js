@@ -83,16 +83,6 @@ async function initApp() {
     });
   }
   
-  if (features.enableExport) {
-    import('./export.js').then(({ setupExport }) => {
-      const exportButton = document.getElementById("exportButton");
-      if (exportButton) {
-        exportButton.addEventListener("click", () => setupExport(data)); // ✅ only runs on click
-      }
-    });
-  }
-
-  
   if (features.enableLocalStorage) {
     import('./storage.js').then(({ syncLocalState }) => {
       syncLocalState(data); // ✅ pass data
