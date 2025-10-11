@@ -1,6 +1,6 @@
 import { renderTimeline } from './timeline.js';
 import { updateStats } from './stats.js';
-import { fetchAndRenderData } from './data.js';
+import { dataset } from './data.js';
 
 export const searchInput = document.getElementById('searchInput');
 export const watchedFilter = document.getElementById('watchedFilter');
@@ -16,31 +16,28 @@ export const hidePinnedToggle = document.getElementById("hidePinnedToggle");
 export const challengeModeToggle = document.getElementById("challengeModeToggle");
 
 export function toggleControls(enable) {
-  [searchInput, watchedFilter, formatFilter, classificationFilter, platformFilter, eventYearFilter, periodFilter, pinnedFilter, clearFilters].forEach(el => {
-    el.disabled = !enable;
-  });
+  [
+    searchInput, watchedFilter, formatFilter, classificationFilter,
+    platformFilter, eventYearFilter, periodFilter, pinnedFilter, clearFilters
+  ].forEach(el => el.disabled = !enable);
 }
 
 export function populateDropdowns(fullData) {
   const formats = [...new Set(fullData.map(f => f.Format).filter(Boolean))].sort();
   const classifications = [...new Set(fullData.map(f => f.Classification).filter(Boolean))].sort();
-  /* const platforms = [...new Set(fullData.flatMap(f => f.WatchOn?.split(',').map(p => p.trim()) || []))].sort(); */
   const eventYears = [...new Set(fullData.map(f => f.EventYear).filter(Boolean))].sort();
   const periods = [...new Set(fullData.map(f => f.Period).filter(Boolean))].sort();
   const platforms = [...new Set(
     fullData
-      .flatMap(f => 
-        (f.WatchOn || "")
-          .replace(/^,+|,+$/g, "") // remove leading/trailing commas
-          .split(',')
-          .map(p => p.trim().toLowerCase()) // normalize here
-      )
-      .filter(p => p) // remove empty strings
+      .flatMap(f => (f.WatchOn || "")
+        .replace(/^,+|,+$/g, "")
+        .split(',')
+        .map(p => p.trim().toLowerCase()))
+      .filter(p => p)
   )].sort();
 
   formatFilter.innerHTML = '<option value="">Format: All</option>' + formats.map(f => `<option value="${f}">${f}</option>`).join("");
   classificationFilter.innerHTML = '<option value="">Classification: All</option>' + classifications.map(c => `<option value="${c}">${c}</option>`).join("");
-  /* platformFilter.innerHTML = '<option value="">Platform/s: All</option>' + platforms.map(p => `<option value="${p}">${p}</option>`).join(""); */
   platformFilter.innerHTML = `
     <option value="">Platform/s: All</option>
     <option value="__none__">(none assigned)</option>
@@ -49,8 +46,6 @@ export function populateDropdowns(fullData) {
       return `<option value="${p}">${sentenceCase}</option>`;
     }).join("")}
   `;
-
-
   eventYearFilter.innerHTML = '<option value="">Event Year: All</option>' + eventYears.map(y => `<option value="${y}">${y}</option>`).join("");
   periodFilter.innerHTML = '<option value="">Period: All</option>' + periods.map(p => `<option value="${p}">${p}</option>`).join("");
 }
@@ -67,7 +62,6 @@ export function parseSearchQuery(query) {
       keywords.push(term);
     }
   });
-
   return { filters, keywords };
 }
 
@@ -75,23 +69,18 @@ export function setupExportButton(filtered) {
   const oldButton = document.getElementById("exportButton");
   if (!oldButton) return;
 
-  const newButton = oldButton.cloneNode(false); // clone without children or listeners
-  newButton.innerHTML = oldButton.innerHTML;    // preserve visual content
+  const newButton = oldButton.cloneNode(false);
+  newButton.innerHTML = oldButton.innerHTML;
   oldButton.replaceWith(newButton);
 
-
-newButton.addEventListener("click", () => {
-  import('./export.js').then(({ setupExport }) => {
-    setupExport(filtered);
+  newButton.addEventListener("click", () => {
+    import('./export.js').then(({ setupExport }) => {
+      setupExport(filtered);
+    });
   });
-});
-
 }
 
-import { dataset } from './data.js';
-
 export function applyFilters(data) {
- 
   const { filters, keywords } = parseSearchQuery(searchInput.value.trim());
   const watched = watchedFilter.value;
   const format = formatFilter.value;
@@ -103,61 +92,43 @@ export function applyFilters(data) {
   const hideWatched = hideWatchedToggle?.checked;
   const hidePinned = hidePinnedToggle?.checked;
   const challengeMode = challengeModeToggle?.checked;
+
   const filtered = dataset.filter(film => {
-    
     const text = Object.values(film).join(" ").toLowerCase();
-  
-    // Keyword search
-    if (keywords.length && !keywords.every(k => text.includes(k.toLowerCase()))) return false;
-  
-    // Title match
-    if (filters.title && !(film.FilmTitle || "").toLowerCase().includes(filters.title.toLowerCase())) return false;
-  
-    // Platform match
+    const watchedValue = (film.Watched || "").trim().toLowerCase();
+    const isPinned = Boolean(film.Pinned);
+
+    if (keywords.length && !keywords.every(k => text.includes(k))) return false;
+    if (filters.title && !(film.FilmTitle || "").toLowerCase().includes(filters.title)) return false;
+
     if (platform === "__none__") {
       if (film.WatchOn) return false;
       return true;
     }
-    if (platform && platform !== "__none__" && !(film.WatchOn || "").toLowerCase().includes(platform.toLowerCase())) return false;
+    if (platform && !(film.WatchOn || "").toLowerCase().includes(platform)) return false;
 
-  
-    // Classification match
-    if (filters.classification && !(film.Classification || "").toLowerCase().includes(filters.classification.toLowerCase())) return false;
+    if (filters.classification && !(film.Classification || "").toLowerCase().includes(filters.classification)) return false;
     if (classification && (film.Classification || "").toLowerCase() !== classification.toLowerCase()) return false;
-  
-    // Period match
-    if (filters.period && !(film.Period || "").toLowerCase().includes(filters.period.toLowerCase())) return false;
+
+    if (filters.period && !(film.Period || "").toLowerCase().includes(filters.period)) return false;
     if (period && (film.Period || "").toLowerCase() !== period.toLowerCase()) return false;
-  
-    // Year match
+
     if (filters.year && String(film.EventYear || "").trim() !== filters.year.trim()) return false;
     if (eventYear && String(film.EventYear || "").trim() !== eventYear.trim()) return false;
-  
-    // Watched match
-    const watchedValue = String(film.Watched || "").trim().toLowerCase();
-    
-    // Search query filter
+
     if (filters.watched === "yes" && watchedValue !== "yes") return false;
     if (filters.watched === "no" && watchedValue === "yes") return false;
-    
-    // Dropdown filter
     if (watched === "Yes" && watchedValue !== "yes") return false;
     if (watched === "No" && watchedValue === "yes") return false;
 
-
-    // Format match
     if (format && (film.Format || "").toLowerCase() !== format.toLowerCase()) return false;
-  
-    const isPinned = Boolean(film.Pinned);
-    
+
     if (pinned === "Yes" && !isPinned) return false;
     if (pinned === "No" && isPinned) return false;
     if (hidePinned && isPinned) return false;
-    if (challengeMode && (film.Watched === "Yes" || isPinned)) return false;
-  
-    // Hide watched
-    if (hideWatched && film.Watched === "Yes") return false;
-  
+    if (challengeMode && (watchedValue === "yes" || isPinned)) return false;
+    if (hideWatched && watchedValue === "yes") return false;
+
     return true;
   });
 
@@ -165,15 +136,13 @@ export function applyFilters(data) {
   if (countDisplay) {
     countDisplay.textContent = `Showing ${filtered.length} of ${dataset.length} record${dataset.length !== 1 ? "s" : ""}`;
   }
-  
+
   console.log("Filtered results:", filtered);
   console.log("Number of results:", filtered.length);
-  /* document.body.innerHTML = `<pre>${JSON.stringify(filtered, null, 2)}</pre>`;*/ 
-  
+
   renderTimeline(filtered);
   updateStats(filtered);
   setupExportButton(filtered);
-
 }
 
 formatFilter.addEventListener("change", () => applyFilters(dataset));
@@ -188,9 +157,7 @@ hidePinnedToggle?.addEventListener("change", () => applyFilters(dataset));
 challengeModeToggle?.addEventListener("change", () => applyFilters(dataset));
 searchInput.addEventListener("input", () => applyFilters(dataset));
 
-const clearButton = document.getElementById("clearFilters");
-clearButton.addEventListener("click", () => {
-  // Reset all filter inputs
+clearFilters.addEventListener("click", () => {
   watchedFilter.value = "";
   formatFilter.value = "";
   classificationFilter.value = "";
@@ -200,10 +167,8 @@ clearButton.addEventListener("click", () => {
   searchInput.value = "";
   pinnedFilter.value = "";
 
-  // Reset toggles if you have them
   hideWatchedToggle.checked = false;
   challengeModeToggle.checked = false;
 
-  // Reapply filters with default state
   applyFilters(dataset);
 });
