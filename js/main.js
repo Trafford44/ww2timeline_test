@@ -49,6 +49,8 @@ async function initApp() {
   console.log("🧩 Using domain key:", domainKey);
 
   const config = await loadConfig(domainKey);
+  console.log("🧩 Loaded domain config:", config.domain);
+  
   features = config.features;
   theme = config.theme;
   domain = config.domain;
