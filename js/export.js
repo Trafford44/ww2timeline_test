@@ -1,5 +1,5 @@
 export function setupExport(records) {
-  console.log("📤 setupExport() called");
+  console.log("Exporting", records.length, "records");
 
   if (!Array.isArray(records) || records.length === 0) {
     console.warn("⚠️ No records to export.");
