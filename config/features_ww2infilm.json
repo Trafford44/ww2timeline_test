@@ -1,7 +1,7 @@
 {
   "enableWikipedia": true,
   "enableMapThumb": true,
-  "enableExport": false,
+  "enableExport": true,
   "enableStatsPanel": true,
   "enableMiniMap": false,
   "enableThemeToggle": true,
