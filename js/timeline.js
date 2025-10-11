@@ -2,7 +2,7 @@ import { renderStars } from './stars.js';
 import { getPlatformIcons } from './platforms.js';
 import { applyFilters } from './filters.js';
 import { dataset } from './data.js';
-import { features } from './config.js'; 
+import { features } from './main.js';
 
 export function renderTimeline(filteredData) {
   const timelineContainer = document.getElementById("timeline");
