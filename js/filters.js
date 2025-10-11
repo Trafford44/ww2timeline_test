@@ -172,6 +172,8 @@ export function applyFilters(data) {
   
   renderTimeline(filtered);
   updateStats(filtered);
+  setupExportButton(filtered);
+  /*
   if (features.enableExport) {
     const exportButton = document.getElementById("exportButton");
     if (exportButton) {
@@ -184,7 +186,7 @@ export function applyFilters(data) {
       exportPanel.style.display = 'none';
     }
   }
-
+  */
 
 }
 
