@@ -105,8 +105,6 @@ export function applyFilters(dataset) {
     if (filters.title && !(film.FilmTitle || "").toLowerCase().includes(filters.title.toLowerCase())) return false;
   
     // Platform match
-    /* if (filters.platform && !(film.WatchOn || "").toLowerCase().includes(filters.platform.toLowerCase())) return false;
-    if (platform && !(film.WatchOn || "").toLowerCase().includes(platform.toLowerCase())) return false; */
     if (platform === "__none__") {
       if (film.WatchOn) return false;
       return true;
@@ -127,9 +125,6 @@ export function applyFilters(dataset) {
     if (eventYear && String(film.EventYear || "").trim() !== eventYear.trim()) return false;
   
     // Watched match
-    /* if (filters.watched && String(film.Watched || "").toLowerCase() !== filters.watched.toLowerCase()) return false;
-    if (watched && String(film.Watched || "").toLowerCase() !== watched.toLowerCase()) return false; */
-
     const watchedValue = String(film.Watched || "").trim().toLowerCase();
     
     // Search query filter
@@ -149,15 +144,7 @@ export function applyFilters(dataset) {
     if (pinned === "Yes" && !isPinned) return false;
     if (pinned === "No" && isPinned) return false;
     if (hidePinned && isPinned) return false;
-    iconst countDisplay = document.getElementById("filterCount");
-if (countDisplay) {
-  countDisplay.textContent = `Showing ${filtered.length} record${filtered.length !== 1 ? "s" : ""}`;
-}
-const countDisplay = document.getElementById("filterCount");
-if (countDisplay) {
-  countDisplay.textContent = `Showing ${filtered.length} record${filtered.length !== 1 ? "s" : ""}`;
-}
-f (challengeMode && (film.Watched === "Yes" || isPinned)) return false;
+    if (challengeMode && (film.Watched === "Yes" || isPinned)) return false;
   
     // Hide watched
     if (hideWatched && film.Watched === "Yes") return false;
