@@ -75,14 +75,17 @@ export function setupExportButton(filtered) {
   const oldButton = document.getElementById("exportButton");
   if (!oldButton) return;
 
-  const newButton = oldButton.cloneNode(true);
-  oldButton.parentNode.replaceChild(newButton, oldButton);
+  const newButton = oldButton.cloneNode(false); // clone without children or listeners
+  newButton.innerHTML = oldButton.innerHTML;    // preserve visual content
+  oldButton.replaceWith(newButton);
 
-  newButton.addEventListener("click", () => {
-    import('./export.js').then(({ setupExport }) => {
-      setupExport(filtered); // always current view
-    });
+
+newButton.addEventListener("click", () => {
+  import('./export.js').then(({ setupExport }) => {
+    setupExport(filtered);
   });
+});
+
 }
 
 import { dataset } from './data.js';
