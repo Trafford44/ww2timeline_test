@@ -30,7 +30,18 @@ export function populateDropdowns(fullData) {
 
   formatFilter.innerHTML = '<option value="">Format: All</option>' + formats.map(f => `<option value="${f}">${f}</option>`).join("");
   classificationFilter.innerHTML = '<option value="">Classification: All</option>' + classifications.map(c => `<option value="${c}">${c}</option>`).join("");
-  platformFilter.innerHTML = '<option value="">Platform/s: All</option>' + platforms.map(p => `<option value="${p}">${p}</option>`).join("");
+  /* platformFilter.innerHTML = '<option value="">Platform/s: All</option>' + platforms.map(p => `<option value="${p}">${p}</option>`).join(""); */
+  const platforms = [...new Set(
+    fullData
+      .flatMap(f => 
+        (f.WatchOn || "")
+          .replace(/^,+|,+$/g, "") // remove leading/trailing commas
+          .split(',')
+          .map(p => p.trim().toLowerCase()) // normalize here
+      )
+      .filter(p => p) // remove empty strings
+  )].sort();
+
   eventYearFilter.innerHTML = '<option value="">Event Year: All</option>' + eventYears.map(y => `<option value="${y}">${y}</option>`).join("");
   periodFilter.innerHTML = '<option value="">Period: All</option>' + periods.map(p => `<option value="${p}">${p}</option>`).join("");
 }
@@ -85,8 +96,11 @@ export function applyFilters(dataset) {
     if (filters.title && !(film.FilmTitle || "").toLowerCase().includes(filters.title.toLowerCase())) return false;
   
     // Platform match
-    if (filters.platform && !(film.WatchOn || "").toLowerCase().includes(filters.platform.toLowerCase())) return false;
-    if (platform && !(film.WatchOn || "").toLowerCase().includes(platform.toLowerCase())) return false;
+    /* if (filters.platform && !(film.WatchOn || "").toLowerCase().includes(filters.platform.toLowerCase())) return false;
+    if (platform && !(film.WatchOn || "").toLowerCase().includes(platform.toLowerCase())) return false; */
+    if (platform === "(none)" && !film.WatchOn) return true;
+    if (platform && platform !== "(none)" && !(film.WatchOn || "").toLowerCase().includes(platform.toLowerCase())) return false;
+
   
     // Classification match
     if (filters.classification && !(film.Classification || "").toLowerCase().includes(filters.classification.toLowerCase())) return false;
