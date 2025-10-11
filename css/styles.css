@@ -262,6 +262,18 @@ details.stats-panel[open] #statsContent {
 .filter-panel[open] .controls select {
   font-size: 14px !important;
 }
+
+.filter-count {
+  font-size: 0.85rem;
+  color: #555;
+  margin-top: 0.5em;
+  margin-left: 0.25em;
+  padding-left: 0.5em;
+  border-left: 2px solid #ccc;
+  font-style: italic;
+}
+
+
     /* this is new */
 /* === Legend Content === */
 .legend-content {
