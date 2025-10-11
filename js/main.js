@@ -62,7 +62,7 @@ async function initApp() {
     setupOptions(applyFilters, features);
   }
 
-  applyFilters(data, features);
+  applyFilters(data);
   updateStats(data);
 
   if (features.enableWikipedia) {
