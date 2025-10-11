@@ -44,8 +44,12 @@ export function populateDropdowns(fullData) {
   platformFilter.innerHTML = `
     <option value="">Platform/s: All</option>
     <option value="__none__">(none assigned)</option>
-    ${platforms.map(p => `<option value="${p}">${p}</option>`).join("")}
+    ${platforms.map(p => {
+      const sentenceCase = p.charAt(0).toUpperCase() + p.slice(1).toLowerCase();
+      return `<option value="${p}">${sentenceCase}</option>`;
+    }).join("")}
   `;
+
 
   eventYearFilter.innerHTML = '<option value="">Event Year: All</option>' + eventYears.map(y => `<option value="${y}">${y}</option>`).join("");
   periodFilter.innerHTML = '<option value="">Period: All</option>' + periods.map(p => `<option value="${p}">${p}</option>`).join("");
