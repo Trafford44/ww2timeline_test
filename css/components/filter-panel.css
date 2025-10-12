@@ -1,3 +1,4 @@
+/* === Filter Panel Container === */
 .filter-panel {
   max-width: 900px;
   margin: 0 auto 20px;
@@ -7,6 +8,36 @@
   border-radius: 6px;
   font-size: 1em;
 }
+
+/* === Summary Styling === */
+.filter-panel summary {
+  font-weight: bold;
+  cursor: pointer;
+  padding: 10px 20px;
+  list-style: none;
+}
+
+/* === Arrow Icon Styling === */
+.filter-panel summary::before {
+  content: '▶';
+  margin-right: 8px;
+  display: inline-block;
+  transition: transform 0.2s;
+}
+
+.filter-panel[open] summary::before {
+  content: '▼';
+}
+
+/* === Font Size Fixes on Open === */
+.filter-panel[open],
+.filter-panel[open] .controls {
+  font-size: 1em !important;
+  zoom: 1 !important;
+  -webkit-text-size-adjust: none !important;
+  text-size-adjust: none !important;
+}
+
 
 .controls {
   display: flex;
