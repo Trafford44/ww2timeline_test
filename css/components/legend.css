@@ -1,0 +1,27 @@
+.timeline-legend {
+  max-width: 900px;
+  margin: 0 auto 20px;
+  padding: 0;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1em;
+}
+
+.timeline-legend summary {
+  font-weight: bold;
+  cursor: pointer;
+  padding: 10px 20px;
+  list-style: none;
+}
+
+.timeline-legend summary::before {
+  content: '▶';
+  margin-right: 8px;
+  display: inline-block;
+  transition: transform 0.2s;
+}
+
+.timeline-legend[open] summary::before {
+  content: '▼';
+}
