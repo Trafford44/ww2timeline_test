@@ -29,11 +29,7 @@ import { fetchAndRenderData } from './data.js';
 import { applyFilters } from './filters.js';
 import { populateDropdowns } from './filters.js';
 import { toggleControls } from './filters.js';
-import { savePinned, loadPinned } from "./pinnedManager.js";
 
-
-
-// main.js
 
 async function initApp() {
   // Use a dynamic key based on URL, user input, or fallback
