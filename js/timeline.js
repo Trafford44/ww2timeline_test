@@ -149,7 +149,6 @@ function createEventCard(film, index) {
   `;
   event.appendChild(details);
 
-  const pinSpan = details.querySelector(".pin-icon");
   pinSpan.addEventListener("click", (e) => {
     e.stopPropagation();
     film.Pinned = !film.Pinned;
