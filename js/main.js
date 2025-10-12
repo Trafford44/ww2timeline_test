@@ -56,7 +56,10 @@ async function initApp() {
   toggleControls(true);
 
   if (features.enableConfigPanel) {
-    setupOptions(applyFilters);
+    /* setupOptions(applyFilters); */
+    document.addEventListener("DOMContentLoaded", () => {
+      setupOptions(applyFilters);
+    });    
   }
 
   applyFilters(data);
