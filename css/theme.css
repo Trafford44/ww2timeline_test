@@ -18,7 +18,7 @@ body.dark {
   --button-hover: #555;
 }
 .timeline-event {
-  background-color: var(--panel-bg);
+  background-color: #red;
   color: var(--text-color);
   border: 1px solid var(--border-color);
   padding: 12px;
