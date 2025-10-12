@@ -57,7 +57,7 @@ async function initApp() {
 
   // ✅ Restore pinned state before filtering
   const pinnedIds = loadPinned();
-  dataset.forEach(film => {
+  data.forEach(film => {
     film.Pinned = pinnedIds.includes(film.RecordID);
   });
   
