@@ -83,20 +83,25 @@ function createEventCard(film, index) {
   const event = document.createElement("div");
   event.className = `timeline-event ${index % 2 === 0 ? "left" : "right"}`;
 
+
   /* pinned state */
   event.dataset.id = film.RecordID;
+  
   if (isPinned(film.RecordID)) {
     film.Pinned = true;
     event.classList.add("pinned");
   }
   
-  pinIcon.addEventListener("click", (e) => {
+  const pinSpan = details.querySelector(".pin-icon");
+  
+  pinSpan.addEventListener("click", (e) => {
     e.stopPropagation();
     film.Pinned = !film.Pinned;
-    event.classList.toggle("pinned", film.Pinned);  
-    togglePinned(film.RecordID);  
-    applyFilters(dataset);
+    event.classList.toggle("pinned", film.Pinned);
+    togglePinned(film.RecordID);
+    applyFilters(dataset); // Optional: re-render or update view
   });
+  /* end pinned state */
 
   
   if (film.Classification) {
