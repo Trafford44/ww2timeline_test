@@ -18,4 +18,5 @@ export function togglePinned(id) {
   const pinned = new Set(loadPinned());
   pinned.has(id) ? pinned.delete(id) : pinned.add(id);
   savePinned([...pinned]);
+  console.log("Pinned items now:", [...pinned]); // ✅ Debug output
 }
