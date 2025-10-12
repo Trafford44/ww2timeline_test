@@ -18,5 +18,6 @@
 @import url('./components/legend-panel.css');
 @import url('./components/modal-window.css');
 @import url('./components/panel-details.css');
-@import url('./components/controls-buttons.css');
-@import url('./components/controls-selects.css');
+@import url('./components/forms-buttons.css');
+@import url('./components/forms-selects.css');
+@import url('./components/forms-inputs.css');
