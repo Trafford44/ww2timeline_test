@@ -1,0 +1,27 @@
+@media screen and (max-width: 768px) {
+  .timeline-event {
+    float: none !important;
+    margin: 0 auto 20px !important;
+    width: 90% !important;
+    clear: both;
+  }
+
+  .timeline-event.left,
+  .timeline-event.right {
+    float: none !important;
+    margin: 0 auto 20px !important;
+  }
+
+  .event-image {
+    float: none;
+    display: block;
+    margin: 10px auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .year-marker {
+    font-size: 1.2em;
+    padding: 3px 8px;
+}
+}
