@@ -1,11 +1,11 @@
 // pinnedManager.js
-const PINNED_KEY = "pinnedFilms";
+const PINNED_KEY = "pinnedItems";
 
-export function savePinned(pinnedIds) {
+function savePinned(pinnedIds) {
   localStorage.setItem(PINNED_KEY, JSON.stringify(pinnedIds));
 }
 
-export function loadPinned() {
+function loadPinned() {
   const stored = localStorage.getItem(PINNED_KEY);
   return stored ? JSON.parse(stored) : [];
 }
