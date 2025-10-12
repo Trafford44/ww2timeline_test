@@ -3,6 +3,8 @@ import { getPlatformIcons } from './platforms.js';
 import { applyFilters } from './filters.js';
 import { dataset } from './data.js';
 import { features } from './main.js';
+import { savePinned, loadPinned, isPinned, togglePinned } from './pinnedManager.js';
+
 
 export function renderTimeline(filteredData) {
   const timelineContainer = document.getElementById("timeline");
@@ -81,6 +83,22 @@ function createEventCard(film, index) {
   const event = document.createElement("div");
   event.className = `timeline-event ${index % 2 === 0 ? "left" : "right"}`;
 
+  /* pinned state */
+  card.dataset.id = entry.RecordID;
+  if (isPinned(entry.RecordID)) {
+    entry.Pinned = true;
+    card.classList.add("pinned");
+  }
+
+  pinIcon.addEventListener("click", (e) => {
+    e.stopPropagation();
+    entry.Pinned = !entry.Pinned;
+    card.classList.toggle("pinned", entry.Pinned);  
+    togglePinned(entry.RecordID);  
+    applyFilters(dataset); // Optional: re-render or update view
+  });
+
+  
   if (film.Classification) {
     event.classList.add(`classification-${String(film.Classification).split('/')[0].trim().replace(/\s/g, '-')}`);
   }
@@ -104,6 +122,8 @@ function createEventCard(film, index) {
     ${notesIndicator}
   `;
   event.appendChild(title);
+
+  event.dataset.id = film.ID || `${film.FilmTitle}-${film.ReleaseYear}`;
 
   const details = document.createElement("div");
   details.className = "event-details";
