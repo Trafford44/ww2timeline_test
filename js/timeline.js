@@ -82,27 +82,6 @@ export function renderTimeline(filteredData) {
 function createEventCard(film, index) {
   const event = document.createElement("div");
   event.className = `timeline-event ${index % 2 === 0 ? "left" : "right"}`;
-
-
-  /* pinned state */
-  event.dataset.id = film.RecordID;
-  
-  if (isPinned(film.RecordID)) {
-    film.Pinned = true;
-    event.classList.add("pinned");
-  }
-  
-  const pinSpan = details.querySelector(".pin-icon");
-  
-  pinSpan.addEventListener("click", (e) => {
-    e.stopPropagation();
-    film.Pinned = !film.Pinned;
-    event.classList.toggle("pinned", film.Pinned);
-    togglePinned(film.RecordID);
-    applyFilters(dataset); // Optional: re-render or update view
-  });
-  /* end pinned state */
-
   
   if (film.Classification) {
     event.classList.add(`classification-${String(film.Classification).split('/')[0].trim().replace(/\s/g, '-')}`);
@@ -110,7 +89,17 @@ function createEventCard(film, index) {
   if (film.Pinned) {
     event.classList.add("pinned");
   }
+  
+  /* pinned state */
+  event.dataset.id = film.RecordID;
+  
+  if (isPinned(film.RecordID)) {
+    film.Pinned = true;
+    event.classList.add("pinned");
+  }
+  /* end pinned state */
 
+  
   const watchedStatus = film.Watched && String(film.Watched).toLowerCase() === 'yes'
     ? `Yes <span class="watched-status-icon" title="You have watched this film.">✔</span>`
     : (film.Watched || "No");
@@ -149,6 +138,26 @@ function createEventCard(film, index) {
   `;
   event.appendChild(details);
 
+  /* pinned state */
+  event.dataset.id = film.RecordID;
+  
+  if (isPinned(film.RecordID)) {
+    film.Pinned = true;
+    event.classList.add("pinned");
+  }
+  
+  const pinSpan = details.querySelector(".pin-icon");
+  
+  pinSpan.addEventListener("click", (e) => {
+    e.stopPropagation();
+    film.Pinned = !film.Pinned;
+    event.classList.toggle("pinned", film.Pinned);
+    togglePinned(film.RecordID);
+    applyFilters(dataset); // Optional: re-render or update view
+  });
+  /* end pinned state */
+  
+  
   pinSpan.addEventListener("click", (e) => {
     e.stopPropagation();
     film.Pinned = !film.Pinned;
