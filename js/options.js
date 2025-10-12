@@ -52,9 +52,8 @@ export function setupOptions(applyFilters) {
       applyFilters();
     });
   }
-
-  if (themeSelect) {
-    console.log("Theme select:", themeSelect);
+console.log("Theme select:", themeSelect);
+  if (themeSelect) {    
     themeSelect.addEventListener("change", () => {
       document.body.classList.remove("light", "dark");
       document.body.classList.add(themeSelect.value);
