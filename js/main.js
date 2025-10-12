@@ -1,4 +1,6 @@
 import { loadConfig } from './config.js';
+import { dataset } from './data.js';
+
 export let features = {};
 let domain = {};
 let settings = {};
@@ -57,7 +59,7 @@ async function initApp() {
 
   // ✅ Restore pinned state before filtering
   const pinnedIds = loadPinned();
-  data.forEach(film => {
+  dataset.forEach(film => {
     film.Pinned = pinnedIds.includes(film.RecordID);
   });
   
