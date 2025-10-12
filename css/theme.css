@@ -1,1 +1,15 @@
-/* Placeholder for future dark theme overrides */
+/* === Light Theme === */
+body.light {
+  --bg-color: #ffffff;
+  --text-color: #222222;
+  --panel-bg: #f5f5f5;
+  --border-color: #ccc;
+}
+
+/* === Dark Theme === */
+body.dark {
+  --bg-color: #1e1e1e;
+  --text-color: #dddddd;
+  --panel-bg: #2a2a2a;
+  --border-color: #444;
+}
