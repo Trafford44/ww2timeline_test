@@ -86,7 +86,7 @@ async function initApp() {
   }
 
   if (features.enableLocalStorage) {
-    import('./storage.js').then(({ syncLocalState }) => {
+    import('./local-storage.js').then(({ syncLocalState }) => {
       syncLocalState(data);
     });
   }
