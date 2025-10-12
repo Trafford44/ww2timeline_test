@@ -4,7 +4,7 @@ export function setupOptions(applyFilters) {
   const challengeModeToggle = document.getElementById("challengeModeToggle");
   const themeSelect = document.getElementById("themeSelect");
   
-console.log("Theme select:", themeSelect);
+  console.log("Theme select:", themeSelect);
   console.log("🔧 setupOptions() is running");
   
   // === Load saved options ===
@@ -55,7 +55,7 @@ console.log("Theme select:", themeSelect);
       applyFilters();
     });
   }
-console.log("Theme select:", themeSelect);
+
   if (themeSelect) {    
     themeSelect.addEventListener("change", () => {
       document.body.classList.remove("light", "dark");
