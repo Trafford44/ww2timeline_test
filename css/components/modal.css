@@ -1,3 +1,16 @@
+/*
+A modal is a type of UI component — it’s a pop-up or overlay window that appears on top of the main content to grab the user’s attention or prompt an action.
+🧱 Common Uses for Modals
+- Confirming actions (e.g. “Are you sure you want to delete?”)
+- Displaying extra details (e.g. film metadata, trailers, or links)
+- Forms or inputs (e.g. rating a film, adding a note)
+- Alerts or warnings
+🖼️ Visual Behavior
+- Usually dims the background (backdrop)
+- Locks scroll on the main page
+- Can be dismissed by clicking outside or pressing ESC
+/*
+
 /* css/components/modal.css */
 .modal {
   position: fixed;
