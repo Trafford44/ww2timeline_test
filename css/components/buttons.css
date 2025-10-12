@@ -1,0 +1,51 @@
+/* === Base Button Styling === */
+button {
+  display: inline-block;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #fff;
+  background-color: #007acc;
+  border: 1px solid #007acc;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+/* === Hover & Focus States === */
+button:hover,
+button:focus {
+  background-color: #005fa3;
+  border-color: #005fa3;
+  outline: none;
+}
+
+/* === Disabled State === */
+button:disabled {
+  background-color: #ccc;
+  border-color: #ccc;
+  color: #666;
+  cursor: not-allowed;
+}
+
+/* === Optional: Button Variants === */
+button.secondary {
+  background-color: #eee;
+  color: #333;
+  border-color: #ccc;
+}
+
+button.secondary:hover {
+  background-color: #ddd;
+  border-color: #bbb;
+}
+
+button.danger {
+  background-color: #d9534f;
+  border-color: #d43f3a;
+}
+
+button.danger:hover {
+  background-color: #c9302c;
+  border-color: #ac2925;
+}
