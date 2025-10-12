@@ -1,0 +1,13 @@
+/* === Generic <details> Styling for Panels === */
+details {
+  margin-bottom: 1em;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 10px;
+}
+
+summary {
+  font-weight: bold;
+  cursor: pointer;
+}
