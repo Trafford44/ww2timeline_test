@@ -1,16 +1,7 @@
 import { loadConfig } from './config.js';
 export let features = {};
-let theme = {};
 let domain = {};
 let settings = {};
-
-function applyTheme() {
-  const root = document.documentElement;
-  root.style.setProperty('--background-color', theme.backgroundColor || "#f5f5f5");
-  root.style.setProperty('--text-color', theme.textColor || "#333");
-  root.style.setProperty('--font-family', theme.fontFamily || "Arial, sans-serif");
-  root.style.setProperty('--primary-color', theme.primaryColor || "#0d6efd");
-}
 
 
 function applySettings() {
@@ -52,11 +43,9 @@ async function initApp() {
   console.log("🧩 Loaded domain config:", config.domain);
   
   features = config.features;
-  theme = config.theme;
   domain = config.domain;
   settings = config.settings;
 
-  applyTheme();
   applySettings();
   applyFeatureVisibility();
 
