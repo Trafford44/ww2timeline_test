@@ -29,6 +29,7 @@ import { fetchAndRenderData } from './data.js';
 import { applyFilters } from './filters.js';
 import { populateDropdowns } from './filters.js';
 import { toggleControls } from './filters.js';
+import { loadPinned } from './pinnedManager.js';
 
 
 async function initApp() {
@@ -54,11 +55,16 @@ async function initApp() {
   populateDropdowns(data);
   toggleControls(true);
 
+  // ✅ Restore pinned state before filtering
+  const pinnedIds = loadPinned();
+  dataset.forEach(film => {
+    film.Pinned = pinnedIds.includes(film.RecordID);
+  });
+  
   if (features.enableOptionsPanel) {
     setupOptions(applyFilters);
   }
 
-  applyFilters(data);
   updateStats(data);
 
   if (features.enableWikipedia) {
