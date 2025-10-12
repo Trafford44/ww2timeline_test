@@ -3,7 +3,7 @@ export function setupOptions(applyFilters) {
   const hidePinnedToggle = document.getElementById("hidePinnedToggle");
   const challengeModeToggle = document.getElementById("challengeModeToggle");
   const themeSelect = document.getElementById("themeSelect");
-
+console.log("Theme select:", themeSelect);
   // === Load saved options ===
   const saved = JSON.parse(localStorage.getItem("optionsPanel") || "{}");
 
