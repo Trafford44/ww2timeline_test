@@ -38,7 +38,8 @@ async function initApp() {
   const urlParams = new URLSearchParams(window.location.search);
   const domainKey = urlParams.get("domain") || "ww2infilm";
   console.log("🧩 Using domain key:", domainKey);
-
+  console.log("🔍 features.enableOptionsPanel:", features.enableOptionsPanel);
+  
   const config = await loadConfig(domainKey);
   console.log("🧩 Loaded domain config:", config.domain);
   
