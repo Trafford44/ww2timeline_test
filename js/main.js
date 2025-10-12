@@ -55,8 +55,9 @@ async function initApp() {
 
   populateDropdowns(data);
   toggleControls(true);
-
+console.log("✅ got to here");
   if (features.enableOptionsPanel) {
+    console.log("✅ setupOptions() should now run");
     /* setupOptions(applyFilters); */
     document.addEventListener("DOMContentLoaded", () => {
       setupOptions(applyFilters);
