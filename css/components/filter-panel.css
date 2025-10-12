@@ -48,12 +48,14 @@
   padding: 0 10px;
 }
 
-input[type="text"], select, button {
+input[type="text"],
+select {
   padding: 8px;
   font-size: 14px;
   border: 1px solid #ccc;
   border-radius: 4px;
 }
+
 
 .filter-count {
   font-size: 0.85rem;
