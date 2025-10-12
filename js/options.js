@@ -54,6 +54,7 @@ export function setupOptions(applyFilters) {
   }
 
   if (themeSelect) {
+    console.log("Theme select:", themeSelect);
     themeSelect.addEventListener("change", () => {
       document.body.classList.remove("light", "dark");
       document.body.classList.add(themeSelect.value);
