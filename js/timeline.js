@@ -131,6 +131,7 @@ function createEventCard(film, index) {
   details.className = "event-details";
   // CORRECTED: Cleaned template literal to prevent unwanted whitespace/entities from breaking CSS (removed linefeeds so that eachattribute appeared on a separate line for readibility)
   // details.innerHTML = `<b>Period:</b> ${film.Period || ""}<br><b>Format:</b> ${film.Format || ""}<br><b>Classification:</b> ${film.Classification || ""}<br><b>Running Time:</b> ${film.RunningTime || ""}<br><b>Historical Accuracy:</b> ${renderStars(film.HistoricalAccuracy)}<br><b>Short Description:</b> ${film.ShortDescription || ""}<br><b>Watch On:</b> ${film.WatchOn || ""} ${getPlatformIcons(film.WatchOn)}<br><b>Link:</b> ${film.Link ? `<a href="${film.Link}" target="_blank">View Link</a>` : ""}<br><b>Watched:</b> ${watchedStatus}<br><b>Rating:</b> ${renderStars(film.Rating || 0)}<span class="pin-icon" title="Click to pin/unpin this film">${film.Pinned ? "📌" : "📍"}</span>`;
+  // reverted back to a working copy of old - seems to work ok
   details.innerHTML = `
     <b>Period:</b> ${film.Period || ""}<br>
     <b>Format:</b> ${film.Format || ""}<br>
