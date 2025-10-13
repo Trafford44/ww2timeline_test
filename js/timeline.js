@@ -123,8 +123,8 @@ function createEventCard(film, index) {
 
   const title = document.createElement("div");
   title.className = "event-title";
-  // CORRECTED: Ensures proper spacing and structure using concatenation for readability/safety.
-  title.innerHTML = `${imageHTML}${film.FilmTitle || "Untitled Film"}${film.ReleaseYear ? ` <span class="release-year">(${film.ReleaseYear})</span>` : ""}${notesIndicator}`;
+  // FIX: Wrapped the film title in a span to ensure consistent styling regardless of image/notes presence.
+  title.innerHTML = `${imageHTML}<span class="film-name">${film.FilmTitle || "Untitled Film"}</span>${film.ReleaseYear ? ` <span class="release-year">(${film.ReleaseYear})</span>` : ""}${notesIndicator}`;
   event.appendChild(title);
 
   const details = document.createElement("div");
