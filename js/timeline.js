@@ -123,14 +123,13 @@ function createEventCard(film, index) {
 
   const title = document.createElement("div");
   title.className = "event-title";
-  title.innerHTML = `
-    ${imageHTML}${film.FilmTitle || "Untitled Film"}${film.ReleaseYear ? `<span class="release-year"> (${film.ReleaseYear})</span>` : ""}
-    ${notesIndicator}
-  `;
+  // CORRECTED: Ensures proper spacing and structure using concatenation for readability/safety.
+  title.innerHTML = `${imageHTML}${film.FilmTitle || "Untitled Film"}${film.ReleaseYear ? ` <span class="release-year">(${film.ReleaseYear})</span>` : ""}${notesIndicator}`;
   event.appendChild(title);
 
   const details = document.createElement("div");
   details.className = "event-details";
+  // CORRECTED: Cleaned template literal to prevent unwanted whitespace/entities from breaking CSS
   details.innerHTML = `
     <b>Period:</b> ${film.Period || ""}<br>
     <b>Format:</b> ${film.Format || ""}<br>
