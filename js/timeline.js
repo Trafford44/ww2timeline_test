@@ -123,8 +123,8 @@ function createEventCard(film, index) {
 
   const title = document.createElement("div");
   title.className = "event-title";
-  // FIX: Wrapped the film title in a span to ensure consistent styling regardless of image/notes presence.
-  title.innerHTML = `${imageHTML}<span class="film-name">${film.FilmTitle || "Untitled Film"}</span>${film.ReleaseYear ? ` <span class="release-year">(${film.ReleaseYear})</span>` : ""}${notesIndicator}`;
+  // RESTORED: Removed the extra span class to allow the original .event-title CSS to apply directly to the text node.
+  title.innerHTML = `${imageHTML}${film.FilmTitle || "Untitled Film"}${film.ReleaseYear ? ` <span class="release-year">(${film.ReleaseYear})</span>` : ""}${notesIndicator}`;
   event.appendChild(title);
 
   const details = document.createElement("div");
