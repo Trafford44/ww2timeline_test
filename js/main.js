@@ -1,5 +1,5 @@
 import { loadConfig } from './config.js';
-import { dataset } from './data.js';
+// import { dataset } from './data.js';
 
 export let features = {};
 let domain = {};
@@ -61,10 +61,10 @@ async function initApp() {
   toggleControls(true);
   
   // ✅ Restore pinned state before filtering
-  const pinnedIds = loadPinned();
-  dataset.forEach(film => {
-    film.Pinned = pinnedIds.includes(film.RecordID);
-  });  
+  // const pinnedIds = loadPinned();
+  // dataset.forEach(film => {
+  //   film.Pinned = pinnedIds.includes(film.RecordID);
+  // });  
  
   if (features.enableOptionsPanel) {
     setupOptions(applyFilters);
