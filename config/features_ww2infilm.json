@@ -4,7 +4,7 @@
   "enableExport": true,
   "enableStatsPanel": true,
   "enableMiniMap": false,
-  "enableThemeToggle": false,
+  "enableThemeToggle": true,
   "enableUserLogin": false,
   "enableCloudSync": false,
   "enableLocalStorage": true,
