@@ -47,3 +47,21 @@
 .classification-Fiction {
   border-left-color: red;
 }
+
+.event-title {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+.event-details {
+  font-size: 0.9em;
+  line-height: 1.4;
+}
+
+.event-image {
+  float: right;
+  max-height: 100px;
+  margin-left: 10px;
+  border-radius: 4px;
+}
