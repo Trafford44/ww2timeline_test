@@ -5,21 +5,12 @@ import { dataset } from './data.js';
 import { features } from './main.js';
 import { savePinned, loadPinned, isPinned, togglePinned } from './pinnedManager.js';
 
-
-export function renderTimeline(filteredData) {
-  const timelineContainer = document.getElementById("timeline");
-  const initialPrompt = document.getElementById("initialPrompt");
-
-  timelineContainer.innerHTML = "";
-
-  if (filteredData.length === 0) {
-    initialPrompt.style.display = 'block';
-    initialPrompt.textContent = "No data found or all records filtered out.";
-    return;
-  }
-
-  initialPrompt.style.display = 'none';
-
+/**
+ * Groups film data by its event year for timeline rendering.
+ * @param {Array<object>} filteredData - The list of film records to group.
+ * @returns {object} An object where keys are years (string) and values are arrays of films.
+ */
+function groupFilmsByYear(filteredData) {
   const grouped = {};
 
   filteredData.forEach(film => {
@@ -35,6 +26,26 @@ export function renderTimeline(filteredData) {
     if (!grouped[year]) grouped[year] = [];
     grouped[year].push(film);
   });
+
+  return grouped;
+}
+
+export function renderTimeline(filteredData) {
+  const timelineContainer = document.getElementById("timeline");
+  const initialPrompt = document.getElementById("initialPrompt");
+
+  timelineContainer.innerHTML = "";
+
+  if (filteredData.length === 0) {
+    initialPrompt.style.display = 'block';
+    initialPrompt.textContent = "No data found or all records filtered out.";
+    return;
+  }
+
+  initialPrompt.style.display = 'none';
+
+  // Use the extracted utility function
+  const grouped = groupFilmsByYear(filteredData); 
 
   const sortedYears = Object.keys(grouped).sort((a, b) => {
     if (a === "Unknown Year") return 1;
@@ -70,7 +81,7 @@ export function renderTimeline(filteredData) {
 
     filmsInYear.forEach((film, index) => {
       const event = createEventCard(film, index);
-      attachEventCardListeners(event, film); // New function call
+      attachEventCardListeners(event, film); 
       yearGroup.appendChild(event);
     });
 
