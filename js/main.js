@@ -54,18 +54,18 @@ async function initApp() {
   const data = await fetchAndRenderData(features, domain, settings);
   console.log("Sample item:", data[0]);
 
-  dataset.length = 0;
-  dataset.push(...data); // ✅ update shared dataset.  This ensures all modules referencing dataset see the updated content.
+  // dataset.length = 0;
+  // dataset.push(...data); // ✅ update shared dataset.  This ensures all modules referencing dataset see the updated content.
+
+  populateDropdowns(data);
+  toggleControls(true);
   
   // ✅ Restore pinned state before filtering
   const pinnedIds = loadPinned();
   dataset.forEach(film => {
     film.Pinned = pinnedIds.includes(film.RecordID);
-  });
-  
-  populateDropdowns(data);
-  toggleControls(true);
-  
+  });  
+ 
   if (features.enableOptionsPanel) {
     setupOptions(applyFilters);
   }
