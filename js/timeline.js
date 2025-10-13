@@ -27,7 +27,6 @@ function groupFilmsByYear(filteredData) {
     grouped[year].push(film);
   });
 
-  
   return grouped;
 }
 
@@ -157,11 +156,12 @@ function createEventCard(film, index) {
     event.appendChild(notes);
   }
 
-  console.log("Created Card Element Check:", {
+  console.log("Created Card Element Check:", {
     eventClass: event.className,
     titleClass: title.className,
     detailsClass: details.className
   });
+
   return event;
 }
 
