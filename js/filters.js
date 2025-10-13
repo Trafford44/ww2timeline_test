@@ -1,8 +1,9 @@
 import { renderTimeline } from './timeline.js';
 import { updateStats } from './stats.js';
 import { dataset } from './data.js';
-import { isPinned } from './pinnedManager.js'; // CRITICAL: Import the function to check localStorage
+import { isPinned } from './pinnedManager.js';
 
+// --- 1. DOM Element References ---
 export const searchInput = document.getElementById('searchInput');
 export const watchedFilter = document.getElementById('watchedFilter');
 export const formatFilter = document.getElementById('formatFilter');
@@ -23,6 +24,7 @@ export function toggleControls(enable) {
   ].forEach(el => el.disabled = !enable);
 }
 
+// --- 2. Dropdown Population ---
 export function populateDropdowns(fullData) {
   const formats = [...new Set(fullData.map(f => f.Format).filter(Boolean))].sort();
   const classifications = [...new Set(fullData.map(f => f.Classification).filter(Boolean))].sort();
@@ -51,6 +53,7 @@ export function populateDropdowns(fullData) {
   periodFilter.innerHTML = '<option value="">Period: All</option>' + periods.map(p => `<option value="${p}">${p}</option>`).join("");
 }
 
+// --- 3. Search Query Parsing ---
 export function parseSearchQuery(query) {
   const terms = query.toLowerCase().split(/\s+/);
   const filters = {};
@@ -66,6 +69,7 @@ export function parseSearchQuery(query) {
   return { filters, keywords };
 }
 
+// --- 4. Export Setup (External Dependency) ---
 export function setupExportButton(filtered) {
   const oldButton = document.getElementById("exportButton");
   if (!oldButton) return;
@@ -81,65 +85,84 @@ export function setupExportButton(filtered) {
   });
 }
 
+// --- 5. Filter State Abstraction (New Module) ---
+function getFilterValues() {
+  return {
+    search: parseSearchQuery(searchInput.value.trim()),
+    watched: watchedFilter.value,
+    format: formatFilter.value,
+    classification: classificationFilter.value,
+    platform: platformFilter.value,
+    eventYear: eventYearFilter.value,
+    period: periodFilter.value,
+    pinned: pinnedFilter.value,
+    hideWatched: hideWatchedToggle?.checked,
+    hidePinned: hidePinnedToggle?.checked,
+    challengeMode: challengeModeToggle?.checked
+  };
+}
+
+// --- 6. Core Filtering Logic (New Module) ---
+function shouldIncludeFilm(film, values) {
+  const { search, watched, format, classification, platform, eventYear, period, pinned, hideWatched, hidePinned, challengeMode } = values;
+  const { filters, keywords } = search;
+  
+  const text = Object.values(film).join(" ").toLowerCase();
+  const watchedValue = (film.Watched || "").trim().toLowerCase();
+  const isPinnedStatus = isPinned(film.RecordID); 
+
+  // Keyword search
+  if (keywords.length && !keywords.every(k => text.includes(k))) return false;
+
+  // Search Filters (field:value)
+  if (filters.title && !(film.FilmTitle || "").toLowerCase().includes(filters.title)) return false;
+  
+  // Platform Filter
+  if (platform === "__none__") {
+    if (film.WatchOn) return false;
+    // If platform is "__none__" and WatchOn is empty, it passes.
+  } else if (platform && !(film.WatchOn || "").toLowerCase().includes(platform)) return false;
+
+  // Classification Filter (Dropdown and Search)
+  if (filters.classification && !(film.Classification || "").toLowerCase().includes(filters.classification)) return false;
+  if (classification && (film.Classification || "").toLowerCase() !== classification.toLowerCase()) return false;
+
+  // Period Filter (Dropdown and Search)
+  if (filters.period && !(film.Period || "").toLowerCase().includes(filters.period)) return false;
+  if (period && (film.Period || "").toLowerCase() !== period.toLowerCase()) return false;
+
+  // Event Year Filter (Dropdown and Search)
+  if (filters.year && String(film.EventYear || "").trim() !== filters.year.trim()) return false;
+  if (eventYear && String(film.EventYear || "").trim() !== eventYear.trim()) return false;
+
+  // Watched Filter (Dropdown and Search)
+  if (filters.watched === "yes" && watchedValue !== "yes") return false;
+  if (filters.watched === "no" && watchedValue === "yes") return false;
+  if (watched === "Yes" && watchedValue !== "yes") return false;
+  if (watched === "No" && watchedValue === "yes") return false;
+
+  // Format Filter
+  if (format && (film.Format || "").toLowerCase() !== format.toLowerCase()) return false;
+
+  // Pinned Filter (Dropdown)
+  if (pinned === "Yes" && !isPinnedStatus) return false;
+  if (pinned === "No" && isPinnedStatus) return false;
+  
+  // Options Toggles
+  if (hidePinned && isPinnedStatus) return false; 
+  if (hideWatched && watchedValue === "yes") return false;
+  
+  // Challenge Mode (Overrides other Toggles)
+  if (challengeMode && (watchedValue === "yes" || isPinnedStatus)) return false;
+
+  return true;
+}
+
+// --- 7. Main Filter Execution ---
 export function applyFilters(data) {
-  const { filters, keywords } = parseSearchQuery(searchInput.value.trim());
-  const watched = watchedFilter.value;
-  const format = formatFilter.value;
-  const classification = classificationFilter.value;
-  const platform = platformFilter.value;
-  const eventYear = eventYearFilter.value;
-  const period = periodFilter.value;
-  const pinned = pinnedFilter.value;
-  const hideWatched = hideWatchedToggle?.checked;
-  const hidePinned = hidePinnedToggle?.checked;
-  const challengeMode = challengeModeToggle?.checked;
+  const filterValues = getFilterValues();
 
-  const filtered = dataset.filter(film => {
-    const text = Object.values(film).join(" ").toLowerCase();
-    const watchedValue = (film.Watched || "").trim().toLowerCase();
-    
-    // CRITICAL FIX: Use the external isPinned function to check localStorage
-    const isPinnedStatus = isPinned(film.RecordID); 
-
-    if (keywords.length && !keywords.every(k => text.includes(k))) return false;
-    if (filters.title && !(film.FilmTitle || "").toLowerCase().includes(filters.title)) return false;
-
-    if (platform === "__none__") {
-      if (film.WatchOn) return false;
-      return true;
-    }
-    if (platform && !(film.WatchOn || "").toLowerCase().includes(platform)) return false;
-
-    if (filters.classification && !(film.Classification || "").toLowerCase().includes(filters.classification)) return false;
-    if (classification && (film.Classification || "").toLowerCase() !== classification.toLowerCase()) return false;
-
-    if (filters.period && !(film.Period || "").toLowerCase().includes(filters.period)) return false;
-    if (period && (film.Period || "").toLowerCase() !== period.toLowerCase()) return false;
-
-    if (filters.year && String(film.EventYear || "").trim() !== filters.year.trim()) return false;
-    if (eventYear && String(film.EventYear || "").trim() !== eventYear.trim()) return false;
-
-    if (filters.watched === "yes" && watchedValue !== "yes") return false;
-    if (filters.watched === "no" && watchedValue === "yes") return false;
-    if (watched === "Yes" && watchedValue !== "yes") return false;
-    if (watched === "No" && watchedValue === "yes") return false;
-
-    if (format && (film.Format || "").toLowerCase() !== format.toLowerCase()) return false;
-
-    // Use the reliable isPinnedStatus variable for all pin checks
-    if (pinned === "Yes" && !isPinnedStatus) return false;
-    if (pinned === "No" && isPinnedStatus) return false;
-    
-    // This is the filter for the 'Hide Pinned Films' toggle
-    if (hidePinned && isPinnedStatus) return false; 
-    
-    // Update Challenge Mode check to use the reliable status
-    if (challengeMode && (watchedValue === "yes" || isPinnedStatus)) return false;
-    
-    if (hideWatched && watchedValue === "yes") return false;
-
-    return true;
-  });
+  const filtered = dataset.filter(film => shouldIncludeFilm(film, filterValues));
 
   const countDisplay = document.getElementById("filterCount");
   if (countDisplay) {
@@ -154,6 +177,7 @@ export function applyFilters(data) {
   setupExportButton(filtered);
 }
 
+// --- 8. Event Wiring ---
 formatFilter.addEventListener("change", () => applyFilters(dataset));
 classificationFilter.addEventListener("change", () => applyFilters(dataset));
 platformFilter.addEventListener("change", () => applyFilters(dataset));
@@ -167,6 +191,7 @@ challengeModeToggle?.addEventListener("change", () => applyFilters(dataset));
 searchInput.addEventListener("input", () => applyFilters(dataset));
 
 clearFilters.addEventListener("click", () => {
+  // Reset Dropdowns and Search
   watchedFilter.value = "";
   formatFilter.value = "";
   classificationFilter.value = "";
@@ -176,8 +201,9 @@ clearFilters.addEventListener("click", () => {
   searchInput.value = "";
   pinnedFilter.value = "";
 
+  // Reset Toggles
   hideWatchedToggle.checked = false;
-  hidePinnedToggle.checked = false; // CRITICAL: Reset the hide pinned toggle
+  hidePinnedToggle.checked = false; 
   challengeModeToggle.checked = false;
 
   applyFilters(dataset);
