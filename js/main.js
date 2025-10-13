@@ -70,6 +70,7 @@ async function initApp() {
   //   setupOptions(applyFilters);
   // }
 
+  applyFilters(data);
   updateStats(data);
 
   if (features.enableWikipedia) {
