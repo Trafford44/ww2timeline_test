@@ -66,9 +66,9 @@ async function initApp() {
   //   film.Pinned = pinnedIds.includes(film.RecordID);
   // });  
  
-  if (features.enableOptionsPanel) {
-    setupOptions(applyFilters);
-  }
+  // if (features.enableOptionsPanel) {
+  //   setupOptions(applyFilters);
+  // }
 
   updateStats(data);
 
