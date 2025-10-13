@@ -66,12 +66,11 @@ export function renderTimeline(filteredData) {
       yearGroup.classList.toggle("collapsed");
     });
 
-
-
     yearGroup.appendChild(yearMarker);
 
     filmsInYear.forEach((film, index) => {
       const event = createEventCard(film, index);
+      attachEventCardListeners(event, film); // New function call
       yearGroup.appendChild(event);
     });
 
@@ -79,6 +78,12 @@ export function renderTimeline(filteredData) {
   });
 }
 
+/**
+ * Creates the base HTML structure for a film event card.
+ * @param {object} film - The film data object.
+ * @param {number} index - Index for left/right positioning.
+ * @returns {HTMLElement} The event card DOM element without listeners.
+ */
 function createEventCard(film, index) {
   const event = document.createElement("div");
   event.className = `timeline-event ${index % 2 === 0 ? "left" : "right"}`;
@@ -113,8 +118,6 @@ function createEventCard(film, index) {
   `;
   event.appendChild(title);
 
-  // event.dataset.id = film.ID || `${film.FilmTitle}-${film.ReleaseYear}`; // Removed duplicate dataset.id setting
-
   const details = document.createElement("div");
   details.className = "event-details";
   details.innerHTML = `
@@ -131,12 +134,23 @@ function createEventCard(film, index) {
     <span class="pin-icon" title="Click to pin/unpin this film">
       ${film.Pinned ? "📌" : "📍"}
     </span>
+    ${film.Notes ? `<div class="notes">Notes: ${film.Notes}</div>` : ''}
   `;
   event.appendChild(details);
 
-  // --- START: COMBINED PINNED STATE LISTENER (Removed Duplicates) ---
-  const pinSpan = details.querySelector(".pin-icon");
+  return event;
+}
+
+/**
+ * Attaches event listeners to the film card for interaction (pinning and notes).
+ * @param {HTMLElement} event - The film card DOM element.
+ * @param {object} film - The film data object.
+ */
+function attachEventCardListeners(event, film) {
+  const pinSpan = event.querySelector(".pin-icon");
+  const notesDiv = event.querySelector(".notes");
   
+  // Pinning Listener
   pinSpan.addEventListener("click", (e) => {
     e.stopPropagation();
     film.Pinned = !film.Pinned;
@@ -145,20 +159,14 @@ function createEventCard(film, index) {
     togglePinned(film.RecordID); // Update local storage
     applyFilters(dataset); // Re-render/Update view based on new pin state
   });
-  // --- END: COMBINED PINNED STATE LISTENER ---
-  
-  
-  if (film.Notes) {
-    const notes = document.createElement("div");
-    notes.className = "notes";
-    notes.textContent = `Notes: ${film.Notes}`;
-    event.appendChild(notes);
+
+  // Notes Toggle Listener
+  if (notesDiv) {
     event.addEventListener("click", (e) => {
-      if (e.target.tagName !== 'A' && !e.target.closest('.pin-icon')) {
-        notes.classList.toggle("show");
+      // Prevent note toggle if clicking on interactive elements
+      if (e.target.tagName !== 'A' && !e.target.closest('.pin-icon') && !e.target.closest('.notes-indicator')) {
+        notesDiv.classList.toggle("show");
       }
     });
   }
-
-  return event;
 }
