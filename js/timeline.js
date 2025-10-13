@@ -145,9 +145,16 @@ function createEventCard(film, index) {
     <span class="pin-icon" title="Click to pin/unpin this film">
       ${film.Pinned ? "📌" : "📍"}
     </span>
-    ${film.Notes ? `<div class="notes">Notes: ${film.Notes}</div>` : ''}
   `;
   event.appendChild(details);
+
+  // Reverting this back to appending a separate element to maintain original structure
+  if (film.Notes) {
+    const notes = document.createElement("div");
+    notes.className = "notes";
+    notes.textContent = `Notes: ${film.Notes}`;
+    event.appendChild(notes);
+  }
 
   return event;
 }
@@ -159,7 +166,8 @@ function createEventCard(film, index) {
  */
 function attachEventCardListeners(event, film) {
   const pinSpan = event.querySelector(".pin-icon");
-  const notesDiv = event.querySelector(".notes");
+  // Now querying the notes div which is a direct child of 'event' again
+  const notesDiv = event.querySelector(".notes"); 
   
   // Pinning Listener
   pinSpan.addEventListener("click", (e) => {
