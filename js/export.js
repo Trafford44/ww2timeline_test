@@ -1,16 +1,17 @@
-export function setupExport(records) {
-  console.log("Exporting", records.length, "records");
+export function setupExport(events) {
+  console.log("Exporting", events.length, "events");
 
-  if (!Array.isArray(records) || records.length === 0) {
-    console.warn("⚠️ No records to export.");
-    alert("No data available to export.");
+  if (!Array.isArray(events) || events.length === 0) {
+    console.warn("⚠️ No events available to export.");
+    // NOTE: Replacing alert() with a console warning as per development guidelines.
+    // If a user-facing message is required, a custom modal UI should be used.
     return;
   }
 
-  console.log("Records received for export:", records);
+  console.log("Events received for export:", events);
   
-  const headers = Object.keys(records[0]);
-  const rows = records.map(r => headers.map(h => `"${r[h] || ''}"`).join(','));
+  const headers = Object.keys(events[0]);
+  const rows = events.map(event => headers.map(h => `"${event[h] || ''}"`).join(','));
   const csv = [headers.join(','), ...rows].join('\n');
 
   const blob = new Blob([csv], { type: 'text/csv' });
@@ -18,7 +19,7 @@ export function setupExport(records) {
 
   const link = document.createElement('a');
   link.href = url;
-  link.download = 'timeline_export.csv';
+  link.download = 'event_timeline_export.csv';
   link.click();
 
   URL.revokeObjectURL(url);
