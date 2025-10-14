@@ -1,4 +1,5 @@
-export function setupOptions(applyFilters) {
+export function setupOptions(applyFilters, domain) {
+  const fm = domain.fieldMap; // Alias for fieldMap
   const hideWatchedToggle = document.getElementById("hideWatchedToggle");
   const hidePinnedToggle = document.getElementById("hidePinnedToggle");
   const challengeModeToggle = document.getElementById("challengeModeToggle");
@@ -8,7 +9,9 @@ export function setupOptions(applyFilters) {
   console.log("🔧 setupOptions() is running");
   
   // === Load saved options ===
-  const saved = JSON.parse(localStorage.getItem("timelineOptions") || "{}");
+  // Use a generic key that includes the domain's subject for better scoping
+  const optionsKey = `timelineOptions_${domain.subject.replace(/\s/g, "")}`;
+  const saved = JSON.parse(localStorage.getItem(optionsKey) || "{}");
 
   // --- CRITICAL FIX FOR BOOLEAN LOADING ---
   /**
@@ -25,21 +28,21 @@ export function setupOptions(applyFilters) {
   document.body.classList.add(theme);
   if (themeSelect) themeSelect.value = theme;
 
-  // Apply toggles using the safe isEnabled check
-  if (hideWatchedToggle) hideWatchedToggle.checked = isEnabled(saved.hideWatched);
-  if (hidePinnedToggle) hidePinnedToggle.checked = isEnabled(saved.hidePinned);
+  // Apply toggles using the safe isEnabled check and the fieldMap keys
+  if (hideWatchedToggle) hideWatchedToggle.checked = isEnabled(saved[`hide_${fm.watched}`]);
+  if (hidePinnedToggle) hidePinnedToggle.checked = isEnabled(saved[`hide_${fm.pinned}`]);
   if (challengeModeToggle) challengeModeToggle.checked = isEnabled(saved.challengeMode);
   
   // === Save options to localStorage ===
   function saveOptions() {
     const options = {
       theme: themeSelect?.value || "light",
-      // Save actual JavaScript boolean values
-      hideWatched: hideWatchedToggle?.checked || false,
-      hidePinned: hidePinnedToggle?.checked || false,
+      // Save actual JavaScript boolean values using the domain keys for unique storage
+      [`hide_${fm.watched}`]: hideWatchedToggle?.checked || false,
+      [`hide_${fm.pinned}`]: hidePinnedToggle?.checked || false,
       challengeMode: challengeModeToggle?.checked || false
     };
-    localStorage.setItem("timelineOptions", JSON.stringify(options));
+    localStorage.setItem(optionsKey, JSON.stringify(options));
   }
 
   // === Event Listeners ===
