@@ -1,11 +1,11 @@
 // map.js
-export function renderMapThumbs(records) {
+export function renderMapThumbs(events) {
   console.log("🗺️ renderMapThumbs() called");
-  return records
-    .filter(r => r.Location)
-    .map(r => ({
-      id: r.ID,
-      title: r.Title,
-      location: r.Location
+  return events
+    .filter(event => event.Location)
+    .map(event => ({
+      id: event.ID,
+      title: event.Title,
+      location: event.Location
     }));
 }
