@@ -1,46 +1,71 @@
 // stats.js
 
-export function updateStats(filteredEvents) {
-  console.log("✅ updateStats called with", filteredEvents.length, "events");
+/**
+ * Updates the statistics panel with summary data for the filtered events.
+ * @param {Array<object>} filteredEvents - The list of events currently displayed.
+ * @param {object} domain - The configuration object containing fieldMap and labels.
+ */
+export function updateStats(filteredEvents, domain) {
+  console.log("✅ updateStats called with", filteredEvents.length, "events");
 
-  const statsContent = document.getElementById("statsContent");
-  const total = filteredEvents.length;
+  const statsContent = document.getElementById("statsContent");
+  const total = filteredEvents.length;
 
-  if (total === 0) {
-    statsContent.innerHTML = `<i>No matching records to summarize.</i>`;
-    return;
-  }
+  const fm = domain.fieldMap || {};
+  const labels = domain.labels || {};
+  
+  // Use mapped keys for data attributes
+  const watchedKey = fm.watched || 'Watched';
+  const pinnedKey = fm.pinned || 'Pinned';
+  const classificationKey = fm.classification || 'Classification';
+  const platformKey = fm.platform || 'WatchOn';
+  
+  // Use mapped labels for display text
+  const watchedLabel = labels.watchedLabel || 'Watched';
+  const pinnedLabel = labels.pinnedLabel || 'Pinned';
+  const classificationLabel = labels.classificationLabel || 'Classification';
+  const platformLabel = labels.platformLabel || 'Platforms';
 
-  let watchedCount = 0;
-  let pinnedCount = 0;
-  const byClassification = {};
-  const topPlatforms = {};
+  if (total === 0) {
+    statsContent.innerHTML = `<i>No matching records to summarize.</i>`;
+    return;
+  }
 
-  filteredEvents.forEach(event => {
-    if (event.Watched === "Yes") watchedCount++;
-    if (event.Pinned) pinnedCount++;
+  let watchedCount = 0;
+  let pinnedCount = 0;
+  const byClassification = {};
+  const topPlatforms = {};
 
-    const classification = event.Classification || "Unclassified";
-    byClassification[classification] = (byClassification[classification] || 0) + 1;
+  filteredEvents.forEach(event => {
+    // Use mapped key and normalized check for Watched
+    if (event[watchedKey] && String(event[watchedKey]).toLowerCase() === "yes") watchedCount++;
+    
+    // Use mapped key for Pinned check
+    if (event[pinnedKey]) pinnedCount++;
 
-    (event.WatchOn || "").split(",").forEach(p => {
-      const platform = p.trim();
-      if (platform) topPlatforms[platform] = (topPlatforms[platform] || 0) + 1;
-    });
-  });
+    // Use mapped key for Classification grouping
+    const classification = event[classificationKey] || "Unclassified";
+    byClassification[classification] = (byClassification[classification] || 0) + 1;
 
-  const topPlatformList = Object.entries(topPlatforms)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 5)
-    .map(([p, count]) => `${p} (${count})`)
-    .join(", ");
+    // Use mapped key for Platform grouping and splitting
+    (event[platformKey] || "").split(",").forEach(p => {
+      const platform = p.trim();
+      if (platform) topPlatforms[platform] = (topPlatforms[platform] || 0) + 1;
+    });
+  });
 
-  statsContent.innerHTML = `
-    <b>Total Events:</b> ${total}<br>
-    <b>Watched:</b> ${watchedCount} (${Math.round((watchedCount / total) * 100)}%)<br>
-    <b>Pinned:</b> ${pinnedCount} (${Math.round((pinnedCount / total) * 100)}%)<br>
-    <b>By Classification:</b><br>
-    ${Object.entries(byClassification).map(([k, v]) => `&nbsp;&nbsp;${k}: ${v}`).join("<br>")}
-    <br><b>Top Platforms:</b> ${topPlatformList}
-  `;
+  const topPlatformList = Object.entries(topPlatforms)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 5)
+    .map(([p, count]) => `${p} (${count})`)
+    .join(", ");
+
+  statsContent.innerHTML = `
+    <b>Total Events:</b> ${total}<br>
+    <b>${watchedLabel}:</b> ${watchedCount} (${Math.round((watchedCount / total) * 100)}%)<br>
+    <b>${pinnedLabel}:</b> ${pinnedCount} (${Math.round((pinnedCount / total) * 100)}%)<br>
+    <b>By ${classificationLabel}:</b><br>
+    ${Object.entries(byClassification).map(([k, v]) => `&nbsp;&nbsp;${k}: ${v}`).join("<br>")}
+    <br><b>Top ${platformLabel}:</b> ${topPlatformList}
+  `;
 }
