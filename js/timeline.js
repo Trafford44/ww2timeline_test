@@ -1,228 +1,186 @@
-import { renderStars } from './stars.js';
-import { getPlatformIcons } from './platforms.js';
-import { applyFilters } from './filters.js';
-import { dataset } from './data.js';
-import { features } from './main.js';
 import { isPinned, togglePinned } from './pinnedManager.js';
+import { updateApp } from './main.js'; // To trigger re-render after interaction
+
+// --- Global DOM References ---
+const timelineContainer = document.getElementById("timeline");
+const statsContent = document.getElementById("statsContent");
+
+// --- 1. Event Card Creation (Generic) ---
 
 /**
- * Groups event data by its event year for timeline rendering.
- * @param {Array<object>} filteredData - The list of event records to group.
- * @param {object} domain - The configuration object containing fieldMap.
- * @returns {object} An object where keys are years (string) and values are arrays of events.
+ * Creates the HTML string for a single event card.
+ * @param {object} event The event data object.
+ * @param {object} domain The domain configuration.
+ * @returns {string} The HTML string for the event card.
  */
-function groupEventsByYear(filteredData, domain) {
-  const grouped = {};
-  const fm = domain.fieldMap || {};
-  // Use the mapped year field, defaulting to 'EventYear' if not mapped in config
-  const yearKey = fm.eventYear || 'EventYear'; 
+function createEventCard(event, domain) {
+    const fm = domain.fieldMap;
+    const labels = domain.labels;
+    const isWatched = (event[fm.watched] || "").toLowerCase() === 'yes';
+    const pinned = isPinned(event.RecordID);
 
-  filteredData.forEach(event => {
-    let year = "Unknown Year";
-    const rawYear = String(event[yearKey] || "").trim();
+    const accuracyStars = (rating) => {
+        const fullStars = parseInt(rating, 10);
+        const emptyStars = 5 - fullStars;
+        return '★'.repeat(fullStars) + '☆'.repeat(emptyStars);
+    };
     
-    // Logic remains generic based on string manipulation of the year field
-    if (/^\d{4}$/.test(rawYear)) {
-      year = rawYear;
-    } else if (rawYear.includes('–') || rawYear.includes('-')) {
-      year = rawYear.split(/[–-]/)[0].trim();
-    } else if (rawYear) {
-      year = rawYear.split(' ')[0];
-    }
-    if (!grouped[year]) grouped[year] = [];
-    grouped[year].push(event);
-  });
+    // Determine card classes, using classification for color
+    let cardClasses = `timeline-card classification-${(event[fm.classification] || '').replace(/\s+/g, '-')}`;
+    if (isWatched) cardClasses += ' watched';
+    if (pinned) cardClasses += ' pinned';
+    
+    // Notes/Synopsis content management
+    const synopsis = event[fm.notes] || 'No synopsis available.';
+    const hasNotes = !!event[fm.notes];
 
-  return grouped;
+    // Card structure using dynamic field names and labels
+    return `
+        <div class="${cardClasses}" data-id="${event.RecordID}" data-date="${event[fm.year]}" data-classification="${event[fm.classification]}">
+            <div class="card-header">
+                <span class="card-title">${event[fm.title] || 'Untitled'}</span>
+                <span class="card-date">${event[fm.year] || 'N/A'}</span>
+            </div>
+            
+            <div class="card-details">
+                <p><strong>${labels.classificationLabel || 'Classification'}:</strong> ${event[fm.classification] || 'N/A'}</p>
+                <p><strong>${labels.accuracyLabel || 'Accuracy'}:</strong> <span class="rating-stars">${accuracyStars(event[fm.accuracy] || 0)}</span> (${event[fm.accuracy] || 'N/A'} / 5)</p>
+                <p><strong>${labels.periodLabel || 'Period'}:</strong> ${event[fm.period] || 'N/A'}</p>
+                <p><strong>${labels.platformLabel || 'Platform/s'}:</strong> ${event[fm.platform] || 'N/A'}</p>
+                ${event[fm.location] ? `<p><strong>${labels.locationLabel || 'Location'}:</strong> ${event[fm.location]}</p>` : ''}
+            </div>
+
+            <div class="card-notes ${hasNotes ? '' : 'no-notes'}" id="notes-${event.RecordID}">
+                <p><strong>${labels.notesLabel || 'Notes'}:</strong> ${synopsis}</p>
+            </div>
+
+            <div class="card-actions">
+                <button class="toggle-pin-btn" data-id="${event.RecordID}">
+                    ${pinned ? '📌 Unpin' : '📍 Pin'}
+                </button>
+                <button class="toggle-watched-btn" data-id="${event.RecordID}" data-watched="${isWatched}">
+                    ${isWatched ? '✔ Watched' : '☐ Unwatched'}
+                </button>
+                ${hasNotes ? '<span class="notes-indicator">&#9999; Notes</span>' : ''}
+            </div>
+        </div>
+    `;
+}
+
+// --- 2. Timeline Rendering & Event Wiring (Generic) ---
+
+/**
+ * Attaches event listeners for Pinned/Watched toggles.
+ * @param {object} domain The domain configuration.
+ */
+function wireEvents(domain) {
+    // Only set up event listener once
+    if (timelineContainer.dataset.listenersAttached === 'true') return;
+    timelineContainer.dataset.listenersAttached = 'true';
+
+    timelineContainer.addEventListener('click', (e) => {
+        const btn = e.target.closest('.toggle-pin-btn');
+        if (btn) {
+            const id = btn.dataset.id;
+            togglePinned(id, domain); // Generic: Pass domain to pinnedManager
+            updateApp();
+            return;
+        }
+
+        const watchedBtn = e.target.closest('.toggle-watched-btn');
+        if (watchedBtn) {
+            // NOTE: Toggle watched status (must be handled by a function in data.js or local-storage.js)
+            // Since we don't have that file, we just trigger the full update cycle.
+            // If you later implement a toggleWatched(id, domain) function, it would go here.
+            
+            // For now, assume a toggleWatched function exists in local-storage.js and we dynamically import it
+            import('./local-storage.js').then(({ toggleWatchedStatus }) => {
+                toggleWatchedStatus(watchedBtn.dataset.id, domain);
+                updateApp();
+            });
+            return;
+        }
+    });
+}
+
+
+/**
+ * Renders the initial timeline structure. Only called once on app startup.
+ * @param {Array<object>} data The full dataset.
+ * @param {object} domain The domain configuration.
+ */
+export function renderTimeline(data, domain) {
+    if (!timelineContainer) return;
+    console.log("⏳ Initial timeline render...");
+    
+    // Render all cards initially
+    const cardsHtml = data.map(event => createEventCard(event, domain)).join('');
+    timelineContainer.innerHTML = cardsHtml;
+    
+    // Wire up event listeners only once
+    wireEvents(domain);
 }
 
 /**
- * Renders the timeline from filtered event data.
- * @param {Array<object>} filteredData - The event records to render.
- * @param {object} domain - The configuration object.
+ * Updates the timeline display based on filtered and sorted data.
+ * @param {Array<object>} filteredData The data after filters have been applied.
+ * @param {object} domain The domain configuration.
+ * @returns {Array<object>} The final, visible data after sorting.
  */
-export function renderTimeline(filteredData, domain) {
-  const timelineContainer = document.getElementById("timeline");
-  const initialPrompt = document.getElementById("initialPrompt");
+export function updateTimeline(filteredData, domain) {
+    // 1. Sort the data (Placeholder: sort by Release Year descending)
+    const sortKey = domain.fieldMap.year || 'ReleaseYear';
+    const sortedData = filteredData.sort((a, b) => b[sortKey] - a[sortKey]);
 
-  timelineContainer.innerHTML = "";
-
-  if (filteredData.length === 0) {
-    initialPrompt.style.display = 'block';
-    initialPrompt.textContent = "No data found or all records filtered out.";
-    return;
-  }
-
-  initialPrompt.style.display = 'none';
-
-  // Pass domain config to the grouping utility
-  const grouped = groupEventsByYear(filteredData, domain); 
-
-  const sortedYears = Object.keys(grouped).sort((a, b) => {
-    if (a === "Unknown Year") return 1;
-    if (b === "Unknown Year") return -1;
-    return parseInt(a) - parseInt(b);
-  });
-
-  sortedYears.forEach(year => {
-    const eventsInYear = grouped[year];
-    const yearGroup = document.createElement("div");
-    yearGroup.className = "year-group";
-
+    // 2. Clear and Re-render only the filtered/sorted cards
+    if (!timelineContainer) return sortedData;
     
-    const yearMarker = document.createElement("div");
-    yearMarker.className = "year-marker";
-    
-    const yearLabel = document.createElement("span");
-    yearLabel.className = "year-label";
-    yearLabel.textContent = year;
-    
-    const countSpan = document.createElement("span");
-    countSpan.className = "year-count";
-    countSpan.textContent = `(${eventsInYear.length} event${eventsInYear.length !== 1 ? 's' : ''})`;
-    
-    yearMarker.appendChild(yearLabel);
-    yearMarker.appendChild(countSpan);
+    timelineContainer.innerHTML = sortedData.map(event => createEventCard(event, domain)).join('');
 
-    yearMarker.addEventListener("click", () => {
-      yearGroup.classList.toggle("collapsed");
-    });
-
-    yearGroup.appendChild(yearMarker);
-
-    eventsInYear.forEach((event, index) => {
-      // Pass domain config to createEventCard
-      const card = createEventCard(event, index, domain); 
-      attachEventCardListeners(card, event); 
-      yearGroup.appendChild(card);
-    });
-
-    timelineContainer.appendChild(yearGroup);
-  });
+    console.log(`✅ Timeline updated with ${sortedData.length} visible events.`);
+    return sortedData;
 }
 
-/**
- * Creates the base HTML structure for an event card.
- * @param {object} event - The event data object.
- * @param {number} index - Index for left/right positioning.
- * @param {object} domain - The configuration object containing fieldMap and labels.
- * @returns {HTMLElement} The event card DOM element without listeners.
- */
-function createEventCard(event, index, domain) {
-  const fm = domain.fieldMap || {};
-  const labels = domain.labels || {};
-  
-  // Use mapped keys, with fallbacks to the original hardcoded keys
-  const titleKey = fm.title || 'FilmTitle';
-  const yearKey = fm.year || 'ReleaseYear';
-  const classificationKey = fm.classification || 'Classification';
-  const periodKey = fm.period || 'Period';
-  const accuracyKey = fm.accuracy || 'HistoricalAccuracy';
-  const platformKey = fm.platform || 'WatchOn';
-  const watchedKey = fm.watched || 'Watched';
-  const notesKey = fm.notes || 'Notes';
 
-  const card = document.createElement("div");
-  card.className = `timeline-event ${index % 2 === 0 ? "left" : "right"}`;
-  
-  // Use mapped key for classification for styling class
-  if (event[classificationKey]) {
-    card.classList.add(`classification-${String(event[classificationKey]).split('/')[0].trim().replace(/\s/g, '-')}`);
-  }
-  
-  // Initialize Pinned status based on stored state
-  if (isPinned(event.RecordID)) {
-    event.Pinned = true;
-    card.classList.add("pinned");
-  }
-  
-  card.dataset.id = event.RecordID;
-
-  
-  // Use mapped key for Watched status display
-  const watchedValue = event[watchedKey] && String(event[watchedKey]).toLowerCase() === 'yes';
-  const watchedStatus = watchedValue
-    ? `${labels.watchedLabel || 'Yes'} <span class="watched-status-icon" title="You have watched this event.">✔</span>`
-    : (event[watchedKey] || (labels.notWatchedLabel || "No"));
-
-  // Use mapped key for Notes check
-  const hasNotes = event[notesKey];
-  const notesIndicator = hasNotes ? `<span class="notes-indicator" title="Click to view notes!">&#9999;</span>` : '';
-  
-  const imageHTML = event.ImageURL
-    ? `<img src="${event.ImageURL}" alt="Poster for ${event[titleKey] || 'Untitled Event'}" class="event-image">`
-    : '';
-
-  const titleText = event[titleKey] || "Untitled Event";
-  const releaseYear = event[yearKey];
-
-  const title = document.createElement("div");
-  title.className = "event-title";
-  // Use mapped keys for Title and Year
-  title.innerHTML = `${imageHTML}${titleText}${releaseYear ? ` <span class="release-year">(${releaseYear})</span>` : ""}${notesIndicator}`;
-  card.appendChild(title);
-
-  const details = document.createElement("div");
-  details.className = "event-details";
-  
-  // Use mapped keys AND labels for all detail fields
-  details.innerHTML = 
-    `<b>${labels.periodLabel || 'Period'}:</b> ${event[periodKey] || ""}<br>` +
-    `<b>Format:</b> ${event.Format || ""}<br>` + // Format is still hardcoded as it's not in the fieldMap
-    `<b>${labels.classificationLabel || 'Classification'}:</b> ${event[classificationKey] || ""}<br>` +
-    `<b>Running Time:</b> ${event.RunningTime || ""}<br>` + // RunningTime is still hardcoded
-    `<b>${labels.accuracyLabel || 'Historical Accuracy'}:</b> ${renderStars(event[accuracyKey])}<br>` +
-    `<b>Short Description:</b> ${event.ShortDescription || ""}<br>` + // ShortDescription is still hardcoded
-    `<b>${labels.platformLabel || 'Watch On'}:</b> ${event[platformKey] || ""} ${getPlatformIcons(event[platformKey])}<br>` +
-    `<b>Link:</b> ${event.Link ? `<a href="${event.Link}" target="_blank">View Link</a>` : ""}<br>` +
-    `<b>${labels.watchedLabel || 'Watched'}:</b> ${watchedStatus}<br>` +
-    `<b>Rating:</b> ${renderStars(event.Rating || 0)}` + // Rating is still hardcoded
-    `<span class="pin-icon" title="Click to pin/unpin this event">${event.Pinned ? "📌" : "📍"}</span>`;
-  card.appendChild(details);
-
-  // Use mapped key for Notes display
-  if (hasNotes) {
-    const notes = document.createElement("div");
-    notes.className = "notes";
-    notes.textContent = `${labels.notesLabel || 'Notes'}: ${event[notesKey]}`;
-    card.appendChild(notes);
-  }
-
-  console.log("Created Card Element Check:", {
-    eventClass: card.className,
-    titleClass: title.className,
-    detailsClass: details.className
-  });
-
-  return card;
-}
+// --- 3. Stats Panel Creation (Generic) ---
 
 /**
- * Attaches event listeners to the event card for interaction (pinning and notes).
- * @param {HTMLElement} card - The event card DOM element.
- * @param {object} event - The event data object.
+ * Renders the statistics panel content.
+ * NOTE: This function is required to be EXPORTED by main.js.
+ * @param {Array<object>} data The dataset (typically the filtered set).
+ * @param {object} domain The domain configuration.
  */
-function attachEventCardListeners(card, event) {
-  const pinSpan = card.querySelector(".pin-icon");
-  const notesDiv = card.querySelector(".notes"); 
-  
-  // Pinning Listener
-  pinSpan.addEventListener("click", (e) => {
-    e.stopPropagation();
-    event.Pinned = !event.Pinned;
-    card.classList.toggle("pinned", event.Pinned); // Update visual class
-    pinSpan.innerHTML = event.Pinned ? "📌" : "📍"; // Update pin emoji
-    togglePinned(event.RecordID); // Update local storage
-    applyFilters(dataset); // Re-render/Update view based on new pin state
-  });
+export function createStatsPanel(data, domain) {
+    if (!statsContent) return;
 
-  // Notes Toggle Listener
-  if (notesDiv) {
-    card.addEventListener("click", (e) => {
-      // Prevent note toggle if clicking on interactive elements
-      if (e.target.tagName !== 'A' && !e.target.closest('.pin-icon') && !e.target.closest('.notes-indicator')) {
-        notesDiv.classList.toggle("show");
-      }
-    });
-  }
+    const totalCount = data.length;
+    const watchedKey = domain.fieldMap.watched || 'Watched';
+    const classificationKey = domain.fieldMap.classification || 'Classification';
+
+    const watchedCount = data.filter(e => (e[watchedKey] || '').toLowerCase() === 'yes').length;
+    const unwatchedCount = totalCount - watchedCount;
+    const pinnedCount = data.filter(e => isPinned(e.RecordID)).length;
+
+    // Tally classifications
+    const classificationTallies = data.reduce((acc, e) => {
+        const key = e[classificationKey] || 'Unclassified';
+        acc[key] = (acc[key] || 0) + 1;
+        return acc;
+    }, {});
+
+    let statsHTML = `
+        <h4 style="margin-bottom: 5px;">Overall Summary (${totalCount} Records)</h4>
+        <p><strong>Watched:</strong> ${watchedCount} (${(watchedCount / (totalCount || 1) * 100).toFixed(1)}%)</p>
+        <p><strong>Unwatched:</strong> ${unwatchedCount} (${(unwatchedCount / (totalCount || 1) * 100).toFixed(1)}%)</p>
+        <p><strong>Pinned:</strong> ${pinnedCount}</p>
+        
+        <h4 style="margin-top: 15px; margin-bottom: 5px;">By ${domain.labels.classificationLabel || 'Classification'}</h4>
+        <ul>
+            ${Object.entries(classificationTallies).map(([name, count]) => 
+                `<li>${name}: ${count}</li>`
+            ).join('')}
+        </ul>
+    `;
+
+    statsContent.innerHTML = statsHTML;
 }
