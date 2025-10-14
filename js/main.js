@@ -1,18 +1,17 @@
-// js/main.js - Fully Generic, Corrected Version
-
 import { getQueryParam, loadConfig } from './config.js';
 import { fetchAndRenderData, dataset } from './data.js';
 import { renderTimeline, updateTimeline, createStatsPanel } from './timeline.js';
-import { applyFilters, setFilterUIListeners, updateFilterStats, getAppliedFilters, populateDropdowns } from './filters.js';
-import { setOptionsUIListeners } from './options.js'; // populateDropdowns removed from options.js
+// Updated imports from filters.js: populateDropdowns, setFilterUIListeners, applyFilters, getAppliedFilters, updateFilterStats
+import { populateDropdowns, setFilterUIListeners, applyFilters, getAppliedFilters, updateFilterStats } from './filters.js';
+import { setOptionsUIListeners } from './options.js'; 
 import { initPinnedManager } from './pinnedManager.js';
 import { initMap, renderMap } from './map.js';
 import { initWikiManager } from './wiki.js';
 
-// Global variables for configuration
-let features = {};
-let domain = {};
-let settings = {};
+// Global variables for configuration - NOW EXPORTED
+export let features = {};
+export let domain = {};
+export let settings = {};
 
 /**
  * Reads classification colors from domain config and injects them as CSS variables.
@@ -62,7 +61,10 @@ async function initApp() {
     const config = await loadConfig(domainKey);
     if (!config) return;
 
-    ({ features, domain, settings } = config);
+    // Assignment must use the exported variables
+    features = config.features;
+    domain = config.domain;
+    settings = config.settings;
 
     applySettings();
 
@@ -80,15 +82,15 @@ async function initApp() {
     
     renderTimeline(events, domain);
     
-    // Load local storage items (filters/sort)
+    // Load local storage items (filters/sort) and sync
     import('./local-storage.js').then(({ syncLocalState }) => {
-        // IMPORTANT: syncLocalState now requires the domain object
+        // syncLocalState now requires the domain object
         syncLocalState(dataset, domain);
     });
 
     const filteredEvents = updateTimeline(dataset, domain);
 
-    // IMPORTANT: populateDropdowns now requires the domain object
+    // All UI setup now requires the domain object
     populateDropdowns(dataset, domain); 
     setFilterUIListeners(domain, updateApp);
     setOptionsUIListeners(domain, updateApp);
@@ -96,8 +98,8 @@ async function initApp() {
     createStatsPanel(dataset, domain);
     renderMap(filteredEvents);
     updateFilterStats(filteredEvents.length, dataset.length);
-
-
+    
+    // NOTE: The theme is now handled internally by options.js upon load
 }
 
 /**
@@ -106,7 +108,7 @@ async function initApp() {
 export function updateApp() {
     const appliedFilters = getAppliedFilters();
     
-    // IMPORTANT: applyFilters now requires the domain object
+    // applyFilters now requires the domain object
     const filtered = applyFilters(dataset, appliedFilters, domain);
     
     const visibleEvents = updateTimeline(filtered, domain);
