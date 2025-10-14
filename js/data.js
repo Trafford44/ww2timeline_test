@@ -19,6 +19,9 @@ export async function fetchAndRenderData(features, domain, settings) {
     if (!settings) {
       throw new Error(`settings is empty`);
     }
+    else {
+      throw new Error(`settings is NOT empty`);
+    }
   
   try {
     // Get the data URL directly from the settings file, which is loaded via config.js.
