@@ -1,10 +1,10 @@
 // stats.js
 
-export function updateStats(filteredData) {
-  console.log("✅ updateStats called with", filteredData.length, "items");
+export function updateStats(filteredEvents) {
+  console.log("✅ updateStats called with", filteredEvents.length, "events");
 
   const statsContent = document.getElementById("statsContent");
-  const total = filteredData.length;
+  const total = filteredEvents.length;
 
   if (total === 0) {
     statsContent.innerHTML = `<i>No matching records to summarize.</i>`;
@@ -16,14 +16,14 @@ export function updateStats(filteredData) {
   const byClassification = {};
   const topPlatforms = {};
 
-  filteredData.forEach(f => {
-    if (f.Watched === "Yes") watchedCount++;
-    if (f.Pinned) pinnedCount++;
+  filteredEvents.forEach(event => {
+    if (event.Watched === "Yes") watchedCount++;
+    if (event.Pinned) pinnedCount++;
 
-    const classification = f.Classification || "Unclassified";
+    const classification = event.Classification || "Unclassified";
     byClassification[classification] = (byClassification[classification] || 0) + 1;
 
-    (f.WatchOn || "").split(",").forEach(p => {
+    (event.WatchOn || "").split(",").forEach(p => {
       const platform = p.trim();
       if (platform) topPlatforms[platform] = (topPlatforms[platform] || 0) + 1;
     });
@@ -36,7 +36,7 @@ export function updateStats(filteredData) {
     .join(", ");
 
   statsContent.innerHTML = `
-    <b>Total Films:</b> ${total}<br>
+    <b>Total Events:</b> ${total}<br>
     <b>Watched:</b> ${watchedCount} (${Math.round((watchedCount / total) * 100)}%)<br>
     <b>Pinned:</b> ${pinnedCount} (${Math.round((pinnedCount / total) * 100)}%)<br>
     <b>By Classification:</b><br>
