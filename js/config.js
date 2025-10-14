@@ -18,7 +18,7 @@ export function getQueryParam(key) {
  */
 export async function loadConfig(domainKey) {
     // This path is used by the generic app structure (e.g., domain_ww2infilm_enhanced.json)
-    const configPath = `./domain_${domainKey}_enhanced.json`;
+    const configPath = `./domain_${domainKey}.json`;
     console.log(`📡 Attempting to load configuration from: ${configPath}`);
     
     try {
