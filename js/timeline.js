@@ -8,14 +8,20 @@ import { savePinned, loadPinned, isPinned, togglePinned } from './pinnedManager.
 /**
  * Groups event data by its event year for timeline rendering.
  * @param {Array<object>} filteredData - The list of event records to group.
+ * @param {object} domain - The configuration object containing fieldMap.
  * @returns {object} An object where keys are years (string) and values are arrays of events.
  */
-function groupEventsByYear(filteredData) {
+function groupEventsByYear(filteredData, domain) {
   const grouped = {};
+  const fm = domain.fieldMap || {};
+  // Use the mapped year field, defaulting to 'EventYear' if not mapped in config
+  const yearKey = fm.eventYear || 'EventYear'; 
 
   filteredData.forEach(event => {
     let year = "Unknown Year";
-    const rawYear = String(event.EventYear || "").trim();
+    const rawYear = String(event[yearKey] || "").trim();
+    
+    // Logic remains generic based on string manipulation of the year field
     if (/^\d{4}$/.test(rawYear)) {
       year = rawYear;
     } else if (rawYear.includes('–') || rawYear.includes('-')) {
@@ -30,7 +36,12 @@ function groupEventsByYear(filteredData) {
   return grouped;
 }
 
-export function renderTimeline(filteredData) {
+/**
+ * Renders the timeline from filtered event data.
+ * @param {Array<object>} filteredData - The event records to render.
+ * @param {object} domain - The configuration object.
+ */
+export function renderTimeline(filteredData, domain) {
   const timelineContainer = document.getElementById("timeline");
   const initialPrompt = document.getElementById("initialPrompt");
 
@@ -44,8 +55,8 @@ export function renderTimeline(filteredData) {
 
   initialPrompt.style.display = 'none';
 
-  // Use the extracted utility function
-  const grouped = groupEventsByYear(filteredData); 
+  // Pass domain config to the grouping utility
+  const grouped = groupEventsByYear(filteredData, domain); 
 
   const sortedYears = Object.keys(grouped).sort((a, b) => {
     if (a === "Unknown Year") return 1;
@@ -80,7 +91,8 @@ export function renderTimeline(filteredData) {
     yearGroup.appendChild(yearMarker);
 
     eventsInYear.forEach((event, index) => {
-      const card = createEventCard(event, index);
+      // Pass domain config to createEventCard
+      const card = createEventCard(event, index, domain); 
       attachEventCardListeners(card, event); 
       yearGroup.appendChild(card);
     });
@@ -93,14 +105,29 @@ export function renderTimeline(filteredData) {
  * Creates the base HTML structure for an event card.
  * @param {object} event - The event data object.
  * @param {number} index - Index for left/right positioning.
+ * @param {object} domain - The configuration object containing fieldMap and labels.
  * @returns {HTMLElement} The event card DOM element without listeners.
  */
-function createEventCard(event, index) {
+function createEventCard(event, index, domain) {
+  const fm = domain.fieldMap || {};
+  const labels = domain.labels || {};
+  
+  // Use mapped keys, with fallbacks to the original hardcoded keys
+  const titleKey = fm.title || 'FilmTitle';
+  const yearKey = fm.year || 'ReleaseYear';
+  const classificationKey = fm.classification || 'Classification';
+  const periodKey = fm.period || 'Period';
+  const accuracyKey = fm.accuracy || 'HistoricalAccuracy';
+  const platformKey = fm.platform || 'WatchOn';
+  const watchedKey = fm.watched || 'Watched';
+  const notesKey = fm.notes || 'Notes';
+
   const card = document.createElement("div");
   card.className = `timeline-event ${index % 2 === 0 ? "left" : "right"}`;
   
-  if (event.Classification) {
-    card.classList.add(`classification-${String(event.Classification).split('/')[0].trim().replace(/\s/g, '-')}`);
+  // Use mapped key for classification for styling class
+  if (event[classificationKey]) {
+    card.classList.add(`classification-${String(event[classificationKey]).split('/')[0].trim().replace(/\s/g, '-')}`);
   }
   
   // Initialize Pinned status based on stored state
@@ -112,32 +139,52 @@ function createEventCard(event, index) {
   card.dataset.id = event.RecordID;
 
   
-  const watchedStatus = event.Watched && String(event.Watched).toLowerCase() === 'yes'
-    ? `Yes <span class="watched-status-icon" title="You have watched this event.">✔</span>`
-    : (event.Watched || "No");
+  // Use mapped key for Watched status display
+  const watchedValue = event[watchedKey] && String(event[watchedKey]).toLowerCase() === 'yes';
+  const watchedStatus = watchedValue
+    ? `${labels.watchedLabel || 'Yes'} <span class="watched-status-icon" title="You have watched this event.">✔</span>`
+    : (event[watchedKey] || (labels.notWatchedLabel || "No"));
 
-  const notesIndicator = event.Notes ? `<span class="notes-indicator" title="Click to view notes!">&#9999;</span>` : '';
+  // Use mapped key for Notes check
+  const hasNotes = event[notesKey];
+  const notesIndicator = hasNotes ? `<span class="notes-indicator" title="Click to view notes!">&#9999;</span>` : '';
+  
   const imageHTML = event.ImageURL
-    ? `<img src="${event.ImageURL}" alt="Poster for ${event.FilmTitle || 'Untitled Event'}" class="event-image">`
+    ? `<img src="${event.ImageURL}" alt="Poster for ${event[titleKey] || 'Untitled Event'}" class="event-image">`
     : '';
+
+  const titleText = event[titleKey] || "Untitled Event";
+  const releaseYear = event[yearKey];
 
   const title = document.createElement("div");
   title.className = "event-title";
-  // RESTORED: Removed the extra span class to allow the original .event-title CSS to apply directly to the text node.
-  title.innerHTML = `${imageHTML}${event.FilmTitle || "Untitled Event"}${event.ReleaseYear ? ` <span class="release-year">(${event.ReleaseYear})</span>` : ""}${notesIndicator}`;
+  // Use mapped keys for Title and Year
+  title.innerHTML = `${imageHTML}${titleText}${releaseYear ? ` <span class="release-year">(${releaseYear})</span>` : ""}${notesIndicator}`;
   card.appendChild(title);
 
   const details = document.createElement("div");
   details.className = "event-details";
-  // CORRECTED: Cleaned template literal to prevent unwanted whitespace/entities from breaking CSS
-  details.innerHTML = `<b>Period:</b> ${event.Period || ""}<br><b>Format:</b> ${event.Format || ""}<br><b>Classification:</b> ${event.Classification || ""}<br><b>Running Time:</b> ${event.RunningTime || ""}<br><b>Historical Accuracy:</b> ${renderStars(event.HistoricalAccuracy)}<br><b>Short Description:</b> ${event.ShortDescription || ""}<br><b>Watch On:</b> ${event.WatchOn || ""} ${getPlatformIcons(event.WatchOn)}<br><b>Link:</b> ${event.Link ? `<a href="${event.Link}" target="_blank">View Link</a>` : ""}<br><b>Watched:</b> ${watchedStatus}<br><b>Rating:</b> ${renderStars(event.Rating || 0)}<span class="pin-icon" title="Click to pin/unpin this event">${event.Pinned ? "📌" : "📍"}</span>`;
+  
+  // Use mapped keys AND labels for all detail fields
+  details.innerHTML = 
+    `<b>${labels.periodLabel || 'Period'}:</b> ${event[periodKey] || ""}<br>` +
+    `<b>Format:</b> ${event.Format || ""}<br>` + // Format is still hardcoded as it's not in the fieldMap
+    `<b>${labels.classificationLabel || 'Classification'}:</b> ${event[classificationKey] || ""}<br>` +
+    `<b>Running Time:</b> ${event.RunningTime || ""}<br>` + // RunningTime is still hardcoded
+    `<b>${labels.accuracyLabel || 'Historical Accuracy'}:</b> ${renderStars(event[accuracyKey])}<br>` +
+    `<b>Short Description:</b> ${event.ShortDescription || ""}<br>` + // ShortDescription is still hardcoded
+    `<b>${labels.platformLabel || 'Watch On'}:</b> ${event[platformKey] || ""} ${getPlatformIcons(event[platformKey])}<br>` +
+    `<b>Link:</b> ${event.Link ? `<a href="${event.Link}" target="_blank">View Link</a>` : ""}<br>` +
+    `<b>${labels.watchedLabel || 'Watched'}:</b> ${watchedStatus}<br>` +
+    `<b>Rating:</b> ${renderStars(event.Rating || 0)}` + // Rating is still hardcoded
+    `<span class="pin-icon" title="Click to pin/unpin this event">${event.Pinned ? "📌" : "📍"}</span>`;
   card.appendChild(details);
 
-  // Reverting this back to appending a separate element to maintain original structure
-  if (event.Notes) {
+  // Use mapped key for Notes display
+  if (hasNotes) {
     const notes = document.createElement("div");
     notes.className = "notes";
-    notes.textContent = `Notes: ${event.Notes}`;
+    notes.textContent = `${labels.notesLabel || 'Notes'}: ${event[notesKey]}`;
     card.appendChild(notes);
   }
 
@@ -157,7 +204,6 @@ function createEventCard(event, index) {
  */
 function attachEventCardListeners(card, event) {
   const pinSpan = card.querySelector(".pin-icon");
-  // Now querying the notes div which is a direct child of 'card' again
   const notesDiv = card.querySelector(".notes"); 
   
   // Pinning Listener
