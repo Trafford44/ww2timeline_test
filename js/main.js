@@ -58,39 +58,43 @@ async function initApp() {
   // dataset.length = 0;
   // dataset.push(...data); // ✅ update shared dataset. This ensures all modules referencing dataset see the updated content.
 
-  populateDropdowns(data);
+  // Pass the domain configuration to populateDropdowns and applyFilters
+  populateDropdowns(data, domain);
   toggleControls(true);
   
   // ✅ Restore pinned state before filtering
   // const pinnedIds = loadPinned();
   // data.forEach(event => { // Assuming 'data' is the main dataset
-  //    event.Pinned = pinnedIds.includes(event.RecordID);
+  //     event.Pinned = pinnedIds.includes(event.RecordID);
   // }); 
   
   // --- START: CRITICAL FIX ---
   // 1. Set up the options (load state, set checkboxes, attach listeners)
   if (features.enableOptionsPanel) {
-    setupOptions(applyFilters);
+    setupOptions(applyFilters, domain); // setupOptions also needs domain now
   }
   // --- END: CRITICAL FIX ---
 
 
   // 2. Apply filters (which now correctly reads the restored options state)
-  applyFilters(data);
+  // This call will also trigger renderTimeline and updateStats with the domain config
+  applyFilters(data, domain); 
   
   // 3. Update stats (which run after filters)
-  updateStats(data);
+  // REMOVED: This call is redundant as applyFilters calls updateStats with the filtered data.
 
 
   if (features.enableWikipedia) {
+    // Pass domain config to loadWikipediaSummaries
     import('./wiki.js').then(({ loadWikipediaSummaries }) => {
-      loadWikipediaSummaries(data);
+      loadWikipediaSummaries(data, domain); 
     });
   }
 
   if (features.enableMapThumb) {
+    // Pass domain config to renderMapThumbs
     import('./map.js').then(({ renderMapThumbs }) => {
-      renderMapThumbs(data);
+      renderMapThumbs(data, domain); 
     });
   }
 
