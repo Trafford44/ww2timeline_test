@@ -1,22 +1,55 @@
 {
-  "subject": "Scientific Discoveries",
+  "_comment": "Subject-specific configuration",
+  "subject": "WWII Films",
   "fieldMap": {
-    "title": "DiscoveryName",
-    "year": "DiscoveryYear",
+    "title": "FilmTitle",
+    "year": "ReleaseYear",
     "notes": "Notes",
-    "location": "Location",
+    "location": "Setting",
     "pinned": "Pinned",
-    "watched": "Reviewed"
+    "watched": "Watched",
+    "classification": "Classification",
+    "period": "Period",
+    "platform": "WatchOn",
+    "accuracy": "HistoricalAccuracy",
+    "wikipedia": "Wikipedia"
   },
   "labels": {
-    "titleLabel": "Discovery Name",
-    "yearLabel": "Discovery Year",
-    "notesLabel": "Research Notes",
-    "locationLabel": "Location"
+    "titleLabel": "Film Title",
+    "yearLabel": "Release Year",
+    "notesLabel": "Synopsis",
+    "locationLabel": "Setting",
+    "classificationLabel": "Classification",
+    "periodLabel": "Historical Period",
+    "platformLabel": "Platform/s",
+    "accuracyLabel": "Historical Accuracy"
   },
   "defaultFilters": {
-    "classification": ["Physics", "Biology", "Chemistry"],
-    "platform": ["Archive", "Google Scholar"]
+    "classification": ["Documentary", "Dramatisation", "Fiction"],
+    "platform": [
+      "Apple",
+      "Prime",
+      "Netflix",
+      "AroVision",
+      "DVD",
+      "TVNZ",
+      "Hulu",
+      "YouTube",
+      "Not available for free",
+      "China platforms",
+      "Apple overseas",
+      "Māori+",
+      "Neon",
+      "Beamafilm NZ",
+      "MUBI",
+      "Roadshow Licensing (NZ)",
+      "Plex (Free Overseas)",
+      "Archive.org (Free)",
+      "Prime Overseas",
+      "Google",
+      "Microsoft",
+      "Disney"
+    ]
   },
   "externalSources": {
     "wikipedia": true,
