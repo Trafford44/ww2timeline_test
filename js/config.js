@@ -17,7 +17,7 @@ export function getQueryParam(key) {
  * @returns {Promise<object | null>} The full configuration object or null on failure.
  */
 export async function loadConfig(domainKey) {
-    // This path is used by the generic app structure (e.g., domain_ww2infilm_enhanced.json)
+    // CRITICAL FIX: Ensure the 'config/' directory prefix is included and the correct filename is used.
     const configPath = `config/domain_${domainKey}.json`;
     console.log(`📡 Attempting to load configuration from: ${configPath}`);
     
@@ -45,7 +45,9 @@ export async function loadConfig(domainKey) {
         const settings = {
             title: domainConfig.subject || "Domain Timeline Application",
             searchPlaceholder: `Search ${domainConfig.subject || 'Records'}...`,
-            noDataMessage: `No data available for the ${domainConfig.subject || 'current domain'}.`
+            noDataMessage: `No data available for the ${domainConfig.subject || 'current domain'}.`,
+            // CRITICAL FIX: Extract dataUrl from the loaded configuration for data.js
+            dataUrl: domainConfig.dataUrl 
         };
 
 
