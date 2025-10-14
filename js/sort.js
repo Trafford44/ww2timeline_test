@@ -1,15 +1,15 @@
 // sort.js
-export function applySort(data, sortOrder) {
+export function applySort(events, sortOrder) {
   console.log("🔀 applySort() called with:", sortOrder);
 
-  if (!Array.isArray(data)) return [];
+  if (!Array.isArray(events)) return [];
 
   switch (sortOrder) {
     case "title":
-      return [...data].sort((a, b) => a.Title.localeCompare(b.Title));
+      return [...events].sort((a, b) => a.Title.localeCompare(b.Title));
     case "year":
-      return [...data].sort((a, b) => a.Year - b.Year);
+      return [...events].sort((a, b) => a.Year - b.Year);
     default:
-      return data;
+      return events;
   }
 }
