@@ -1,6 +1,7 @@
 {
   "_comment": "Subject-specific configuration",
   "subject": "WWII Films",
+  "dataUrl": "data/data_ww2infilm.csv",
   "fieldMap": {
     "title": "FilmTitle",
     "year": "ReleaseYear",
