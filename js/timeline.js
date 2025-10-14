@@ -3,7 +3,7 @@ import { getPlatformIcons } from './platforms.js';
 import { applyFilters } from './filters.js';
 import { dataset } from './data.js';
 import { features } from './main.js';
-import { savePinned, loadPinned, isPinned, togglePinned } from './pinnedManager.js';
+import { isPinned, togglePinned } from './pinnedManager.js';
 
 /**
  * Groups event data by its event year for timeline rendering.
