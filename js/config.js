@@ -41,6 +41,8 @@ export async function loadConfig(domainKey) {
             canPin: true,
             canWatch: true
         };
+
+        console.log(`📡 domainConfig.dataUrl: ${domainConfig.dataUrl}`);
         
         const settings = {
             title: domainConfig.subject || "Domain Timeline Application",
