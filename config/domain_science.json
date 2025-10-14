@@ -1,7 +1,7 @@
 {
   "_comment": "Subject-specific configuration",
   "subject": "WWII Films",
-    "dataUrl": "testdata/cience.json",
+    "dataUrl": "testdata/science.json",
   "fieldMap": {
     "title": "FilmTitle",
     "year": "ReleaseYear",
