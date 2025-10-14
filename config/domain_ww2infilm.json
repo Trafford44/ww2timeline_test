@@ -7,13 +7,22 @@
     "notes": "Notes",
     "location": "Setting",
     "pinned": "Pinned",
-    "watched": "Watched"
+    "watched": "Watched",
+    "classification": "Classification",
+    "period": "Period",
+    "platform": "WatchOn",
+    "accuracy": "HistoricalAccuracy",
+    "wikipedia": "Wikipedia"
   },
   "labels": {
     "titleLabel": "Film Title",
     "yearLabel": "Release Year",
     "notesLabel": "Synopsis",
-    "locationLabel": "Setting"
+    "locationLabel": "Setting",
+    "classificationLabel": "Classification",
+    "periodLabel": "Historical Period",
+    "platformLabel": "Platform/s",
+    "accuracyLabel": "Historical Accuracy"
   },
   "defaultFilters": {
     "classification": ["Documentary", "Dramatisation", "Fiction"],
@@ -40,7 +49,8 @@
       "Google",
       "Microsoft",
       "Disney"
-    ]},
+    ]
+  },
   "externalSources": {
     "wikipedia": true,
     "mapThumb": true
