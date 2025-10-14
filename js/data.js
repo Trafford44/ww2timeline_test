@@ -16,6 +16,10 @@ export async function fetchAndRenderData(features, domain, settings) {
   const initialPrompt = document.getElementById("initialPrompt");
   initialPrompt.textContent = `Loading data for ${domain.subject}...`;
 
+    if (!settings) {
+      throw new Error(`settings is empty`);
+    }
+  
   try {
     // Get the data URL directly from the settings file, which is loaded via config.js.
     const datasetURL = settings.dataURL;
