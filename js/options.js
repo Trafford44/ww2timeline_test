@@ -1,43 +1,29 @@
-export function setupOptions(applyFilters, domain) {
+// js/options.js - Manages the Options panel interactions.
+
+/**
+ * Attaches event listeners to all options controls (toggles and theme selector).
+ * Note: The logic for loading and applying options on startup is now handled
+ * by local-storage.js. This file focuses only on the UI wiring and saving state.
+ * * @param {object} domain - The configuration object used for local storage key generation.
+ * @param {function} updateApp - The main application update function (from main.js).
+ */
+export function setOptionsUIListeners(domain, updateApp) {
   const fm = domain.fieldMap; // Alias for fieldMap
   const hideWatchedToggle = document.getElementById("hideWatchedToggle");
   const hidePinnedToggle = document.getElementById("hidePinnedToggle");
   const challengeModeToggle = document.getElementById("challengeModeToggle");
   const themeSelect = document.getElementById("themeSelect");
   
-  console.log("Theme select:", themeSelect);
-  console.log("🔧 setupOptions() is running");
-  
-  // === Load saved options ===
   // Use a generic key that includes the domain's subject for better scoping
   const optionsKey = `timelineOptions_${domain.subject.replace(/\s/g, "")}`;
-  const saved = JSON.parse(localStorage.getItem(optionsKey) || "{}");
-
-  // --- CRITICAL FIX FOR BOOLEAN LOADING ---
+  
   /**
-   * Helper function to safely convert the loaded state to a boolean.
-   * It handles both boolean `true/false` and stored string `"true"/"false"` values.
+   * Saves the current state of all options to local storage.
    */
-  const isEnabled = (value) => {
-    // Check if the value is the boolean true OR the string "true"
-    return value === true || value === "true";
-  };
-  
-  // Apply theme
-  const theme = saved.theme || "light";
-  document.body.classList.add(theme);
-  if (themeSelect) themeSelect.value = theme;
-
-  // Apply toggles using the safe isEnabled check and the fieldMap keys
-  if (hideWatchedToggle) hideWatchedToggle.checked = isEnabled(saved[`hide_${fm.watched}`]);
-  if (hidePinnedToggle) hidePinnedToggle.checked = isEnabled(saved[`hide_${fm.pinned}`]);
-  if (challengeModeToggle) challengeModeToggle.checked = isEnabled(saved.challengeMode);
-  
-  // === Save options to localStorage ===
   function saveOptions() {
     const options = {
       theme: themeSelect?.value || "light",
-      // Save actual JavaScript boolean values using the domain keys for unique storage
+      // Use the actual field name from the data to save the unique state
       [`hide_${fm.watched}`]: hideWatchedToggle?.checked || false,
       [`hide_${fm.pinned}`]: hidePinnedToggle?.checked || false,
       challengeMode: challengeModeToggle?.checked || false
@@ -46,39 +32,38 @@ export function setupOptions(applyFilters, domain) {
   }
 
   // === Event Listeners ===
-  // Listeners are correct, they call saveOptions() and applyFilters()
+  
+  // Toggles: Save options and then trigger the main application update 
   if (hideWatchedToggle) {
     hideWatchedToggle.addEventListener("change", () => {
-      console.log("🔄 Hide Watched toggled");
       saveOptions();
-      applyFilters();
+      updateApp(); // Triggers re-filtering and re-rendering
     });
   }
 
   if (hidePinnedToggle) {
     hidePinnedToggle.addEventListener("change", () => {
-      console.log("🔄 Hide Pinned toggled");
       saveOptions();
-      applyFilters();
+      updateApp(); // Triggers re-filtering and re-rendering
     });
   }
 
   if (challengeModeToggle) {
     challengeModeToggle.addEventListener("change", () => {
-      console.log("🔄 Challenge Mode toggled");
       saveOptions();
-      applyFilters();
+      updateApp(); // Triggers re-filtering and re-rendering
     });
   }
 
+  // Theme Select: Applies theme immediately and saves the option
   if (themeSelect) {    
     themeSelect.addEventListener("change", () => {
+      // Remove both classes to ensure clean switch
       document.body.classList.remove("light", "dark");
       document.body.classList.add(themeSelect.value);
-      console.log(`🎨 Theme changed to ${themeSelect.value}`);
       saveOptions();
     });
   }
 
-  console.log("🛠️ Options panel wired up");
+  console.log("🛠️ Options panel UI listeners wired up.");
 }
