@@ -1,6 +1,8 @@
 {
   "_comment": "Subject-specific configuration",
   "subject": "WWII Films",
+  "_comment": "To be added 'dataUrl'",  
+  "dataUrl": "testdata/ww2_infilm.json",  
   "fieldMap": {
     "title": "FilmTitle",
     "year": "ReleaseYear",
@@ -8,12 +10,23 @@
     "location": "Setting",
     "pinned": "Pinned",
     "watched": "Watched"
+    "_comment": "To be added from here down",
+    "classification": "Classification",
+    "period": "Period",
+    "platform": "WatchOn",
+    "accuracy": "HistoricalAccuracy",
+    "wikipedia": "Wikipedia"    
   },
   "labels": {
     "titleLabel": "Film Title",
     "yearLabel": "Release Year",
     "notesLabel": "Synopsis",
     "locationLabel": "Setting"
+    "_comment": "To be added from here down",  
+    "classificationLabel": "Classification",
+    "periodLabel": "Historical Period",
+    "platformLabel": "Platform/s",
+    "accuracyLabel": "Historical Accuracy"    
   },
   "defaultFilters": {
     "classification": ["Documentary", "Dramatisation", "Fiction"],
