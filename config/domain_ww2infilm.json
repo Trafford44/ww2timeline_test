@@ -9,7 +9,7 @@
     "notes": "Notes",
     "location": "Setting",
     "pinned": "Pinned",
-    "watched": "Watched"
+    "watched": "Watched",
     "_comment": "To be added from here down",
     "classification": "Classification",
     "period": "Period",
@@ -21,7 +21,7 @@
     "titleLabel": "Film Title",
     "yearLabel": "Release Year",
     "notesLabel": "Synopsis",
-    "locationLabel": "Setting"
+    "locationLabel": "Setting",
     "_comment": "To be added from here down",  
     "classificationLabel": "Classification",
     "periodLabel": "Historical Period",
