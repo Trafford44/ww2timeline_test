@@ -1,0 +1,13 @@
+{
+  "_comment": "Visual styling and layout preferences",
+  "mode": "light", 
+  "_comment": "Options: light, dark",
+  "primaryColor": "#0d6efd",
+  "backgroundColor": "#ffffff",
+  "textColor": "#333333",
+  "cardStyle": "film", 
+  "_comment": "Options: film, event, discovery",
+  "fontFamily": "Arial, sans-serif",
+  "iconSet": "default",
+  "_comment": "Options: default, military, science"
+}

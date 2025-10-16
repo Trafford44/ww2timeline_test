@@ -1,0 +1,30 @@
+.timeline {
+  position: relative;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px 0;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 4px;
+  background: #555;
+  transform: translateX(-50%);
+}
+
+.year-group {
+  position: relative;
+  margin-bottom: 80px;
+  width: 100%;
+  padding-top: 30px;
+}
+
+.year-group::after {
+  content: "";
+  display: table;
+  clear: both;
+}

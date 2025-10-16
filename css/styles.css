@@ -1,0 +1,472 @@
+/* === Base Styles === */
+:root {
+  --background-color: #f5f5f5;
+  --text-color: #333;
+  --font-family: Arial, sans-serif;
+  --primary-color: #0d6efd;
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  font-family: var(--font-family);
+  margin: 0;
+  padding: 20px;
+}
+
+
+* {
+  box-sizing: border-box;
+}
+    /* this is new */
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+    /* has a few new things in it */
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+  justify-content: center;
+  padding: 0 10px;
+}
+    /* this is new */
+input[type="text"], select, button {
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+    /* this is new */
+/* === Unified Panel Container Styles === */
+.timeline-legend, 
+.filter-panel,
+details.options-panel,
+details.stats-panel {
+  max-width: 900px;
+  margin: 0 auto 20px;
+  padding: 0;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1em;
+}
+/* Export button setup */
+.export-button-panel {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0.5em 1em;
+  border-top: 1px dashed #eee;
+}
+
+#exportButton {
+  padding: 0.4em 0.8em;
+  font-size: 0.9em;
+  background-color: var(--accent-color, #00a8e1);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#exportButton:hover {
+  background-color: var(--accent-color-hover, #0077cc);
+}
+
+
+    /* added from old (not in new */
+details {
+  margin-bottom: 1em;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 10px;
+}
+summary {
+  font-weight: bold;
+  cursor: pointer;
+}
+.initial-prompt {
+  font-style: italic;
+  color: #666;
+}
+.timeline-event.watched {
+  border-left-width: 5px;
+  border-left-style: solid;
+}
+
+.event-title {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+.event-details {
+  font-size: 0.9em;
+  line-height: 1.4;
+}
+
+.event-image {
+  float: right;
+  max-height: 100px;
+  margin-left: 10px;
+  border-radius: 4px;
+}
+
+.notes {
+  margin-top: 8px;
+  padding: 8px;
+  background: #f0f8ff;
+  border-left: 3px solid #0077cc;
+  display: none;
+}
+
+.notes.show {
+  display: block;
+}
+
+.rating-stars {
+  color: #f5a623;
+  font-size: 1.1em;
+}
+
+.pin-icon {
+  cursor: pointer;
+  font-size: 1.2em;
+  float: right;
+}
+
+.watched-status-icon {
+  color: green;
+  font-weight: bold;
+  margin-left: 5px;
+}
+
+.notes-indicator {
+  margin-left: 8px;
+  font-size: 1.1em;
+  color: #0077cc;
+}
+.platform-icon {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  margin-right: 4px;
+  margin-bottom: 0px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  vertical-align: middle;
+}
+
+
+/*
+get from here, if required: https://simpleicons.org/?q=netflix
+.icon-Netflix { background-image: url('icons/netflix.png'); }
+.icon-Prime { background-image: url('icons/prime.png'); }
+.icon-YouTube { background-image: url('icons/youtube.png'); }
+.icon-Apple { background-image: url('icons/apple.png'); }
+.icon-TVNZ { background-image: url('icons/tvnz.png'); }
+.icon-Neon { background-image: url('icons/neon.png'); }
+.icon-Beamafilm { background-image: url('icons/beamafilm.png'); }
+.icon-AroVision { background-image: url('icons/arovision.png'); }
+.icon-Plex { background-image: url('icons/plex.png'); }
+.icon-MUBI { background-image: url('icons/mubi.png'); }
+.icon-Disney { background-image: url('icons/disney.png'); }
+*/
+
+.icon-Netflix {
+  background-color: #e50914; /* Netflix red */
+}
+.icon-Prime {
+  background-color: #00a8e1; /* Prime Video blue */
+}
+.icon-YouTube {
+  background-color: #ff0000; /* YouTube red */
+}
+.icon-Apple {
+  background-color: #a2aaad; /* Apple gray */
+}
+.icon-TVNZ {
+  background-color: #0057b8; /* TVNZ blue (approximate) */
+}
+.icon-Neon {
+  background-color: #8e44ad; /* Neon purple (stylized) */
+}
+.icon-Beamafilm {
+  background-color: #009688; /* Teal fallback */
+}
+.icon-AroVision {
+  background-color: #3f51b5; /* Indigo fallback */
+}
+.icon-Plex {
+  background-color: #fbbf24; /* Plex gold */
+}
+.icon-MUBI {
+  background-color: #000000; /* MUBI black */
+}
+.icon-Disney {
+  background-color: #113ccf; /* Disney+ blue */
+}
+
+@media screen and (max-width: 768px) {
+  .timeline-event {
+    float: none !important;
+    margin: 0 auto 20px !important; /* adds bottom gap */
+    width: 90% !important;
+    clear: both;
+  }
+
+  .timeline-event.left,
+  .timeline-event.right {
+    float: none !important;
+    margin: 0 auto 20px !important;
+  }
+
+  .event-image {
+    float: none;
+    display: block;
+    margin: 10px auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .year-marker {
+    font-size: 1.2em;
+    padding: 3px 8px;
+  }
+}
+
+    /* down to here */
+
+#statsContent {
+  font-size: 1em !important;
+  padding: 10px 20px !important;
+}
+    /* this is new */
+/* === Unified Summary Styling === */
+.timeline-legend summary, 
+.filter-panel summary,
+.options-panel summary,
+.stats-panel summary {
+  font-weight: bold;
+  cursor: pointer;
+  padding: 10px 20px;
+  list-style: none;
+}
+    /* this is new */
+/* === Arrow Icon Styling === */
+.timeline-legend summary::before, 
+.filter-panel summary::before,
+.options-panel summary::before,
+.stats-panel summary::before {
+  content: '▶';
+  margin-right: 8px;
+  display: inline-block;
+  transition: transform 0.2s;
+}
+.timeline-legend[open] summary::before,
+.filter-panel[open] summary::before,
+.options-panel[open] summary::before,
+.stats-panel[open] summary::before {
+  content: '▼';
+}
+    /* this is new */
+/* === Font Size Fixes on Open Panels === */
+.timeline-legend[open], 
+.filter-panel[open],
+details.options-panel[open],
+details.stats-panel[open] {
+  font-size: 1em !important;
+  zoom: 1 !important;
+  -moz-text-size-adjust: none !important;
+  -webkit-text-size-adjust: none !important;
+  text-size-adjust: none !important;
+}
+.timeline-legend[open] .legend-content,
+.filter-panel[open] .controls,
+details.options-panel[open] .controls,
+details.stats-panel[open] #statsContent {
+  font-size: 1em !important;
+  zoom: 1 !important;
+  -webkit-text-size-adjust: none !important;
+  text-size-adjust: none !important;
+}
+.timeline-legend[open] .legend-content input, 
+.timeline-legend[open] .legend-content select, 
+.filter-panel[open] .controls input, 
+.filter-panel[open] .controls select {
+  font-size: 14px !important;
+}
+
+.filter-count {
+  font-size: 0.85rem;
+  color: #666;
+  margin-top: 0.5em;
+  margin-left: 0;
+  padding-left: 0.5em;
+  padding-bottom: 0.5em;
+  font-style: italic;
+  display: block;
+  text-align: left;
+}
+    /* this is new */
+/* === Legend Content === */
+.legend-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  padding: 10px 20px;
+  border-top: 1px dashed #eee;
+}
+.legend-group h3 {
+  font-size: 1.1em;
+  margin-top: 0;
+  margin-bottom: 5px;
+  color: #333;
+}
+.legend-group table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9em;
+}
+.legend-group td {
+  padding: 4px 8px 4px 0;
+  vertical-align: top;
+}
+    /* this is a bit different */
+.legend-box {
+  width: 20px;
+  padding: 0 !important;
+  border-left: 5px solid;
+  height: 1.2em;
+  background: #f9f9f9;
+}
+    /* has a few new things in it */
+/* === Timeline Layout === */
+.timeline {
+  position: relative;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px 0;
+}
+    /* this is new */
+.timeline::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 4px;
+  background: #555;
+  transform: translateX(-50%);
+}
+    /* has a few new things in it */
+.year-group {
+  position: relative;
+  margin-bottom: 80px;
+  width: 100%;
+  padding-top: 30px;
+}
+    /* this is new */
+.year-group::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+    /* has alot of new things in it */
+.year-marker {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: -1.0em;
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #fff;
+  background: #00a8e1;
+  padding: 4px 12px;
+  border-radius: 4px;
+  z-index: 10;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  white-space: nowrap;
+  
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.year-count {
+  font-size: 0.85em;
+  opacity: 0.8;
+}
+
+.year-marker::after {
+  content: "▼";
+  font-size: 0.8em;
+  margin-left: 8px;
+  transition: transform 0.2s ease;
+}
+
+.year-group.collapsed .year-marker::after {
+  transform: rotate(-90deg);
+}
+
+.year-group.collapsed .timeline-event {
+  display: none;
+}
+
+
+    /* has a few new things in it */
+/* === Timeline Events === */
+.timeline-event {
+  position: relative;
+  width: 45%;
+  padding: 15px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+  cursor: pointer;
+  transition: transform 0.2s, background-color 0.2s;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-left: 5px solid #ccc;
+}
+.timeline-event.left {
+  float: left;
+  clear: both;
+  margin-right: auto;
+}
+.timeline-event.right {
+  float: right;
+  clear: both;
+  margin-left: auto;
+}
+    /* this is new */
+.timeline-event:hover {
+  transform: translateY(-3px);
+  background-color: #eaf1f9;
+}
+    /* now has a background colour */
+.timeline-event.pinned {
+  background-color: #fffbe6;
+  box-shadow: inset 0 0 0 4px #f5b301;
+}
+/* were missing */
+.classification-Documentary {
+  border-left-color: green;
+}
+
+.classification-Dramatisation {
+  border-left-color: orange;
+}
+
+.classification-Fiction {
+  border-left-color: red;
+}

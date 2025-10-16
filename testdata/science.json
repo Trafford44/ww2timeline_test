@@ -1,0 +1,72 @@
+[
+  {
+    "DiscoveryName": "Theory of Relativity",
+    "DiscoveryYear": "1905",
+    "Notes": "Einstein's groundbreaking work on special relativity, later expanded to general relativity.",
+    "Location": "Bern, Switzerland",
+    "Pinned": false,
+    "Reviewed": "Yes",
+    "Classification": "Physics",
+    "Field": "Theoretical Physics",
+    "Scientist": "Albert Einstein",
+    "ShortDescription": "Revolutionized our understanding of space, time, and gravity.",
+    "Platform": "Archive, Wikipedia",
+    "Link": "https://en.wikipedia.org/wiki/Theory_of_relativity"
+  },
+  {
+    "DiscoveryName": "Penicillin",
+    "DiscoveryYear": "1928",
+    "Notes": "Accidental discovery by Alexander Fleming, leading to the antibiotic revolution.",
+    "Location": "London, UK",
+    "Pinned": true,
+    "Reviewed": "Yes",
+    "Classification": "Biology",
+    "Field": "Microbiology",
+    "Scientist": "Alexander Fleming",
+    "ShortDescription": "First true antibiotic, transformed medicine and saved millions of lives.",
+    "Platform": "Google Scholar",
+    "Link": "https://en.wikipedia.org/wiki/Penicillin"
+  },
+  {
+    "DiscoveryName": "DNA Double Helix",
+    "DiscoveryYear": "1953",
+    "Notes": "Structure revealed by Watson and Crick, based on Rosalind Franklin's X-ray data.",
+    "Location": "Cambridge, UK",
+    "Pinned": false,
+    "Reviewed": "No",
+    "Classification": "Biology",
+    "Field": "Genetics",
+    "Scientist": "James Watson, Francis Crick, Rosalind Franklin",
+    "ShortDescription": "Unveiled the molecular structure of DNA, enabling modern genetics.",
+    "Platform": "Archive",
+    "Link": "https://en.wikipedia.org/wiki/DNA"
+  },
+  {
+    "DiscoveryName": "Higgs Boson",
+    "DiscoveryYear": "2012",
+    "Notes": "Confirmed at CERN via the Large Hadron Collider after decades of theoretical predictions.",
+    "Location": "Geneva, Switzerland",
+    "Pinned": false,
+    "Reviewed": "Yes",
+    "Classification": "Physics",
+    "Field": "Particle Physics",
+    "Scientist": "Peter Higgs et al.",
+    "ShortDescription": "Key to explaining mass in the Standard Model of particle physics.",
+    "Platform": "Wikipedia",
+    "Link": "https://en.wikipedia.org/wiki/Higgs_boson"
+  },
+  {
+    "DiscoveryName": "CRISPR Gene Editing",
+    "DiscoveryYear": "2012",
+    "Notes": "Developed from bacterial immune systems; revolutionized genetic engineering.",
+    "Location": "Berkeley, USA",
+    "Pinned": true,
+    "Reviewed": "No",
+    "Classification": "Biology",
+    "Field": "Genetic Engineering",
+    "Scientist": "Jennifer Doudna, Emmanuelle Charpentier",
+    "ShortDescription": "Precise, programmable tool for editing DNA in living organisms.",
+    "Platform": "Google Scholar",
+    "Link": "https://en.wikipedia.org/wiki/CRISPR"
+  }
+]

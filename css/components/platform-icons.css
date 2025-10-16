@@ -1,0 +1,23 @@
+.platform-icon {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  margin-right: 4px;
+  margin-bottom: 0px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  vertical-align: middle;
+}
+
+/* Platform-specific colors */
+.icon-Netflix { background-color: #e50914; }
+.icon-Prime { background-color: #00a8e1; }
+.icon-YouTube { background-color: #ff0000; }
+.icon-Apple { background-color: #a2aaad; }
+.icon-TVNZ { background-color: #0057b8; }
+.icon-Neon { background-color: #8e44ad; }
+.icon-Beamafilm { background-color: #009688; }
+.icon-AroVision { background-color: #3f51b5; }
+.icon-Plex { background-color: #fbbf24; }
+.icon-MUBI { background-color: #000000; }
+.icon-Disney { background-color: #113ccf; }

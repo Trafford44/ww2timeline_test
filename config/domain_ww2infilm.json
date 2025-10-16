@@ -1,0 +1,48 @@
+{
+  "_comment": "Subject-specific configuration",
+  "subject": "WWII Films",
+  "fieldMap": {
+    "title": "FilmTitle",
+    "year": "ReleaseYear",
+    "notes": "Notes",
+    "location": "Setting",
+    "pinned": "Pinned",
+    "watched": "Watched"
+  },
+  "labels": {
+    "titleLabel": "Film Title",
+    "yearLabel": "Release Year",
+    "notesLabel": "Synopsis",
+    "locationLabel": "Setting"
+  },
+  "defaultFilters": {
+    "classification": ["Documentary", "Dramatisation", "Fiction"],
+    "platform": [
+      "Apple",
+      "Prime",
+      "Netflix",
+      "AroVision",
+      "DVD",
+      "TVNZ",
+      "Hulu",
+      "YouTube",
+      "Not available for free",
+      "China platforms",
+      "Apple overseas",
+      "Māori+",
+      "Neon",
+      "Beamafilm NZ",
+      "MUBI",
+      "Roadshow Licensing (NZ)",
+      "Plex (Free Overseas)",
+      "Archive.org (Free)",
+      "Prime Overseas",
+      "Google",
+      "Microsoft",
+      "Disney"
+    ]},
+  "externalSources": {
+    "wikipedia": true,
+    "mapThumb": true
+  }
+}

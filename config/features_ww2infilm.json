@@ -1,0 +1,22 @@
+{
+  "enableWikipedia": true,
+  "enableMapThumb": true,
+  "enableExport": true,
+  "enableStatsPanel": true,
+  "enableMiniMap": false,
+  "enableThemeToggle": true,
+  "enableUserLogin": false,
+  "enableCloudSync": false,
+  "enableLocalStorage": true,
+  "enableImageThumb": true,
+
+  "_comment": "UI Feature Toggles",
+  "enableFilterPanel": true,
+  "enableSearch": true,
+  "enableOptionsPanel": true,
+  "enablePinning": true,
+  "enableLegendPanel": true,
+  "enableClassificationColors": true,
+  "enablePlatformIcons": true,
+  "enableNotesToggle": true
+}
