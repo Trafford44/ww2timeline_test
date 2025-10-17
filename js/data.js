@@ -18,6 +18,7 @@ export async function fetchAndRenderData(features, domain, settings) {
     const datasetURL = datasetMap[subject];
     //fetch is a built-in browser API
     const response = await fetch(datasetURL);
+    //parse to JSON
     const data = await response.json();
     console.log("📦 Loaded dataset:", data);
 
