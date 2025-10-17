@@ -16,6 +16,7 @@ export async function fetchAndRenderData(features, domain, settings) {
       throw new Error(`No dataset mapped for domain: ${subject}`);
     }
     const datasetURL = datasetMap[subject];
+    //fetch is a built-in browser API
     const response = await fetch(datasetURL);
     const data = await response.json();
     console.log("📦 Loaded dataset:", data);
