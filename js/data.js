@@ -5,7 +5,7 @@ export let dataset = [];
 export async function fetchAndRenderData(features, domain, settings) {
   const initialPrompt = document.getElementById("initialPrompt");
   initialPrompt.textContent = `Loading data for ${domain.subject}...`;
-  const data;
+  let data;
   
   try {
     const subject = settings?.dataSource || "googleSheets";
@@ -30,8 +30,9 @@ export async function fetchAndRenderData(features, domain, settings) {
       data = sheetData;
     }
     console.log("📦 Loaded dataset:", data);
-
-    dataset = data; // ✅ store globally
+    dataset = Array.isArray(data) ? data : [];
+    //dataset = data; // ✅ store globally
+    
     return data;
   } catch (error) {
     console.error("❌ Fetch error:", error);
