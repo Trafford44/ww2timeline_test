@@ -8,6 +8,7 @@ export function setupOptions(applyFilters) {
   console.log("🔧 setupOptions() is running");
   
   // === Load saved options ===
+  // localStorage is a browser API that lets you store key/value pairs persistently in the user’s browser.
   const saved = JSON.parse(localStorage.getItem("timelineOptions") || "{}");
 
   // --- CRITICAL FIX FOR BOOLEAN LOADING ---
