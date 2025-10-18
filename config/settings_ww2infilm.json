@@ -1,5 +1,6 @@
 {
   "dataSource": "googleSheets",
+  "_dataSource": "localJSON",    
   
   "_comment": "App identity and UI text",
   "appTitle": "WWII Film Timeline",
