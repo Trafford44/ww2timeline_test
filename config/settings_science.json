@@ -1,4 +1,6 @@
 {
+  "dataSource": "localJSON",  
+  
   "_comment": "App identity and UI text",
   "appTitle": "Scientific Discoveries Timeline",
   "searchPlaceholder": "Search by discovery, scientist, field...",
