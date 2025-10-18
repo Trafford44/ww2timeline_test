@@ -55,7 +55,7 @@ details.stats-panel {
   font-size: 1em;
 }
 /* Export button setup */
-.export-button-panel {
+.options-button-panel {
   display: flex;
   justify-content: flex-start;
   align-items: center;
