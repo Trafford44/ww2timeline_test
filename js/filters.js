@@ -26,6 +26,9 @@ export function toggleControls(enable) {
 
 // --- 2. Dropdown Population ---
 export function populateDropdowns(fullData) {
+  // extract the film formats, classifications, years. periods and platforms
+  // from the data in to respective vars
+  // for platforms, split by comma, trim, lowercase etc
   const formats = [...new Set(fullData.map(f => f.Format).filter(Boolean))].sort();
   const classifications = [...new Set(fullData.map(f => f.Classification).filter(Boolean))].sort();
   const eventYears = [...new Set(fullData.map(f => f.EventYear).filter(Boolean))].sort();
