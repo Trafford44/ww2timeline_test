@@ -36,7 +36,7 @@ export function setupOptions(applyFilters) {
   function saveOptions() {
     const options = {
       //theme: themeSelect?.value || "light",
-      theme: body.classList.contains('dark') ? 'dark' : 'light';
+      theme: body.classList.contains('dark') ? 'dark' : 'light'
       
       // Save actual JavaScript boolean values
       hideWatched: hideWatchedToggle?.checked || false,
