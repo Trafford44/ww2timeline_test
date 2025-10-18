@@ -2,7 +2,8 @@
   "_comment": "Subject-specific configuration",
   "subject": "WWII Films",
   "_comment": "To be added 'dataUrl'",  
-  "dataUrl": "testdata/ww2_infilm.json",  
+  "dataUrl": "testdata/ww2_infilm.json", 
+  "_dataUrl": "https://script.google.com/macros/s/AKfycbwuMhkWNZI71HWbZr18pe56ekjCVrn0SCliiFHOzIW60odC3CsOstRgUeMIEbg03xbeNA/exec", 
   "fieldMap": {
     "title": "FilmTitle",
     "year": "ReleaseYear",
@@ -31,8 +32,8 @@
     "classificationLabel": "Classification",
     "periodLabel": "Historical Period",
     "platformLabel": "Platform/s",
-    "accuracyLabel": "Historical Accuracy"
-    "wikipediaLabel": "Wikipedia"
+    "accuracyLabel": "Historical Accuracy",
+    "wikipediaLabel": "Wikipedia",
     "Format": "Format",  
     "RunningTime": "Running Time",
     "ShortDescription": "Short Description", 
