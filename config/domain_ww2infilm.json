@@ -14,7 +14,12 @@
     "period": "Period",
     "platform": "WatchOn",
     "accuracy": "HistoricalAccuracy",
-    "wikipedia": "Wikipedia"    
+    "wikipedia": "Wikipedia",    
+    "Format": "Format",  
+    "RunningTime": "RunningTime",
+    "ShortDescription": "ShortDescription", 
+    "Rating": "Rating",
+    "Link": "Link"
   },
   "labels": {
     "titleLabel": "Film Title",
@@ -28,6 +33,11 @@
     "platformLabel": "Platform/s",
     "accuracyLabel": "Historical Accuracy"
     "wikipediaLabel": "Wikipedia"
+    "Format": "Format",  
+    "RunningTime": "Running Time",
+    "ShortDescription": "Short Description", 
+    "Rating": "Rating",
+    "Link": "Link"    
   },
   "defaultFilters": {
     "classification": ["Documentary", "Dramatisation", "Fiction"],
