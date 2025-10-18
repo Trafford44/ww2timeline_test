@@ -25,7 +25,7 @@ export function setupOptions(applyFilters) {
   const theme = saved.theme || "light";
   document.body.classList.add(theme);
   //if (themeSelect) themeSelect.value = theme;
-  if (themeSelect) themeSelect..textContent = theme === 'dark' ? '☀️ Toggle Light Mode' : '🌙 Toggle Dark Mode';
+  if (themeSelect) themeSelect.textContent = theme === 'dark' ? '☀️ Toggle Light Mode' : '🌙 Toggle Dark Mode';
 
   // Apply toggles using the safe isEnabled check
   if (hideWatchedToggle) hideWatchedToggle.checked = isEnabled(saved.hideWatched);
