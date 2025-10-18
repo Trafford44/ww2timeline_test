@@ -4,7 +4,7 @@
   align-items: center;
   padding: 0.5em 1em;
   border-top: 1px dashed #eee;
-  gap: 0.5em;
+  gap: 0.5em; /* 👈 adds space between buttons */
 }
 
 /* making it a little smaller than default */
