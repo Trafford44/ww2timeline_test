@@ -77,6 +77,8 @@ export function setupExportButton(filtered) {
   const oldButton = document.getElementById("exportButton");
   if (!oldButton) return;
 
+  // create a new button in case of ending up with 
+  // attach multiple listeners, causing the export function to run several times per click.
   const newButton = oldButton.cloneNode(false);
   newButton.innerHTML = oldButton.innerHTML;
   oldButton.replaceWith(newButton);
