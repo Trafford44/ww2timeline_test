@@ -21,10 +21,13 @@
     "yearLabel": "Release Year",
     "notesLabel": "Synopsis",
     "locationLabel": "Setting",
+    "pinnedLabel": "Pinned",
+    "watchedLabel": "Watched",    
     "classificationLabel": "Classification",
     "periodLabel": "Historical Period",
     "platformLabel": "Platform/s",
-    "accuracyLabel": "Historical Accuracy"    
+    "accuracyLabel": "Historical Accuracy"
+    "wikipediaLabel": "Wikipedia"
   },
   "defaultFilters": {
     "classification": ["Documentary", "Dramatisation", "Fiction"],
