@@ -2,7 +2,7 @@ export function setupOptions(applyFilters) {
   const hideWatchedToggle = document.getElementById("hideWatchedToggle");
   const hidePinnedToggle = document.getElementById("hidePinnedToggle");
   const challengeModeToggle = document.getElementById("challengeModeToggle");
-  const themeSelect = document.getElementById("themeSelect");
+  const themeSelect = document.getElementById("themeToggleButton");
   
   console.log("Theme select:", themeSelect);
   console.log("🔧 setupOptions() is running");
@@ -24,7 +24,8 @@ export function setupOptions(applyFilters) {
   // Apply theme
   const theme = saved.theme || "light";
   document.body.classList.add(theme);
-  if (themeSelect) themeSelect.value = theme;
+  //if (themeSelect) themeSelect.value = theme;
+  if (themeSelect) themeSelect..textContent = theme === 'dark' ? '☀️ Toggle Light Mode' : '🌙 Toggle Dark Mode';
 
   // Apply toggles using the safe isEnabled check
   if (hideWatchedToggle) hideWatchedToggle.checked = isEnabled(saved.hideWatched);
@@ -34,7 +35,9 @@ export function setupOptions(applyFilters) {
   // === Save options to localStorage ===
   function saveOptions() {
     const options = {
-      theme: themeSelect?.value || "light",
+      //theme: themeSelect?.value || "light",
+      theme: body.classList.contains('dark') ? 'dark' : 'light';
+      
       // Save actual JavaScript boolean values
       hideWatched: hideWatchedToggle?.checked || false,
       hidePinned: hidePinnedToggle?.checked || false,
@@ -71,9 +74,15 @@ export function setupOptions(applyFilters) {
 
   if (themeSelect) {    
     themeSelect.addEventListener("change", () => {
-      document.body.classList.remove("light", "dark");
-      document.body.classList.add(themeSelect.value);
+      //document.body.classList.remove("light", "dark");
+      //document.body.classList.add(themeSelect.value);
+
+      document.body.classList.toggle('dark');
+      const theme = body.classList.contains('dark') ? 'dark' : 'light';
+      //localStorage.setItem('theme', theme);
+      //toggleButton.textContent = theme === 'dark' ? '☀️ Toggle Light Mode' : '🌙 Toggle Dark Mode';
       console.log(`🎨 Theme changed to ${themeSelect.value}`);
+      
       saveOptions();
     });
   }
