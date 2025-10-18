@@ -107,6 +107,8 @@ function getFilterValues() {
 }
 
 // --- 6. Core Filtering Logic (New Module) ---
+// Decide whether a single event should be included based on the current filter settings
+// Returns a true or false
 function shouldIncludeEvent(event, values) {
   const { search, watched, format, classification, platform, eventYear, period, pinned, hideWatched, hidePinned, challengeMode } = values;
   const { filters, keywords } = search;
