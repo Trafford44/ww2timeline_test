@@ -102,7 +102,7 @@ async function initApp() {
   }
 
   if (!features.enableExport) {
-    const exportPanel = document.querySelector('.export-button-panel');
+    const exportPanel = document.querySelector('.options-button-panel');
     if (exportPanel) {
       exportPanel.style.display = 'none';
     }
