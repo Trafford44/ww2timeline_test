@@ -89,6 +89,7 @@ export function setupExportButton(filtered) {
 }
 
 // --- 5. Filter State Abstraction (New Module) ---
+// returns an object ({ ... }) containing key/value pairs.
 function getFilterValues() {
   return {
     search: parseSearchQuery(searchInput.value.trim()),
