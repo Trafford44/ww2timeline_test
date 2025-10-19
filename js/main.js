@@ -117,7 +117,7 @@ async function initApp() {
   }  
 
   if (!features.enableExport && !features.enableThemeToggle) {
-    const buttonsPanel = document.querySelector('.options-button-panel');
+    const buttonsPanel = document.querySelector('options-button-panel');
     if (buttonsPanel) {
       buttonsPanel.style.display = 'none';
     }
