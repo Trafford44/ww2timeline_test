@@ -79,7 +79,7 @@ async function initApp() {
   applyFilters(data);
   
   // 3. Update stats (which run after filters)
-  updateStats(data);
+  //updateStats(data);
 
 
   if (features.enableWikipedia) {
@@ -91,13 +91,6 @@ async function initApp() {
   if (features.enableMapThumb) {
     import('./map.js').then(({ renderMapThumbs }) => {
       renderMapThumbs(data);
-    });
-  }
-
-  // The syncLocalState call may still be useful for other local storage items (like filters/sort)
-  if (features.enableLocalStorage) {
-    import('./local-storage.js').then(({ syncLocalState }) => {
-      syncLocalState(data);
     });
   }
 
@@ -122,6 +115,14 @@ async function initApp() {
       buttonsPanel.style.display = 'none';
     }
   }
+
+
+  // The syncLocalState call may still be useful for other local storage items (like filters/sort)
+  if (features.enableLocalStorage) {
+    import('./local-storage.js').then(({ syncLocalState }) => {
+      syncLocalState(data);
+    });
+  }  
 }
 
 
