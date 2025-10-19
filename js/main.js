@@ -115,12 +115,10 @@ async function initApp() {
       themeSelect.style.display = 'none';
     }
   }  
-  console.log("made it to here 0");
+  
   if (!features.enableExport && !features.enableThemeToggle) {
-    console.log("made it to here 1");
     const buttonsPanel = document.querySelector('.options-button-panel');
     if (buttonsPanel) {
-      console.log("made it to here 2");
       buttonsPanel.style.display = 'none';
     }
   }
