@@ -73,7 +73,7 @@ export function setupOptions(applyFilters) {
   }
 
   if (themeSelect) {    
-    themeSelect.addEventListener("change", () => {
+    themeSelect.addEventListener("click", () => {
       //document.body.classList.remove("light", "dark");
       //document.body.classList.add(themeSelect.value);
 
