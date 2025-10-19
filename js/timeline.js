@@ -141,12 +141,14 @@ function createEventCard(event, index) {
     card.appendChild(notes);
   }
 
+  /*
+  // this section outputs all the below call detail for all records to console
   console.log("Created Card Element Check:", {
     eventClass: card.className,
     titleClass: title.className,
     detailsClass: details.className
   });
-
+  */
   return card;
 }
 
