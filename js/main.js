@@ -102,11 +102,19 @@ async function initApp() {
   }
 
   if (!features.enableExport) {
-    const exportPanel = document.querySelector('.options-button-panel');
+    //const exportPanel = document.querySelector('.options-button-panel');
     if (exportPanel) {
-      exportPanel.style.display = 'none';
+      const exportButton = document.getElementById("exportButton");
+      exportButton.style.display = 'none';
     }
   }
+
+  if (!features.enableThemeToggle) {
+    if (exportPanel) {
+      const themeSelect = document.getElementById("themeToggleButton");
+      themeSelect.style.display = 'none';
+    }
+  }  
 }
 
 
