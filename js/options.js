@@ -76,7 +76,7 @@ export function setupOptions(applyFilters) {
       const theme = document.body.classList.contains('dark') ? 'dark' : 'light';
       
       localStorage.setItem('theme', theme);
-      toggleButton.textContent = theme === 'dark' ? '☀️ Toggle Light Mode' : '🌙 Toggle Dark Mode';
+      themeSelect.textContent = theme === 'dark' ? '☀️ Toggle Light Mode' : '🌙 Toggle Dark Mode';
       
       console.log(`🎨 Theme changed to ${theme}`);
       
