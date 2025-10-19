@@ -103,15 +103,15 @@ async function initApp() {
 
   if (!features.enableExport) {
     //const exportPanel = document.querySelector('.options-button-panel');
-    if (exportPanel) {
-      const exportButton = document.getElementById("exportButton");
+    const exportButton = document.getElementById("exportButton");
+    if (exportButton) {
       exportButton.style.display = 'none';
     }
   }
 
   if (!features.enableThemeToggle) {
-    if (exportPanel) {
-      const themeSelect = document.getElementById("themeToggleButton");
+    const themeSelect = document.getElementById("themeToggleButton");
+    if (themeSelect) {
       themeSelect.style.display = 'none';
     }
   }  
