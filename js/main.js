@@ -117,8 +117,10 @@ async function initApp() {
   }  
 
   if (!features.enableExport && !features.enableThemeToggle) {
+    console.log("made it to here 1");
     const buttonsPanel = document.querySelector('options-button-panel');
     if (buttonsPanel) {
+      console.log("made it to here 2");
       buttonsPanel.style.display = 'none';
     }
   }
