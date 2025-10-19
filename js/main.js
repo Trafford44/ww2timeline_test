@@ -115,6 +115,13 @@ async function initApp() {
       themeSelect.style.display = 'none';
     }
   }  
+
+  if (!features.enableExport && !features.enableThemeToggle) {
+    const buttonsPanel = document.querySelector('.options-button-panel');
+    if (buttonsPanel) {
+      buttonsPanel.style.display = 'none';
+    }
+  }
 }
 
 
