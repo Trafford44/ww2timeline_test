@@ -28,7 +28,7 @@ function applyFeatureVisibility() {
 
 import { setupOptions } from './options.js';
 import { updateStats } from './stats.js';
-import { fetchAndRenderData } from './data.js';
+import { fetchData } from './data.js';
 import { applyFilters } from './filters.js';
 import { populateDropdowns } from './filters.js';
 import { toggleControls } from './filters.js';
@@ -52,7 +52,7 @@ async function initApp() {
   applySettings();
   applyFeatureVisibility();
 
-  const data = await fetchAndRenderData(features, domain, settings);
+  const data = await fetchData(features, domain, settings);
   console.log("Sample item:", data[0]);
 
   // dataset.length = 0;
