@@ -132,7 +132,7 @@ function createEventCard(event, index) {
   // CORRECTED: Cleaned template literal to prevent unwanted whitespace/entities from breaking CSS
   //details.innerHTML = `<b>Period:</b> ${event.Period || ""}<br><b>Format:</b> ${event.Format || ""}<br><b>Classification:</b> ${event.Classification || ""}<br><b>Running Time:</b> ${event.RunningTime || ""}<br><b>Historical Accuracy:</b> ${renderStars(event.HistoricalAccuracy)}<br><b>Short Description:</b> ${event.ShortDescription || ""}<br><b>Watch On:</b> ${event.WatchOn || ""} ${getPlatformIcons(event.WatchOn)}<br><b>Link:</b> ${event.Link ? `<a href="${event.Link}" target="_blank">View Link</a>` : ""}<br><b>Watched:</b> ${watchedStatus}<br><b>Rating:</b> ${renderStars(event.Rating || 0)}<span class="pin-icon" title="Click to pin/unpin this event">${event.Pinned ? "📌" : "📍"}</span>`;
 
-  /*
+
   details.innerHTML = `
   <b>Period:</b> ${event.Period || ""}
   <br><b>Format:</b> ${event.Format || ""}
@@ -148,9 +148,9 @@ function createEventCard(event, index) {
     ${event.Pinned ? "📌" : "📍"}
   </span>
 `;
-*/
 
-
+// note yet used - supposed to add "..." on notes
+/*
   details.innerHTML = `
   <b>Period:</b> ${event.Period || ""}
   <br><b>Format:</b> ${event.Format || ""}
@@ -166,7 +166,7 @@ function createEventCard(event, index) {
     ${event.Pinned ? "📌" : "📍"}
   </span>
 `;
-  
+  */
   card.appendChild(details);
 
   //add notes after the detail in its own div
@@ -188,6 +188,7 @@ function createEventCard(event, index) {
   return card;
 }
 
+// note yet used - supposed to add "..." on notes
 function createToggleDescription(description) {
   const MAX_LENGTH = 50;
   const descriptionText = description || "";
@@ -217,6 +218,7 @@ function createToggleDescription(description) {
   `;
 }
 
+// note yet used - supposed to add "..." on notes
 function toggleText(buttonElement, targetId) {
   // Use the unique ID to find the correct elements for this description box
   const dots = document.getElementById(targetId + "-dots");
