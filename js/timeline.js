@@ -127,19 +127,18 @@ function createEventCard(event, index) {
   title.innerHTML = `${imageHTML}${event.FilmTitle || "Untitled Event"}${event.ReleaseYear ? ` <span class="release-year">(${event.ReleaseYear})</span>` : ""}${notesIndicator}`;
   card.appendChild(title);
 
-  const details = document.createElement("div");
-  details.className = "event-details";
-  // CORRECTED: Cleaned template literal to prevent unwanted whitespace/entities from breaking CSS
-  details.innerHTML = `<b>Period:</b> ${event.Period || ""}<br><b>Format:</b> ${event.Format || ""}<br><b>Classification:</b> ${event.Classification || ""}<br><b>Running Time:</b> ${event.RunningTime || ""}<br><b>Historical Accuracy:</b> ${renderStars(event.HistoricalAccuracy)}<br><b>Short Description:</b> ${event.ShortDescription || ""}<br><b>Watch On:</b> ${event.WatchOn || ""} ${getPlatformIcons(event.WatchOn)}<br><b>Link:</b> ${event.Link ? `<a href="${event.Link}" target="_blank">View Link</a>` : ""}<br><b>Watched:</b> ${watchedStatus}<br><b>Rating:</b> ${renderStars(event.Rating || 0)}<span class="pin-icon" title="Click to pin/unpin this event">${event.Pinned ? "📌" : "📍"}</span>`;
-  card.appendChild(details);
-
-  // Reverting this back to appending a separate element to maintain original structure
   if (event.Notes) {
     const notes = document.createElement("div");
     notes.className = "notes";
     notes.textContent = `Notes: ${event.Notes}`;
     card.appendChild(notes);
   }
+  
+  const details = document.createElement("div");
+  details.className = "event-details";
+  // CORRECTED: Cleaned template literal to prevent unwanted whitespace/entities from breaking CSS
+  details.innerHTML = `<b>Period:</b> ${event.Period || ""}<br><b>Format:</b> ${event.Format || ""}<br><b>Classification:</b> ${event.Classification || ""}<br><b>Running Time:</b> ${event.RunningTime || ""}<br><b>Historical Accuracy:</b> ${renderStars(event.HistoricalAccuracy)}<br><b>Short Description:</b> ${event.ShortDescription || ""}<br><b>Watch On:</b> ${event.WatchOn || ""} ${getPlatformIcons(event.WatchOn)}<br><b>Link:</b> ${event.Link ? `<a href="${event.Link}" target="_blank">View Link</a>` : ""}<br><b>Watched:</b> ${watchedStatus}<br><b>Rating:</b> ${renderStars(event.Rating || 0)}<span class="pin-icon" title="Click to pin/unpin this event">${event.Pinned ? "📌" : "📍"}</span>`;
+  card.appendChild(details);
 
   /*
   // this section outputs all the below call detail for all records to console
