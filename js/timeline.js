@@ -253,52 +253,7 @@ function attachEventCardListeners(card, event) {
     card.classList.toggle("pinned", event.Pinned); // Update visual class
     pinSpan.innerHTML = event.Pinned ? "📌" : "📍"; // Update pin emoji
     togglePinned(event.RecordID); // Update local storage
-    applyFilters(dataset); // Re-render/Update view based on new pin stafunction createToggleDescription(description) {
-  const MAX_LENGTH = 50;
-  const descriptionText = description || "";
-
-  // The unique ID will be used to link the button to the dots/hidden text.
-  // We'll use a simple timestamp or a unique event ID if available (e.g., event.id).
-  // Assuming a simple timestamp for a unique identifier here.
-  const uniqueId = 'desc-toggle-' + Date.now() + Math.floor(Math.random() * 1000); 
-
-  if (descriptionText.length <= MAX_LENGTH) {
-    // If text is short, return the standard line.
-    return `<br><b>Short Description:</b> ${descriptionText}`;
-  }
-
-  // 1. Split the text
-  const shortText = descriptionText.substring(0, MAX_LENGTH);
-  const hiddenText = descriptionText.substring(MAX_LENGTH);
-
-  // 2. Build the HTML structure with unique IDs
-  return `
-    <br><b>Short Description:</b> ${shortText}
-    <span id="${uniqueId}-dots">...</span>
-    <span id="${uniqueId}-more" style="display: none;">${hiddenText}</span>
-    <button onclick="toggleText(this, '${uniqueId}')" style="border: none; background: none; color: blue; cursor: pointer; text-decoration: underline;">
-      Show more
-    </button>
-  `;
-}
-
-function toggleText(buttonElement, targetId) {
-  // Use the unique ID to find the correct elements for this description box
-  const dots = document.getElementById(targetId + "-dots");
-  const moreText = document.getElementById(targetId + "-more");
-
-  if (moreText.style.display === "none") {
-    // Show the hidden text
-    dots.style.display = "none";
-    moreText.style.display = "inline";
-    buttonElement.innerText = "Show less";
-  } else {
-    // Hide the text again
-    dots.style.display = "inline";
-    moreText.style.display = "none";
-    buttonElement.innerText = "Show more";
-  }
-}te
+    applyFilters(dataset); // Re-render/Update view based on new pin state
   });
 
   // Notes Toggle Listener
