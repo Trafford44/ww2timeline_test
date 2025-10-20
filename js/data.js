@@ -2,7 +2,7 @@
 
 export let dataset = [];
 
-export async function fetchAndRenderData(features, domain, settings) {
+export async function fetchData(features, domain, settings) {
   const initialPrompt = document.getElementById("initialPrompt");
   initialPrompt.textContent = `Loading data for ${domain.subject}...`;
   let data;
