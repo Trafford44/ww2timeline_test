@@ -190,7 +190,7 @@ function createEventCard(event, index) {
 
 // note yet used - supposed to add "..." on notes
 function createToggleDescription(description) {
-  const MAX_LENGTH = 50;
+  const MAX_LENGTH = 75;
   const descriptionText = description || "";
 
   // The unique ID will be used to link the button to the dots/hidden text.
@@ -213,7 +213,7 @@ function createToggleDescription(description) {
     <span id="${uniqueId}-dots">...</span>
     <span id="${uniqueId}-more" style="display: none;">${hiddenText}</span>
     <button 
-      class="toggle-btn"
+      class="notes-toggle-btn"
       data-target-id="${uniqueId}"
       style="border: none; background: none; color: blue; cursor: pointer; text-decoration: underline;">
       more..
