@@ -246,7 +246,6 @@ function toggleText(buttonElement, targetId) {
 function attachEventCardListeners(card, event) {
   const pinSpan = card.querySelector(".pin-icon");
   // Now querying the notes div which is a direct child of 'card' again
-  const notesDiv = card.querySelector(".notes"); 
   
   // Pinning Listener
   pinSpan.addEventListener("click", (e) => {
