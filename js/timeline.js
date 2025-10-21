@@ -151,7 +151,7 @@ function createEventCard(event, index) {
     ${event.Pinned ? "📌" : "📍"}
   </span>
 `;
-wikipedia-link
+
   card.appendChild(details);
 
   //add notes after the detail in its own div
