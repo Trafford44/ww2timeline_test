@@ -212,35 +212,30 @@ function createToggleDescription(description) {
     <br><b>Short Description:</b> ${shortText}
     <span id="${uniqueId}-dots">...</span>
     <span id="${uniqueId}-more" style="display: none;">${hiddenText}</span>
-    <button 
-      class="notes-toggle-btn"
+    <span 
+      class="notes-toggle-icon"
       data-target-id="${uniqueId}"
-      style="border: none; background: none; color: blue; cursor: pointer; text-decoration: underline;">
-      more..
-    </button>
-
+      style="cursor: pointer; margin-left: 6px;"
+      onclick="toggleText(this, '${uniqueId}')"
+      title="Click to expand/collapse description"
+    >
+      📖
+    </span>
   `;
+
 }
 
 
-function toggleText(buttonElement, targetId) {
-  // Use the unique ID to find the correct elements for this description box
+function toggleText(iconElement, targetId) {
   const dots = document.getElementById(targetId + "-dots");
   const moreText = document.getElementById(targetId + "-more");
 
-  if (moreText.style.display === "none") {
-    // Show the hidden text
-    dots.style.display = "none";
-    moreText.style.display = "inline";
-    buttonElement.innerText = "less..";
-  } else {
-    // Hide the text again
-    dots.style.display = "inline";
-    moreText.style.display = "none";
-    buttonElement.innerText = "more..";
-  }
-}
+  const isCollapsed = moreText.style.display === "none";
 
+  dots.style.display = isCollapsed ? "none" : "inline";
+  moreText.style.display = isCollapsed ? "inline" : "none";
+  iconElement.textContent = isCollapsed ? "📕" : "📖";
+}
 
 /**
  * Attaches event listeners to the event card for interaction (pinning and notes).
@@ -281,10 +276,10 @@ function attachEventCardListeners(card, event) {
   }*/
   
   // Description toggle listener
-  card.querySelectorAll(".notes-toggle-btn").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const targetId = btn.dataset.targetId;
-      toggleText(btn, targetId);
+  card.querySelectorAll(".notes-toggle-icon").forEach((icon) => {
+    icon.addEventListener("click", () => {
+      const targetId = icon.dataset.targetId;
+      toggleText(icon, targetId);
     });
   });
   
