@@ -132,7 +132,7 @@ function createEventCard(event, index) {
   // CORRECTED: Cleaned template literal to prevent unwanted whitespace/entities from breaking CSS
   //details.innerHTML = `<b>Period:</b> ${event.Period || ""}<br><b>Format:</b> ${event.Format || ""}<br><b>Classification:</b> ${event.Classification || ""}<br><b>Running Time:</b> ${event.RunningTime || ""}<br><b>Historical Accuracy:</b> ${renderStars(event.HistoricalAccuracy)}<br><b>Short Description:</b> ${event.ShortDescription || ""}<br><b>Watch On:</b> ${event.WatchOn || ""} ${getPlatformIcons(event.WatchOn)}<br><b>Link:</b> ${event.Link ? `<a href="${event.Link}" target="_blank">View Link</a>` : ""}<br><b>Watched:</b> ${watchedStatus}<br><b>Rating:</b> ${renderStars(event.Rating || 0)}<span class="pin-icon" title="Click to pin/unpin this event">${event.Pinned ? "📌" : "📍"}</span>`;
 
-
+/*
   details.innerHTML = `
   <b>Period:</b> ${event.Period || ""}
   <br><b>Format:</b> ${event.Format || ""}
@@ -148,16 +148,16 @@ function createEventCard(event, index) {
     ${event.Pinned ? "📌" : "📍"}
   </span>
 `;
-
+  */
+  
 // note yet used - supposed to add "..." on notes
-/*
   details.innerHTML = `
   <b>Period:</b> ${event.Period || ""}
   <br><b>Format:</b> ${event.Format || ""}
   <br><b>Classification:</b> ${event.Classification || ""}
   <br><b>Running Time:</b> ${event.RunningTime || ""}
   <br><b>Historical Accuracy:</b> ${renderStars(event.HistoricalAccuracy)}
-  ${createToggleDescription(event.ShortDescription)}  <-- **UPDATED HERE**
+  ${createToggleDescription(event.ShortDescription)}
   <br><b>Watch On:</b> ${event.WatchOn || ""} ${getPlatformIcons(event.WatchOn)}
   <br><b>Link:</b> ${event.Link ? `<a href="${event.Link}" target="_blank">View Link</a>` : ""}
   <br><b>Watched:</b> ${watchedStatus}
@@ -166,7 +166,7 @@ function createEventCard(event, index) {
     ${event.Pinned ? "📌" : "📍"}
   </span>
 `;
-  */
+
   card.appendChild(details);
 
   //add notes after the detail in its own div
@@ -213,7 +213,7 @@ function createToggleDescription(description) {
     <span id="${uniqueId}-dots">...</span>
     <span id="${uniqueId}-more" style="display: none;">${hiddenText}</span>
     <button onclick="toggleText(this, '${uniqueId}')" style="border: none; background: none; color: blue; cursor: pointer; text-decoration: underline;">
-      Show more
+      more..
     </button>
   `;
 }
@@ -228,12 +228,12 @@ function toggleText(buttonElement, targetId) {
     // Show the hidden text
     dots.style.display = "none";
     moreText.style.display = "inline";
-    buttonElement.innerText = "Show less";
+    buttonElement.innerText = "less..";
   } else {
     // Hide the text again
     dots.style.display = "inline";
     moreText.style.display = "none";
-    buttonElement.innerText = "Show more";
+    buttonElement.innerText = "more..";
   }
 }
 
