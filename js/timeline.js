@@ -142,14 +142,16 @@ function createEventCard(event, index) {
   ${createToggleDescription(event.ShortDescription)}
   <br><b>Watch On:</b> ${event.WatchOn || ""} ${getPlatformIcons(event.WatchOn)}
   <br><b>Link:</b> ${event.Link ? `<a href="${event.Link}" target="_blank">View Link</a>` : ""}
-  <br><b>Wikipedia:</b> ${event.Wikipedia ? `<a href="${event.Wikipedia}" target="_blank">see details..</a>` : ""}
+  <span class="wikipedia-link" title="">
+    <b>Wikipedia:</b> ${event.Wikipedia ? `<a href="${event.Wikipedia}" target="_blank">see details..</a>` : ""}
+  </span>
   <br><b>Watched:</b> ${watchedStatus}
   <br><b>Rating:</b> ${renderStars(event.Rating || 0)}
   <span class="pin-icon" title="Click to pin/unpin this event">
     ${event.Pinned ? "📌" : "📍"}
   </span>
 `;
-
+wikipedia-link
   card.appendChild(details);
 
   //add notes after the detail in its own div
