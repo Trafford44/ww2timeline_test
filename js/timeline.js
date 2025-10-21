@@ -208,20 +208,22 @@ function createToggleDescription(description) {
   const hiddenText = descriptionText.substring(MAX_LENGTH);
 
   // 2. Build the HTML structure with unique IDs
-  return `
-    <br><b>Short Description:</b> ${shortText}
-    <span id="${uniqueId}-dots">...</span>
-    <span id="${uniqueId}-more" style="display: none;">${hiddenText}</span>
-    <span 
-      class="notes-toggle-icon"
-      data-target-id="${uniqueId}"
-      style="cursor: pointer; margin-left: 6px;"
-      onclick="toggleText(this, '${uniqueId}')"
-      title="Click to expand/collapse description"
-    >
-      📖
-    </span>
-  `;
+return `
+  <br><b>Short Description:</b> 
+  <span 
+    class="notes-toggle-icon"
+    data-target-id="${uniqueId}"
+    style="cursor: pointer; margin: 0 6px;"
+    onclick="toggleText(this, '${uniqueId}')"
+    title="Click to expand/collapse description"
+  >
+    📖
+  </span>
+  ${shortText}
+  <span id="${uniqueId}-dots">...</span>
+  <span id="${uniqueId}-more" style="display: none;">${hiddenText}</span>
+`;
+
 
 }
 
