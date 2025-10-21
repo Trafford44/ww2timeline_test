@@ -212,9 +212,13 @@ function createToggleDescription(description) {
     <br><b>Short Description:</b> ${shortText}
     <span id="${uniqueId}-dots">...</span>
     <span id="${uniqueId}-more" style="display: none;">${hiddenText}</span>
-    <button onclick="toggleText(this, '${uniqueId}')" style="border: none; background: none; color: blue; cursor: pointer; text-decoration: underline;">
+    <button 
+      class="toggle-btn"
+      data-target-id="${uniqueId}"
+      style="border: none; background: none; color: blue; cursor: pointer; text-decoration: underline;">
       more..
     </button>
+
   `;
 }
 
@@ -275,5 +279,13 @@ function attachEventCardListeners(card, event) {
       }
     });
   }*/
+  
+  // Description toggle listener
+  card.querySelectorAll(".toggle-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const targetId = btn.dataset.targetId;
+      toggleText(btn, targetId);
+    });
+  });
   
 }
