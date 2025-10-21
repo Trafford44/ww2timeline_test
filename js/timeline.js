@@ -259,6 +259,15 @@ function attachEventCardListeners(card, event) {
   });
 
   // Notes Toggle Listener
+  const notesDiv = card.querySelector(".notes");
+  const titleDiv = card.querySelector(".event-title");
+
+  if (notesDiv && titleDiv) {
+    titleDiv.addEventListener("click", () => {
+      notesDiv.classList.toggle("show");
+    });
+  }
+  /*
   if (notesDiv) {
     card.addEventListener("click", (e) => {
       // Prevent note toggle if clicking on interactive elements
@@ -266,5 +275,6 @@ function attachEventCardListeners(card, event) {
         notesDiv.classList.toggle("show");
       }
     });
-  }
+  }*/
+  
 }
