@@ -1,5 +1,5 @@
 {
-  "enableWikipedia": true,
+  "enableWikipedia": false,
   "enableMapThumb": true,
   "enableExport": true,
   "enableThemeToggle": true,  
