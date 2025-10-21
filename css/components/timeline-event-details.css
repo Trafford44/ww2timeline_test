@@ -19,3 +19,14 @@
 
 }
 
+.pin-icon {
+  cursor: pointer;
+  font-size: 1.2em;
+  float: right;
+}
+
+.wikipedia-link {
+  cursor: pointer;
+  font-size: 1.2em;
+  float: right;
+}
