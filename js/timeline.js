@@ -190,7 +190,7 @@ function createEventCard(event, index) {
 
 // note yet used - supposed to add "..." on notes
 function createToggleDescription(description) {
-  const MAX_LENGTH = 75;
+  const MAX_LENGTH = 60;
   const descriptionText = description || "";
 
   // The unique ID will be used to link the button to the dots/hidden text.
@@ -222,7 +222,7 @@ function createToggleDescription(description) {
   `;
 }
 
-// note yet used - supposed to add "..." on notes
+
 function toggleText(buttonElement, targetId) {
   // Use the unique ID to find the correct elements for this description box
   const dots = document.getElementById(targetId + "-dots");
@@ -281,7 +281,7 @@ function attachEventCardListeners(card, event) {
   }*/
   
   // Description toggle listener
-  card.querySelectorAll(".toggle-btn").forEach((btn) => {
+  card.querySelectorAll(".notes-toggle-btn").forEach((btn) => {
     btn.addEventListener("click", () => {
       const targetId = btn.dataset.targetId;
       toggleText(btn, targetId);
