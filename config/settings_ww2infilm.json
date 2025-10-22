@@ -7,7 +7,7 @@
   "searchPlaceholder": "Search by title, platform, classification...",
   "noDataMessage": "No films found or all records filtered out.",
 
-  "_comment": "Icon settings",
+  "_comment": "Icon settings - NOT USED",
   "pinIcon": {
     "active": "📌",
     "inactive": "📍"
@@ -15,9 +15,9 @@
   "notesIndicator": "📝",
   "watchedIcon": "✔",
 
-  "_comment": "UI behavior",
+  "_comment": "UI behavior - NOT USED",
   "defaultSortOrder": "chronological", 
-  "_comment": "Options: chronological, reverse, alphabetical",
+  "_comment": "Options: chronological, reverse, alphabetical - NOT USED",
   "defaultPanelState": {
     "legend": true,
     "filters": true,
@@ -25,7 +25,7 @@
     "stats": false
   },
 
-  "_comment": "Optional: layout tweaks",
+  "_comment": "Optional: layout tweaks - NOT USED",
   "maxTimelineWidth": "900px",
   "defaultZoom": 1,
   "fontSize": "1em"
