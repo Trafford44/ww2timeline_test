@@ -8,6 +8,14 @@ let settings = {};
 
 function applySettings() {
   document.title = settings.appTitle || "Timeline App";
+
+  // set the browser title. Use default if either are blank/null
+  const subject = domain.subject?.trim();
+  const title = settings.appTitle?.trim();  
+  document.title = (subject && title)
+    ? `${subject} ${title}`
+    : "Timeline App";
+
   const searchInput = document.getElementById("searchInput");
   const initialPrompt = document.getElementById("initialPrompt");
   if (searchInput && settings.searchPlaceholder) {
