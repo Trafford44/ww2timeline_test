@@ -7,7 +7,7 @@ let settings = {};
 
 
 function applySettings() {
-  document.title = settings.appTitle || "Timeline App";
+ // document.title = settings.appTitle || "Timeline App";
 
   // set the browser title. Use default if either are blank/null
   const subject = domain.subject?.trim();
