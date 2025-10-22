@@ -1,6 +1,6 @@
 {
-  "_dataSource": "googleSheets",
-  "dataSource": "localJSON",    
+  "dataSource": "googleSheets",
+  "_dataSource": "localJSON",    
   
   "_comment": "App identity and UI text",
   "appTitle": "Timeline",
