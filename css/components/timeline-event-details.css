@@ -16,7 +16,8 @@
   color: #0077cc;
 }
 .notes-toggle-icon {
-
+  cursor: pointer; 
+  margin: 0 6px;
 }
 
 .pin-icon {
