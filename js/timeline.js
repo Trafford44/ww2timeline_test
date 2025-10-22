@@ -196,7 +196,6 @@ return `
   <span 
     class="notes-toggle-icon"
     data-target-id="${uniqueId}"
-    style="cursor: pointer; margin: 0 6px;"
     onclick="toggleText(this, '${uniqueId}')"
     title="Click to expand/collapse description"
   >
