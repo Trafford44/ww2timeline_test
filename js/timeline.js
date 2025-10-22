@@ -140,17 +140,17 @@ function createEventCard(event, index) {
   
   // add the card content
   details.innerHTML = `
-  <b>Period:</b> ${event.Period || ""}
-  <br><b>${domain.labels.Format || "Format"}:</b> ${event.Format || ""}
-  <br><b>Classification:</b> ${event.Classification || ""}
-  <br><b>Running Time:</b> ${event.RunningTime || ""}
-  <br><b>Historical Accuracy:</b> ${renderStars(event.HistoricalAccuracy)}
+  <b>${domain.labels.PeriodLabel || "Format"}:</b> ${event.Period || ""}
+  <br><b>${domain.labels.FormatLabel || "Format"}:</b> ${event.Format || ""}
+  <br><b>${domain.labels.ClassificationLabel || "Format"}:</b> ${event.Classification || ""}
+  <br><b>${domain.labels.RunningTimeLabel || "Format"}:</b> ${event.RunningTime || ""}
+  <br><b>${domain.labels.HistoricalAccuracyLabel || "Format"}:</b> ${renderStars(event.HistoricalAccuracy)}
   ${createToggleDescription(event.ShortDescription)}
-  <br><b>Watch On:</b> ${event.Platform || ""} ${getPlatformIcons(event.Platform)}
-  <br><b>Platform Link:</b> ${event.PlatformLink ? `<a href="${event.PlatformLink}" target="_blank">View Link</a>` : ""}
-  <br><b>Wikipedia:</b> ${event.Wikipedia ? `<a href="${event.Wikipedia}" target="_blank">see details..</a>` : ""}
-  <br><b>Watched:</b> ${watchedStatus}
-  <br><b>Rating:</b> ${renderStars(event.Rating || 0)}
+  <br><b>${domain.labels.PlatformLabel || "Format"}:</b> ${event.Platform || ""} ${getPlatformIcons(event.Platform)}
+  <br><b>${domain.labels.PlatformLinkLabel || "Format"}:</b> ${event.PlatformLink ? `<a href="${event.PlatformLink}" target="_blank">View Link</a>` : ""}
+  <br><b>${domain.labels.WikipediaLabel || "Format"}:</b> ${event.Wikipedia ? `<a href="${event.Wikipedia}" target="_blank">see details..</a>` : ""}
+  <br><b>${domain.labels.WatchedLabel || "Format"}:</b> ${watchedStatus}
+  <br><b>${domain.labels.RatingLabel || "Format"}:</b> ${renderStars(event.Rating || 0)}
   <span class="pin-icon" title="Click to pin/unpin this event">
     ${event.Pinned ? "📌" : "📍"}
   </span>
