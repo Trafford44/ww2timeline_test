@@ -1,5 +1,5 @@
-export function getPlatformIcons(watchOnText) {
-  if (!watchOnText) return '';
+export function getPlatformIcons(PlatformText) {
+  if (!PlatformText) return '';
   const platformMap = {
     netflix: 'Netflix', prime: 'Prime', youtube: 'YouTube', apple: 'Apple',
     tvnz: 'TVNZ', tvnzplus: 'TVNZ', neon: 'Neon', beamafilm: 'Beamafilm',
@@ -8,7 +8,7 @@ export function getPlatformIcons(watchOnText) {
   };
   const seen = new Set();
   const icons = [];
-  watchOnText.split(',').forEach(entry => {
+  PlatformText.split(',').forEach(entry => {
     const clean = entry.trim().toLowerCase().replace(/[^a-z0-9+]/gi, '');
     for (const key in platformMap) {
       if (clean.includes(key) && !seen.has(key)) {
