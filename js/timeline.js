@@ -116,7 +116,7 @@ function createEventCard(event, index) {
     ? `Yes <span class="watched-status-icon" title="You have watched this event.">✔</span>`
     : (event.Watched || "No");
 
-  const notesIndicator = event.Notes ? `<span class="notes-indicator" title="Click to view notes!">&#9999;</span>` : '';
+  const notesIndicator = event.Notes ? `<span class="notes-indicator" title="Click to view notes!">📝</span>` : '';
   const imageHTML = event.ImageURL
     ? `<img src="${event.ImageURL}" alt="Poster for ${event.FilmTitle || 'Untitled Event'}" class="event-image">`
     : '';
