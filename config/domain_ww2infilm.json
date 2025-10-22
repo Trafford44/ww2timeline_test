@@ -5,8 +5,8 @@
   "dataUrl": "testdata/ww2_infilm.json", 
   "_dataUrl": "https://script.google.com/macros/s/AKfycbwuMhkWNZI71HWbZr18pe56ekjCVrn0SCliiFHOzIW60odC3CsOstRgUeMIEbg03xbeNA/exec", 
   "fieldMap": {
-    "title": "FilmTitle",
-    "year": "ReleaseYear",
+    "Title": "FilmTitle",
+    "YearOfIssue": "ReleaseYear",
     "notes": "Notes",
     "location": "Setting",
     "pinned": "Pinned",
