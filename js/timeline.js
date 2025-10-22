@@ -126,19 +126,17 @@ function createEventCard(event, index) {
 
   const notesIndicator = event.Notes ? `<span class="notes-indicator" title="Click to view notes!">📝</span>` : '';
   const imageHTML = event.ImageURL
-    ? `<img src="${event.ImageURL}" alt="Poster for ${event.FilmTitle || 'Untitled Event'}" class="event-image">`
+    ? `<img src="${event.ImageURL}" alt="Poster for ${event.Title || 'Untitled Event'}" class="event-image">`
     : '';
 
   const title = document.createElement("div");
   title.className = "event-title";
   // RESTORED: Removed the extra span class to allow the original .event-title CSS to apply directly to the text node.
-  title.innerHTML = `${imageHTML}${event.FilmTitle || "Untitled Event"}${event.ReleaseYear ? ` <span class="release-year">(${event.ReleaseYear})</span>` : ""}${notesIndicator}`;
+  title.innerHTML = `${imageHTML}${event.Title || "Untitled Event"}${event.YearOfIssue ? ` <span class="release-year">(${event.YearOfIssue})</span>` : ""}${notesIndicator}`;
   card.appendChild(title);
   
   const details = document.createElement("div");
   details.className = "event-details";
-  // CORRECTED: Cleaned template literal to prevent unwanted whitespace/entities from breaking CSS
-  //details.innerHTML = `<b>Period:</b> ${event.Period || ""}<br><b>Format:</b> ${event.Format || ""}<br><b>Classification:</b> ${event.Classification || ""}<br><b>Running Time:</b> ${event.RunningTime || ""}<br><b>Historical Accuracy:</b> ${renderStars(event.HistoricalAccuracy)}<br><b>Short Description:</b> ${event.ShortDescription || ""}<br><b>Watch On:</b> ${event.WatchOn || ""} ${getPlatformIcons(event.WatchOn)}<br><b>Link:</b> ${event.Link ? `<a href="${event.Link}" target="_blank">View Link</a>` : ""}<br><b>Watched:</b> ${watchedStatus}<br><b>Rating:</b> ${renderStars(event.Rating || 0)}<span class="pin-icon" title="Click to pin/unpin this event">${event.Pinned ? "📌" : "📍"}</span>`;
   
   // add the card content
   details.innerHTML = `
@@ -148,8 +146,8 @@ function createEventCard(event, index) {
   <br><b>Running Time:</b> ${event.RunningTime || ""}
   <br><b>Historical Accuracy:</b> ${renderStars(event.HistoricalAccuracy)}
   ${createToggleDescription(event.ShortDescription)}
-  <br><b>Watch On:</b> ${event.WatchOn || ""} ${getPlatformIcons(event.WatchOn)}
-  <br><b>Link:</b> ${event.Link ? `<a href="${event.Link}" target="_blank">View Link</a>` : ""}
+  <br><b>Watch On:</b> ${event.Platform || ""} ${getPlatformIcons(event.Platform)}
+  <br><b>Platform Link:</b> ${event.PlatformLink ? `<a href="${event.PlatformLink}" target="_blank">View Link</a>` : ""}
   <br><b>Wikipedia:</b> ${event.Wikipedia ? `<a href="${event.Wikipedia}" target="_blank">see details..</a>` : ""}
   <br><b>Watched:</b> ${watchedStatus}
   <br><b>Rating:</b> ${renderStars(event.Rating || 0)}
