@@ -3,7 +3,7 @@
   "_dataSource": "localJSON",    
   
   "_comment": "App identity and UI text",
-  "appTitle": "WWII Film Timeline",
+  "appTitle": "Timeline",
   "searchPlaceholder": "Search by title, platform, classification...",
   "noDataMessage": "No films found or all records filtered out.",
 
