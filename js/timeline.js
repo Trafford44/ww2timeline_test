@@ -33,7 +33,7 @@ function groupEventsByYear(filteredData) {
   return grouped;
 }
 
-export function renderTimeline(filteredData) {
+export async function renderTimeline(filteredData) {
   const timelineContainer = document.getElementById("timeline");
   const initialPrompt = document.getElementById("initialPrompt");
   
