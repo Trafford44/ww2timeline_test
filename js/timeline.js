@@ -4,6 +4,9 @@ import { applyFilters } from './filters.js';
 import { dataset } from './data.js';
 import { features } from './main.js';
 import { savePinned, loadPinned, isPinned, togglePinned } from './pinnedManager.js';
+import { loadConfig } from './config.js';
+
+let domain = {};
 
 /**
  * Groups event data by its event year for timeline rendering.
@@ -97,6 +100,8 @@ export function renderTimeline(filteredData) {
  */
 function createEventCard(event, index) {
   const card = document.createElement("div");
+  domain = config.domain;
+  
   card.className = `timeline-event ${index % 2 === 0 ? "left" : "right"}`;
   
   if (event.Classification) {
@@ -135,7 +140,7 @@ function createEventCard(event, index) {
   // add the card content
   details.innerHTML = `
   <b>Period:</b> ${event.Period || ""}
-  <br><b>Format:</b> ${event.Format || ""}
+  <br><b>${domain.labels.Format || "Format"}:</b> ${event.Format || ""}
   <br><b>Classification:</b> ${event.Classification || ""}
   <br><b>Running Time:</b> ${event.RunningTime || ""}
   <br><b>Historical Accuracy:</b> ${renderStars(event.HistoricalAccuracy)}
@@ -192,7 +197,7 @@ function createToggleDescription(description) {
 
   // 2. Build the HTML structure with unique IDs
 return `
-  <br><b>Short Description:</b> 
+  <br><b>${domain.labels.ShortDescription || "Description"}:</b> 
   <span 
     class="notes-toggle-icon"
     data-target-id="${uniqueId}"
