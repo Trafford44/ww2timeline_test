@@ -5,6 +5,7 @@ import { dataset } from './data.js';
 import { features } from './main.js';
 import { savePinned, loadPinned, isPinned, togglePinned } from './pinnedManager.js';
 import { loadConfig } from './config.js';
+import { domainKey } from './domain.js';
 
 let domain = {};
 
