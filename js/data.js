@@ -10,6 +10,7 @@ export async function fetchData(features, domain, settings) {
   try {
     const dataSource = settings?.dataSource || "googleSheets";
     if (dataSource == "localJSON") {
+      console.log("📦 Data source is localJSON");
       const datasetMap = {
         "WWII Films": "testdata/ww2_infilm.json",
         "Scientific Discoveries": "testdata/science.json"
@@ -44,6 +45,7 @@ export async function fetchData(features, domain, settings) {
       
     }
     else if (dataSource == "googleSheets") {
+      console.log("📦 Data source is googleSheets");
       try {
         const response = await fetch("https://script.google.com/macros/s/AKfycbwuMhkWNZI71HWbZr18pe56ekjCVrn0SCliiFHOzIW60odC3CsOstRgUeMIEbg03xbeNA/exec");
       
