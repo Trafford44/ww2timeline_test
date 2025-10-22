@@ -1,4 +1,5 @@
 import { loadConfig } from './config.js';
+import { domainKey } from './domain.js';
 // import { dataset } from './data.js';
 
 export let features = {};
@@ -45,9 +46,10 @@ import { loadPinned } from './pinnedManager.js';
 
 async function initApp() {
   // Use a dynamic key based on URL, user input, or fallback
-  const urlParams = new URLSearchParams(window.location.search);
-  const domainKey = urlParams.get("domain") || "ww2infilm";
-  console.log("🧩 Using domain key:", domainKey);
+  //const urlParams = new URLSearchParams(window.location.search);
+ 
+  // const domainKey = urlParams.get("domain") || "ww2infilm";
+  // console.log("🧩 Using domain key:", domainKey);
   
   const config = await loadConfig(domainKey);
   console.log("🧩 Loaded domain config:", config.domain);
