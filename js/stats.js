@@ -23,7 +23,7 @@ export function updateStats(filteredEvents) {
     const classification = event.Classification || "Unclassified";
     byClassification[classification] = (byClassification[classification] || 0) + 1;
 
-    (event.WatchOn || "").split(",").forEach(p => {
+    (event.Platform || "").split(",").forEach(p => {
       const platform = p.trim();
       if (platform) topPlatforms[platform] = (topPlatforms[platform] || 0) + 1;
     });
