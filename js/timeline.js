@@ -36,7 +36,10 @@ function groupEventsByYear(filteredData) {
 export function renderTimeline(filteredData) {
   const timelineContainer = document.getElementById("timeline");
   const initialPrompt = document.getElementById("initialPrompt");
-
+  
+  const config = await loadConfig(domainKey);
+  domain = config.domain;
+  
   timelineContainer.innerHTML = "";
 
   if (filteredData.length === 0) {
@@ -100,8 +103,7 @@ export function renderTimeline(filteredData) {
  */
 function createEventCard(event, index) {
   const card = document.createElement("div");
-  domain = config.domain;
-  
+    
   card.className = `timeline-event ${index % 2 === 0 ? "left" : "right"}`;
   
   if (event.Classification) {
