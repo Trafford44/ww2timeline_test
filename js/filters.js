@@ -35,7 +35,7 @@ export function populateDropdowns(fullData) {
   const periods = [...new Set(fullData.map(f => f.Period).filter(Boolean))].sort();
   const platforms = [...new Set(
     fullData
-      .flatMap(f => (f.WatchOn || "")
+      .flatMap(f => (f.Platform || "")
         .replace(/^,+|,+$/g, "")
         .split(',')
         .map(p => p.trim().toLowerCase()))
@@ -123,13 +123,13 @@ function shouldIncludeEvent(event, values) {
   if (keywords.length && !keywords.every(k => text.includes(k))) return false;
 
   // Search Filters (field:value)
-  if (filters.title && !(event.FilmTitle || "").toLowerCase().includes(filters.title)) return false;
+  if (filters.title && !(event.Title || "").toLowerCase().includes(filters.title)) return false;
   
   // Platform Filter
   if (platform === "__none__") {
-    if (event.WatchOn) return false;
-    // If platform is "__none__" and WatchOn is empty, it passes.
-  } else if (platform && !(event.WatchOn || "").toLowerCase().includes(platform)) return false;
+    if (event.Platform) return false;
+    // If platform is "__none__" and Platform is empty, it passes.
+  } else if (platform && !(event.Platform || "").toLowerCase().includes(platform)) return false;
 
   // Classification Filter (Dropdown and Search)
   if (filters.classification && !(event.Classification || "").toLowerCase().includes(filters.classification)) return false;
