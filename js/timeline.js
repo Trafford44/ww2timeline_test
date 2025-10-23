@@ -188,7 +188,7 @@ function createToggleDescription(description) {
 
   if (descriptionText.length <= MAX_LENGTH) {
     // If text is short, return the standard line.
-    return `<br><b>Short Description:</b> ${descriptionText}`;
+    return `<br><b>${domain.labels.ShortDescription || "Description"}:</b> ${descriptionText}`;
   }
 
   // 1. Split the text
