@@ -146,8 +146,7 @@ function createEventCard(event, index) {
   <br><b>${domain.labels.RunningTimeLabel || "Format"}:</b> ${event.RunningTime || ""}
   <br><b>${domain.labels.HistoricalAccuracyLabel || "Format"}:</b> ${renderStars(event.HistoricalAccuracy)}
   ${createToggleDescription(event.ShortDescription)}
-  <br><b>${domain.labels.PlatformLabel || "Format"}:</b> ${event.Platform || ""} ${getPlatformIcons(event.Platform)}
-  <br><b>${domain.labels.PlatformLinkLabel || "Format"}:</b> ${event.PlatformLink ? `<a href="${event.PlatformLink}" target="_blank">View Link</a>` : ""}
+  ${renderPlatformField(event.Platform, event.PlatformLink)}
   <br><b>${domain.labels.WikipediaLabel || "Format"}:</b> ${event.Wikipedia ? `<a href="${event.Wikipedia}" target="_blank">see details..</a>` : ""}
   <br><b>${domain.labels.WatchedLabel || "Format"}:</b> ${watchedStatus}
   <br><b>${domain.labels.RatingLabel || "Format"}:</b> ${renderStars(event.Rating || 0)}
@@ -179,7 +178,7 @@ function createEventCard(event, index) {
 
 // note yet used - supposed to add "..." on notes
 function createToggleDescription(description) {
-  const MAX_LENGTH = 60;
+  const MAX_LENGTH = 70;
   const descriptionText = description || "";
 
   // The unique ID will be used to link the button to the dots/hidden text.
@@ -197,22 +196,36 @@ function createToggleDescription(description) {
   const hiddenText = descriptionText.substring(MAX_LENGTH);
 
   // 2. Build the HTML structure with unique IDs
-return `
-  <br><b>${domain.labels.ShortDescription || "Description"}:</b> 
-  <span 
-    class="notes-toggle-icon"
-    data-target-id="${uniqueId}"
-    onclick="toggleText(this, '${uniqueId}')"
-    title="Click to expand/collapse description"
-  >
-    📖
-  </span>
-  ${shortText}
-  <span id="${uniqueId}-dots">...</span>
-  <span id="${uniqueId}-more" style="display: none;">${hiddenText}</span>
-`;
+  return `
+    <br><b>${domain.labels.ShortDescription || "Description"}:</b> 
+    <span 
+      class="notes-toggle-icon"
+      data-target-id="${uniqueId}"
+      onclick="toggleText(this, '${uniqueId}')"
+      title="Click to expand/collapse description"
+    >
+      📖
+    </span>
+    ${shortText}
+    <span id="${uniqueId}-dots">...</span>
+    <span id="${uniqueId}-more" style="display: none;">${hiddenText}</span>
+  `;
+}
 
+// - if event.PlatformLink has a value (a url), make a link to the platform using event.Platform as the link text
+// - if event.Platform is null, just use teh text 'link'
+// - if both are null, put nothing
+function renderPlatformField(platform, link) {
+  const label = domain.labels.PlatformLabel || "Format";
 
+  if (link) {
+    const linkText = platform || "link";
+    return `<br><b>${label}:</b> <a href="${link}" target="_blank">${linkText}</a> ${getPlatformIcons(platform)}`;
+  } else if (platform) {
+    return `<br><b>${label}:</b> ${platform} ${getPlatformIcons(platform)}`;
+  } else {
+    return `<br><b>${label}:</b>`;
+  }
 }
 
 
