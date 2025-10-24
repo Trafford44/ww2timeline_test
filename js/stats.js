@@ -1,6 +1,6 @@
 // stats.js
 
-export function updateStats(filteredEvents) {
+export function updateStats(filteredEvents, totalEvents) {
   console.log("✅ updateStats called with", filteredEvents.length, "events");
 
   const statsContent = document.getElementById("statsContent");
@@ -36,7 +36,8 @@ export function updateStats(filteredEvents) {
     .join(", ");
 
   statsContent.innerHTML = `
-    <b>Total Events:</b> ${total}<br>
+    <i>Stats for current selection of total ${totalEvents} events:</i><br>
+    <b>Current Selection:</b> ${total}<br>
     <b>Watched:</b> ${watchedCount} (${Math.round((watchedCount / total) * 100)}%)<br>
     <b>Pinned:</b> ${pinnedCount} (${Math.round((pinnedCount / total) * 100)}%)<br>
     <b>By Classification:</b><br>
