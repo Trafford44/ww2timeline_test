@@ -1,5 +1,5 @@
 /* === Generic <details> Styling for Panels === */
-details {
+body details {
   margin-bottom: 1em;
   background: var(--details-background-color); /* 🎨 Theme-specific variable */
   border: 1px solid #ccc;
