@@ -24,3 +24,8 @@ select:disabled {
   color: #999;
   cursor: not-allowed;
 }
+
+/* === Panels === */
+body details {
+    background-color: var(--details-background-color); 
+}
