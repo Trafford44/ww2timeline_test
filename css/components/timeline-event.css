@@ -32,7 +32,7 @@
 }
 
 .timeline-event.pinned {
-  background-color: #fffbe6;
+  background-color: var(--pinned-card-bg); /* 🎨 Theme-specific variable */
   box-shadow: inset 0 0 0 4px #f5b301;
 }
 
