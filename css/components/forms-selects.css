@@ -25,7 +25,3 @@ select:disabled {
   cursor: not-allowed;
 }
 
-/* === Panels === */
-body details {
-    background-color: var(--details-background-color); 
-}
