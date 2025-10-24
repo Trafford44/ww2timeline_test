@@ -169,6 +169,7 @@ function shouldIncludeEvent(event, values) {
 // --- 7. Main Filter Execution ---
 export function applyFilters(data) {
   const filterValues = getFilterValues();
+  const totalEvents = data.length;
 
   const filtered = dataset.filter(event => shouldIncludeEvent(event, filterValues));
 
@@ -181,7 +182,7 @@ export function applyFilters(data) {
   console.log("Number of results:", filtered.length);
 
   renderTimeline(filtered);
-  updateStats(filtered);
+  updateStats(filtered, totalEvents);
   setupExportButton(filtered);
 }
 
