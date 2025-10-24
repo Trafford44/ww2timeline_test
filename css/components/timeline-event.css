@@ -2,7 +2,7 @@
   position: relative;
   width: 45%;
   padding: 15px;
-  background: var(--timeline-card-bg);
+  background: var(--timeline-card-bg); /* 🎨 Theme-specific variable */
   border-radius: 8px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
   margin-bottom: 20px;
