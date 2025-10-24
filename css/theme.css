@@ -4,6 +4,10 @@ body.light {
   --text-color: #222222;
   --panel-bg: #f5f5f5;
   --border-color: #ccc;
+
+  /* 🎨 Card-specific variables */
+  --timeline-card-bg: #ffffff;
+
 }
 
 /* === Dark Theme === */
@@ -16,4 +20,7 @@ body.dark {
   --border-color: #444;
   --button-bg: #3a3a3a;
   --button-hover: #555;
+
+  /* 🎨 Card-specific variables */
+  --timeline-card-bg: #999;  
 }
