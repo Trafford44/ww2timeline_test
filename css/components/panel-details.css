@@ -1,7 +1,7 @@
 /* === Generic <details> Styling for Panels === */
-body details {
+details {
   margin-bottom: 1em;
-  background: var(--details-background-color); /* 🎨 Theme-specific variable */
+  background: #ffffff;
   border: 1px solid #ccc;
   border-radius: 6px;
   padding: 10px;
