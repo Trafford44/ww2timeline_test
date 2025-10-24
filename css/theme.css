@@ -26,3 +26,11 @@ body.dark {
   --timeline-card-bg: #999;  
   --pinned-card-bg: #a4ac2585;     /* a cool green */
 }
+
+body.light details {
+    details-background-color: #ffffff; 
+}
+
+body.dark details {
+    details-background-color: #1e1e1e; 
+}
