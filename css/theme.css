@@ -7,7 +7,8 @@ body.light {
 
   /* 🎨 Card-specific variables */
   --timeline-card-bg: #ffffff;
-
+  --pinned-card-bg: #fffbe6;     /* a soft yellow tint */
+  
 }
 
 /* === Dark Theme === */
@@ -23,4 +24,5 @@ body.dark {
 
   /* 🎨 Card-specific variables */
   --timeline-card-bg: #999;  
+  --pinned-card-bg: #a4ac2585;     /* a cool green */
 }
