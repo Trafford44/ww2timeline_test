@@ -5,26 +5,27 @@
  *
  * General-purpose utility functions used across the application for timing control and functional composition.
  *
- * Purpose:
+ * ✅ Purpose:
  * - Provide reusable helpers for throttling and debouncing high-frequency actions
  * - Improve performance and responsiveness by limiting how often functions are executed
- * - Support modular event handling and logging strategies
+ * - Support modular event handling, logging, and UI responsiveness strategies
  *
- * Included Utilities:
+ * 🛠️ Included Utilities:
  * - `throttle(fn, delay)`: ensures `fn` is called at most once per `delay` milliseconds
  * - `debounce(fn, delay)`: ensures `fn` is called only after `delay` milliseconds of inactivity
-
- * Usage:
+ *
+ * 📦 Usage:
  * - Wrap any function that may be triggered rapidly (e.g. scroll, resize, input, logging)
- * - Use `throttle()` for regular pacing (e.g. log every 1s)
+ * - Use `throttle()` for regular pacing (e.g. log every 1s, suppress noise)
  * - Use `debounce()` for idle detection (e.g. wait until user stops typing)
-
- * Example:
+ *
+ * 🧩 Example:
  *   const throttledLog = throttle(logAction, 1000);
  *   const debouncedResize = debounce(() => adjustLayout(), 300);
-
+ *
  * These utilities are designed to be lightweight, side-effect-free, and safe for use in both UI and data layers.
  */
+
 
 
 // Throttling and Debouncing are techniques to control how often logging occurs, especially when user actions happen rapidly (like typing, dragging, or clicking repeatedly). They help prevent:
