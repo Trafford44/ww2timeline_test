@@ -1,5 +1,5 @@
 /* === Generic <details> Styling for Panels === */
-details {
+panel {
   margin-bottom: 1em;
   background: #ffffff;
   border: 1px solid #ccc;
