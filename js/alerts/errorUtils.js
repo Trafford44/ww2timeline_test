@@ -43,7 +43,7 @@ export function reportError(userMessage, error, context = {}, retryCallback = nu
 
   showAlert(userMessage, "error", {
     retryCallback,
-    dismissible: true,
+    dismissible: false,
     autoDismiss: 10000
   });
 }
