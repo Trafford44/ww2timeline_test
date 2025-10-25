@@ -84,7 +84,7 @@ showAlert("You don’t have permission to view this section.", "warning");
 export function showAlert(message, type = "error", options = {}) {
   const container = document.getElementById("alert-container");
   if (!container) return;
-console.log("Found alert-container");
+
   const alert = document.createElement("div");
   alert.className = `alert alert-${type}`;
   alert.innerHTML = `<span>${message}</span>`;
@@ -108,7 +108,7 @@ console.log("Found alert-container");
   }
 
   container.appendChild(alert);
-
+console.log("got to here");
   if (options.autoDismiss) {
     setTimeout(() => container.removeChild(alert), options.autoDismiss);
   }
