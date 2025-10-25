@@ -199,7 +199,7 @@ function createToggleDescription(description) {
   return `
     <br><b>${domain.labels.ShortDescription || "Description"}:</b> 
     <span 
-      class="notes-toggle-icon"
+      class="description-toggle-icon"
       data-target-id="${uniqueId}"
       onclick="toggleText(this, '${uniqueId}')"
       title="Click to expand/collapse description"
@@ -270,7 +270,7 @@ function attachEventCardListeners(card, event) {
   }
   
   // Description toggle listener
-  card.querySelectorAll(".notes-toggle-icon").forEach((icon) => {
+  card.querySelectorAll(".description-toggle-icon").forEach((icon) => {
     icon.addEventListener("click", () => {
       const targetId = icon.dataset.targetId;
       toggleText(icon, targetId);
