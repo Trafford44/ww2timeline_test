@@ -10,7 +10,7 @@
  
   <!-- Panels: Legend, Options, Filters, Stats -->
 
-    <details class="timeline-legend">
+    <panel class="timeline-legend">
       <summary>Timeline Legend</summary>
       <div class="legend-content">
         <div class="legend-group">
@@ -54,15 +54,15 @@
           </table>
         </div>
       </div>
-    </details>
+    </panel>
 
     
-    <details class="stats-panel">
+    <panel class="stats-panel">
       <summary>Stats</summary>
       <div id="statsContent" style="padding: 10px; font-size: 0.95em;"></div>
-    </details>
+    </panel>
   
-    <details class="options-panel">
+    <panel class="options-panel">
       <summary>Options</summary>
       <div class="controls">
         <label><input type="checkbox" id="hideWatchedToggle"> Hide Watched Films</label>
@@ -73,9 +73,9 @@
         <button class="options" id="exportButton">📥 Export</button>
         <button class="options" id="themeToggleButton">🌙 Toggle Dark Mode</button>
       </div>
-    </details>
+    </panel>
 
-    <details class="filter-panel">
+    <panel class="filter-panel">
     <summary>Filter Options</summary>
     <div class="controls">
       <input type="text" id="searchInput" placeholder="Search..." disabled>
@@ -107,7 +107,7 @@
       <button id="clearFilters">Clear Filters</button>      
     </div>    
     <div id="filterCount" class="filter-count">Showing 0 records</div>
-  </details>
+  </panel>
 
 
   <div id="initialPrompt" class="initial-prompt">Loading data...</div>
