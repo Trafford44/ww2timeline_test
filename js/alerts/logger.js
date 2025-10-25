@@ -78,6 +78,32 @@
 // }
 
 
+// Re throttleConfig:  Move to a config file?
+// Advantages of Moving throttleConfig to JSON
+// 1. Separation of concerns
+// Keeps logic (logger.js) and configuration (throttleConfig.json) cleanly separated.
+// Easier to audit or update throttle rules without touching code.
+
+// 2. Dynamic loading
+// You could load config at runtime, allowing environment-specific throttling (e.g. dev vs prod).
+// Could support hot-reloading or admin overrides in future.
+
+// 3. Scalability
+// If throttle rules grow or become user-configurable, JSON is easier to manage and parse.
+
+
+// Tradeoffs / Overhead
+// 1. Extra layer
+// You now need to fetch() or import the JSON, handle errors, and possibly wait for it to load.
+// Slightly more cognitive overhead for contributors unfamiliar with the config structure.
+
+// 2. No real gain for static config
+// If the throttle rules are stable and only edited by developers, a JS object is just as effective.
+// You still have to edit and save — just in a different file format.
+
+
+// I'll keep it here for now'
+
 
 import { throttle, debounce } from './utils.js';
 import { getLocalTimestamp } from './utils.js';
