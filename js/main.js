@@ -1,6 +1,10 @@
 import { loadConfig } from './config.js';
 import { domainKey } from './domain.js';
-// import { dataset } from './data.js';
+// logging and alerts
+import { enableTracing, disableTracing, getRecentActions } from './alerts/logger.js';
+import { throttledLogAction } from './alerts/logger.js';
+import { debouncedLogAction } from './alerts/logger.js';
+
 
 export let features = {};
 let domain = {};
