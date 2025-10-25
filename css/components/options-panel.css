@@ -1,5 +1,5 @@
 /* === Options Panel Container === */
-details.options-panel {
+panel.options-panel {
   max-width: 900px;
   margin: 0 auto 20px;
   padding: 0;
@@ -30,7 +30,7 @@ details.options-panel {
 }
 
 /* === Font Size Fixes on Open === */
-details.options-panel[open] {
+panel.options-panel[open] {
   font-size: 1em !important;
   zoom: 1 !important;
   -moz-text-size-adjust: none !important;
@@ -38,7 +38,7 @@ details.options-panel[open] {
   text-size-adjust: none !important;
 }
 
-details.options-panel[open] .controls {
+panel.options-panel[open] .controls {
   font-size: 1em !important;
   zoom: 1 !important;
   -webkit-text-size-adjust: none !important;
