@@ -105,6 +105,21 @@
 // I'll keep it here for now'
 
 
+// Also, re submitForm: 2000:
+// Prevent duplicate submissions: If a user double-clicks or rapidly triggers a form submit, throttling can suppress the second call.
+// Avoid backend strain: If the form triggers expensive operations (e.g. file uploads, database writes), throttling can help.
+// UI debounce: If the submit button is wired to multiple handlers or async chains, throttling can reduce noise.
+
+// ❌ Why 2000ms Might Be Too Long
+// It could suppress legitimate retries or feedback logging
+// It might hide issues during rapid testing or debugging
+// It assumes a user might double-submit within 2 seconds — which may or may not be true
+
+// ✅ What You Could Do Instead
+// Lower it to something like 500 or 1000 if you still want protection
+// Remove it entirely if your form already has built-in safeguards (e.g. disabling the button after submit)
+// Use deduplication instead of throttling if you want to log every attempt but collapse identical entries
+
 import { throttle, debounce } from './utils.js';
 import { getLocalTimestamp } from './utils.js';
 
