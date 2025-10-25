@@ -154,6 +154,7 @@ function innerLog(entry) {
 
 export function logAction(action, params = {}, result = null, options = {}) {
   const force = options.force || false;
+  if (!tracingEnabled && !force) return;
   const throttleMs = throttleConfig[action] || 0;
 
   const entry = {
