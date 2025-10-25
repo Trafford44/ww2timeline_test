@@ -123,7 +123,6 @@
 import { throttle, debounce } from './utils.js';
 import { getLocalTimestamp } from './utils.js';
 
-const actionLog = [];
 let tracingEnabled = false;
 
 const throttleConfig = {
@@ -182,5 +181,5 @@ export function logAction(action, params = {}, result = null, options = {}) {
 export const debouncedLogAction = debounce(logAction, 500);  // after 500ms idle
 
 export function getRecentActions(count = 10) {
-  return actionLog.slice(-count);
+  return recentActions.slice(-count);
 }
