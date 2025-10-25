@@ -123,7 +123,7 @@
 import { throttle, debounce } from './utils.js';
 import { getLocalTimestamp } from './utils.js';
 
-let tracingEnabled = false;
+let tracingEnabled = true;
 
 const throttleConfig = {
   fetchData: 1000,
