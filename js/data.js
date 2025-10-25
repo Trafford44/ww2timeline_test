@@ -1,8 +1,9 @@
 // data.js
 // logs actions, if functionality enabled (calls throttledLogAction)
 
-import { reportError } from './errorUtils.js';
-import { logAction } from './logger.js';
+import { reportError } from './alerts/errorUtils.js';
+import { logAction } from './alerts/logger.js';
+
 
 export let dataset = [];
 
