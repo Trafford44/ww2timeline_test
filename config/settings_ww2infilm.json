@@ -13,8 +13,8 @@
     "active": "📌",
     "inactive": "📍"
   },
-  "descriptionIcon" {
-    "collaped": ""📖",
+  "descriptionIcon": {
+    "collaped": "📖",
     "open": "📕"
   },
   "notesIndicator": "📝",
