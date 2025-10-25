@@ -178,7 +178,7 @@ export function applyFilters(data) {
     countDisplay.textContent = `Showing ${filtered.length} of ${dataset.length} record${dataset.length !== 1 ? "s" : ""}`;
   }
 
-  console.log("Filtered results:", filtered);
+  //console.log("Filtered results:", filtered);
   console.log("Number of results:", filtered.length);
 
   renderTimeline(filtered);
