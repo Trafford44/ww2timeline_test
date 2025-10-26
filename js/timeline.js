@@ -6,6 +6,7 @@ import { features } from './main.js';
 import { savePinned, loadPinned, isPinned, togglePinned } from './pinnedManager.js';
 import { loadConfig } from './config.js';
 import { domainKey } from './domain.js';
+import { hideAlert } from './alerts/alertUtils.js';
 
 let domain = {};
 
@@ -50,6 +51,7 @@ export async function renderTimeline(filteredData) {
   }
 
   initialPrompt.style.display = 'none';
+  hideAlert();
 
   // Use the extracted utility function
   const grouped = groupEventsByYear(filteredData); 
