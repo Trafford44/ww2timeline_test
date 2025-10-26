@@ -90,14 +90,7 @@ showAlert("You don’t have permission to view this section.", "warning");
 
 
 
-export function showAlert(message, type if (options.autoDismiss === true) {
-  const dismissDelay = 10000; // 10 seconds
-  setTimeout(() => {
-    console.log("Auto-dismissing alert after", dismissDelay, "ms");
-    container.removeChild(alert);
-  }, dismissDelay);
-}
-= "error", options = {}) {
+export function showAlert(message, type = "error", options = {}) {
   const container = document.getElementById("alert-container");
   if (!container) return;
 
@@ -105,16 +98,10 @@ export function showAlert(message, type if (options.autoDismiss === true) {
   alert.className = `alert alert-${type}`;
   alert.innerHTML = `<span>${message}</span>`;
 
+  // Add Retry button if callback is provided
   if (options.retryCallback) {
     const retryBtn = document.createElement("button");
-    retryBtn.textContent = "Retry";if (options.autoDismiss === true) {
-  const dismissDelay = 10000; // 10 seconds
-  setTimeout(() => {
-    console.log("Auto-dismissing alert after", dismissDelay, "ms");
-    container.removeChild(alert);
-  }, dismissDelay);
-}
-
+    retryBtn.textContent = "Retry";
     retryBtn.onclick = () => {
       retryBtn.disabled = true;
       retryBtn.textContent = "Retrying...";
@@ -123,22 +110,17 @@ export function showAlert(message, type if (options.autoDismiss === true) {
     alert.appendChild(retryBtn);
   }
 
-  if (options.dismissible) {if (options.autoDismiss === true) {
-  const dismissDelay = 10000; // 10 seconds
-  setTimeout(() => {
-    console.log("Auto-dismissing alert after", dismissDelay, "ms");
-    container.removeChild(alert);
-  }, dismissDelay);
-}
-
+  // Add Dismiss button if enabled
+  if (options.dismissible) {
     const closeBtn = document.createElement("button");
-    closeBtn.textContent = "×";
+    closeBtn.textContent = "Close";
     closeBtn.onclick = () => container.removeChild(alert);
     alert.appendChild(closeBtn);
   }
 
   container.appendChild(alert);
 
+  // Handle auto-dismiss
   if (options.autoDismiss === true) {
     const dismissDelay = 10000; // 10 seconds
     setTimeout(() => {
@@ -146,6 +128,6 @@ export function showAlert(message, type if (options.autoDismiss === true) {
       container.removeChild(alert);
     }, dismissDelay);
   }
-
 }
+
 
