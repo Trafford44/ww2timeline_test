@@ -103,7 +103,7 @@ function applyFeatureVisibility() {
     applyFilters(data);
   
     // load data for features, if they turened on
-    loadFeatures();
+    loadFeatures(data);
   
   
   
@@ -121,7 +121,7 @@ function applyFeatureVisibility() {
 // Hides export and theme buttons if disabled
 // Collapses button panel if both are disabled
 // Logs the action and handles errors via handleError
-function loadFeatures() {
+function loadFeatures(data) {
   logAction("loadFeatures"); 
   try {
     if (features.enableWikipedia) {
