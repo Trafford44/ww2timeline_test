@@ -108,7 +108,7 @@ export function showAlert(message, type = "error", options = {}) {
   }
 
   container.appendChild(alert);
-console.log("got to here");
+console.log(container.innerHTML);
   if (options.autoDismiss) {
     setTimeout(() => container.removeChild(alert), options.autoDismiss);
   }
