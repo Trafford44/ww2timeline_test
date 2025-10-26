@@ -25,7 +25,7 @@ import { logAction } from './alerts/logger.js';
 // Logging:
 //   Uses console.log() to trace invocation and filtered count
 export function updateStats(filteredEvents, totalEvents) {
-  logAction("updateStats", { (filteredEvents, totalEvents });
+  logAction("updateStats", { filteredEvents, totalEvents });
  
   try {
       const statsContent = document.getElementById("statsContent");
