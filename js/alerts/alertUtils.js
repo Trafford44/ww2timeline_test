@@ -100,7 +100,10 @@ rmation
 
  */
 
-
+export function hideAlert() {
+  const container = document.getElementById("alert-container");
+  alert.innerHTML = ""
+}
 
 export function showAlert(message, type = "error", options = {}) {
   const container = document.getElementById("alert-container");
