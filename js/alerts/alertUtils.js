@@ -114,7 +114,6 @@ export function showAlert(message, type = "error", options = {}) {
 setTimeout(() => {
   console.log("Container after 5s:", container.innerHTML);
 }, 5000);
-  return;
   
   const dismissDelay = typeof options.autoDismiss === "number" ? options.autoDismiss : null;
   if (dismissDelay) {
@@ -123,6 +122,5 @@ setTimeout(() => {
       container.removeChild(alert);
     }, dismissDelay);
   }
-
 }
 
