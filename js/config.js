@@ -1,5 +1,20 @@
 import { logAction } from './alerts/logger.js';
 
+
+// loadConfig(domainKey)
+// Fetches and assembles all configuration files for a given domain context.
+// Purpose: Centralized loader for feature toggles, theme settings, domain metadata, and UI settings
+// Input: domainKey (e.g. "ww2infilm", "science") used to dynamically construct file paths
+// Process:
+//   Uses Promise.all() to fetch four JSON files in parallel:
+//     features_${domainKey}.json — toggles for UI panels and feature modules
+//     theme_${domainKey}.json — theme-specific styles and overrides
+//     domain_${domainKey}.json — metadata like subject, title, and domain-specific labels
+//     settings_${domainKey}.json — UI text, placeholders, and app-level configuration
+//   Parses each response into usable objects
+//   Logs the action with logAction() for traceability
+// Output: Returns a unified config object { features, theme, domain, settings }
+// Error Handling: Catches fetch or parse failures and delegates to handleError() with context
 export async function loadConfig(domainKey) {
   logAction("loadConfig", { domainKey });
  
