@@ -11,7 +11,7 @@ export let dataset = [];
 export async function fetchData(features, domain, settings) {
   const initialPrompt = document.getElementById("initialPrompt");
   initialPrompt.textContent = `Loading data for ${domain.subject}...`;
-  showAlert(`Loading data for ${domain.subject}...`, "info", { autoDismiss: 5000 });
+  showAlert(`Loading data for ${domain.subject}...`, "info", { autoDismiss: false });
   
   logAction("fetchData", { features, domain, settings });
 
