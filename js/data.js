@@ -3,6 +3,7 @@
 
 import { reportError } from './alerts/errorUtils.js';
 import { logAction } from './alerts/logger.js';
+import { showAlert } from './alertUtils.js';
 
 
 export let dataset = [];
@@ -10,7 +11,8 @@ export let dataset = [];
 export async function fetchData(features, domain, settings) {
   const initialPrompt = document.getElementById("initialPrompt");
   initialPrompt.textContent = `Loading data for ${domain.subject}...`;
-
+  showAlert(`Loading data for ${domain.subject}...`, "info", { autoDismiss: 5000 });
+  
   logAction("fetchData", { features, domain, settings });
 
   try {
