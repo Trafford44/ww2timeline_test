@@ -55,7 +55,14 @@
  * 1. Form Validation Feedback - When a user submits a form with missing or invalid fields:
  * showAlert("Please complete all required fields.", "warning", { dismissible: true });
 
- * 2. Success Confirmation
+ * 2. Success Confiif (options.autoDismiss === true) {
+  const dismissDelay = 10000; // 10 seconds
+  setTimeout(() => {
+    console.log("Auto-dismissing alert after", dismissDelay, "ms");
+    container.removeChild(alert);
+  }, dismissDelay);
+}
+rmation
  * After a successful action like saving settings or uploading a file:
  * showAlert("Settings saved successfully.", "success", { autoDismiss: 5000 });
  * 
@@ -83,7 +90,14 @@ showAlert("You don’t have permission to view this section.", "warning");
 
 
 
-export function showAlert(message, type = "error", options = {}) {
+export function showAlert(message, type if (options.autoDismiss === true) {
+  const dismissDelay = 10000; // 10 seconds
+  setTimeout(() => {
+    console.log("Auto-dismissing alert after", dismissDelay, "ms");
+    container.removeChild(alert);
+  }, dismissDelay);
+}
+= "error", options = {}) {
   const container = document.getElementById("alert-container");
   if (!container) return;
 
@@ -93,7 +107,14 @@ export function showAlert(message, type = "error", options = {}) {
 
   if (options.retryCallback) {
     const retryBtn = document.createElement("button");
-    retryBtn.textContent = "Retry";
+    retryBtn.textContent = "Retry";if (options.autoDismiss === true) {
+  const dismissDelay = 10000; // 10 seconds
+  setTimeout(() => {
+    console.log("Auto-dismissing alert after", dismissDelay, "ms");
+    container.removeChild(alert);
+  }, dismissDelay);
+}
+
     retryBtn.onclick = () => {
       retryBtn.disabled = true;
       retryBtn.textContent = "Retrying...";
@@ -102,7 +123,14 @@ export function showAlert(message, type = "error", options = {}) {
     alert.appendChild(retryBtn);
   }
 
-  if (options.dismissible) {
+  if (options.dismissible) {if (options.autoDismiss === true) {
+  const dismissDelay = 10000; // 10 seconds
+  setTimeout(() => {
+    console.log("Auto-dismissing alert after", dismissDelay, "ms");
+    container.removeChild(alert);
+  }, dismissDelay);
+}
+
     const closeBtn = document.createElement("button");
     closeBtn.textContent = "×";
     closeBtn.onclick = () => container.removeChild(alert);
@@ -111,16 +139,13 @@ export function showAlert(message, type = "error", options = {}) {
 
   container.appendChild(alert);
 
-setTimeout(() => {
-  console.log("Container after 5s:", container.innerHTML);
-}, 5000);
-  
-  const dismissDelay = typeof options.autoDismiss === "number" ? options.autoDismiss : null;
-  if (dismissDelay) {
+  if (options.autoDismiss === true) {
+    const dismissDelay = 10000; // 10 seconds
     setTimeout(() => {
       console.log("Auto-dismissing alert after", dismissDelay, "ms");
       container.removeChild(alert);
     }, dismissDelay);
   }
+
 }
 
