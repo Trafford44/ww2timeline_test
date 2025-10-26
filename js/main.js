@@ -82,7 +82,7 @@ function applyFeatureVisibility() {
 
 
  } catch (err) {
-   handleError(err, "initApp", {
+   errorHandler(err, "initApp", {
      metadata: { domain, settings },
      retryCallback: () => fetchData(features, domain, settings)
    });
