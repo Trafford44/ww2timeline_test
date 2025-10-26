@@ -102,8 +102,16 @@ rmation
 
 export function hideAlert() {
   const container = document.getElementById("alert-container");
-  if (container) { container.innerHTML = "" };
+  if (container) {
+    console.log("hiding alert");
+    container.style.opacity = "0";
+    setTimeout(() => {
+      container.innerHTML = "";
+      container.style.opacity = "1";
+    }, 300); // match your CSS transition duration
+  }
 }
+
 
 export function showAlert(message, type = "error", options = {}) {
   const container = document.getElementById("alert-container");
