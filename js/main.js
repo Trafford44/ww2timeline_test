@@ -3,6 +3,7 @@ import { domainKey } from './domain.js';
 // logging and alerts
 import { enableTracing, disableTracing, getRecentActions } from './alerts/logger.js';
 import { debouncedLogAction } from './alerts/logger.js';
+import { hideAlert } from './alertUtils.js';
 
 
 export let features = {};
@@ -28,6 +29,7 @@ function applySettings() {
   if (initialPrompt && settings.noDataMessage) {
     initialPrompt.textContent = settings.noDataMessage;
   }
+  hideAlert();
 }
 
 function applyFeatureVisibility() {
@@ -45,7 +47,7 @@ import { applyFilters } from './filters.js';
 import { populateDropdowns } from './filters.js';
 import { toggleControls } from './filters.js';
 import { loadPinned } from './pinnedManager.js';
-
+import { hideAlert } from './alerts/alertUtils.js';
 
 async function initApp() {
   // Use a dynamic key based on URL, user input, or fallback
