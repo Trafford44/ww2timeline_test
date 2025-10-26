@@ -3,7 +3,7 @@ import { domainKey } from './domain.js';
 // logging and alerts
 import { enableTracing, disableTracing, getRecentActions } from './alerts/logger.js';
 import { debouncedLogAction } from './alerts/logger.js';
-import { hideAlert } from './alertUtils.js';
+import { hideAlert } from './alerts/alertUtils.js';
 
 
 export let features = {};
