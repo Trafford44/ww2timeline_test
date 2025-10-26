@@ -145,7 +145,7 @@ function loadFeatures() {
     }
   
     if (!features.enableThemeToggle) {
-      const themeSelect = document.getElementById("themeToggleButton")logAction("fetchData", { features, domain, settin;
+      const themeSelect = document.getElementById("themeToggleButton");
       if (themeSelect) {
         themeSelect.style.display = 'none';
       }
