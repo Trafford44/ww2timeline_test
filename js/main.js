@@ -78,15 +78,14 @@ function applyFeatureVisibility() {
  async function initApp() { 
    try {  
     const config = await loadConfig(domainKey);
-    logAction("initApp", { config.domain });
-     
+        
     throw new Error("Simulated error for testing");
    
     features = config.features;
     domain = config.domain;
     settings = config.settings;
-    console.log("🔍 features.enableOptionsPanel:", features.enableOptionsPanel);
-    
+    logAction("initApp", { domain });
+     
     applySettings();
     applyFeatureVisibility();
   
