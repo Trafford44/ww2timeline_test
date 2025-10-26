@@ -3,7 +3,7 @@
 
 import { reportError } from './alerts/errorUtils.js';
 import { logAction } from './alerts/logger.js';
-import { showAlert } from './alertUtils.js';
+import { showAlert } from './alerts/alertUtils.js';
 
 
 export let dataset = [];
