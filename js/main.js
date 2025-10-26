@@ -75,46 +75,45 @@ function applyFeatureVisibility() {
  // Sets up options panel and applies filters
  // Loads feature-specific modules (Wikipedia, map, local storage)
  // Logs the action and delegates error handling to errorHandler with metadata and retry callback
- async function initApp() {
- 
- try {
-  logAction("initApp", { config.domain });
-  const config = await loadConfig(domainKey);
+ async function initApp() { 
+   try {  
+    const config = await loadConfig(domainKey);
+    logAction("initApp", { config.domain });
+     
+    throw new Error("Simulated error for testing");
+   
+    features = config.features;
+    domain = config.domain;
+    settings = config.settings;
+    console.log("🔍 features.enableOptionsPanel:", features.enableOptionsPanel);
+    
+    applySettings();
+    applyFeatureVisibility();
   
-  throw new Error("Simulated error for testing");
- 
-  features = config.features;
-  domain = config.domain;
-  settings = config.settings;
-  console.log("🔍 features.enableOptionsPanel:", features.enableOptionsPanel);
+    const data = await fetchData(features, domain, settings);
   
-  applySettings();
-  applyFeatureVisibility();
-
-  const data = await fetchData(features, domain, settings);
-
-  populateDropdowns(data);
-  toggleControls(true);
-
-  // 1. Set up the options (load state, set checkboxes, attach listeners)
-  if (features.enableOptionsPanel) {
-    setupOptions(applyFilters);
-  }
-
-  // 2. Apply filters (which now correctly reads the restored options state)
-  applyFilters(data);
-
-  // load data for features, if they turened on
-  loadFeatures();
-
-
-
- } catch (err) {
-   errorHandler(err, "initApp", {
-     metadata: { domain, settings },
-     retryCallback: () => fetchData(features, domain, settings)
-   });
- }
+    populateDropdowns(data);
+    toggleControls(true);
+  
+    // 1. Set up the options (load state, set checkboxes, attach listeners)
+    if (features.enableOptionsPanel) {
+      setupOptions(applyFilters);
+    }
+  
+    // 2. Apply filters (which now correctly reads the restored options state)
+    applyFilters(data);
+  
+    // load data for features, if they turened on
+    loadFeatures();
+  
+  
+  
+   } catch (err) {
+     errorHandler(err, "initApp", {
+       metadata: { domain, settings },
+       retryCallback: () => fetchData(features, domain, settings)
+     });
+   }
 }
 
 // loadFeatures()
