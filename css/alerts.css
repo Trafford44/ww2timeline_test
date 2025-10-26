@@ -1,5 +1,5 @@
 .alert {
-  display: block;
+  display: flex;
   background-color: #fff3cd;
   border-left: 4px solid #f5c002;
   color: #856404;
@@ -9,6 +9,8 @@
   padding: 0.4em 0.8em;   /* reduced from 0.5em 1em */
   cursor: pointer;
   font-size: 0.85rem;     /* slightly smaller text */
+  justify-content: space-between;
+  gap: 0.5em; /* adds space between children */  
 }
 
 .alert-error { background: #fdd; color: #900; }
