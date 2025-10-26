@@ -1,11 +1,12 @@
 .alert {
-  display: none;
+  display: block;
   background-color: #fff3cd;
   border-left: 4px solid #f5c002;
   color: #856404;
   padding: 1em;
   margin: 1em 0;
 }
+
 .alert-error { background: #fdd; color: #900; }
 .alert-success { background: #dfd; color: #060; }
 .alert-warning { background: #ffd; color: #990; }
