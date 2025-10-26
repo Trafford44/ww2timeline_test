@@ -34,7 +34,7 @@ throw new Error("Simulated error for testing");
     //dataset = [];
     return dataset;
   }
-console.log("got to here also");
+
 }
 
 async function loadLocalJSON(domain) {
