@@ -1,3 +1,5 @@
+import { logAction } from './alerts/logger.js';
+
 export async function loadConfig(domainKey) {
   logAction("loadConfig", { domainKey });
  
