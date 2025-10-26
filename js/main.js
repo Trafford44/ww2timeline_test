@@ -3,8 +3,6 @@ import { domainKey } from './domain.js';
 // logging and alerts
 import { enableTracing, disableTracing, getRecentActions } from './alerts/logger.js';
 import { debouncedLogAction } from './alerts/logger.js';
-import { hideAlert } from './alerts/alertUtils.js';
-
 
 export let features = {};
 let domain = {};
@@ -29,7 +27,6 @@ function applySettings() {
   if (initialPrompt && settings.noDataMessage) {
     initialPrompt.textContent = settings.noDataMessage;
   }
-  hideAlert();
 }
 
 function applyFeatureVisibility() {
