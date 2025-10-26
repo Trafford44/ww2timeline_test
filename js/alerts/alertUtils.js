@@ -27,7 +27,9 @@
  *
  * Requirements:
  * - Include a container element with `id="alert-container"` in your HTML
- * - Style alert types via CSS classes: `.alert`, `.alert-error`, `.alert-success`, etc.
+ * - Style alert types via CSS classes: `.alert`, `.alert-error`,setTimeout(() => {
+  console.log("Container after 5s:", container.innerHTML);
+}, 5000); `.alert-success`, etc.
  *
  * This utility is designed for reuse across components and can be extended for stacking, animation, or scoped alerts.
 
@@ -108,7 +110,11 @@ export function showAlert(message, type = "error", options = {}) {
   }
 
   container.appendChild(alert);
-console.log(container.innerHTML);
+
+setTimeout(() => {
+  console.log("Container after 5s:", container.innerHTML);
+}, 5000);
+  
   if (options.autoDismiss) {
     setTimeout(() => container.removeChild(alert), options.autoDismiss);
   }
