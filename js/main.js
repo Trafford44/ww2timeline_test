@@ -47,7 +47,6 @@ import { applyFilters } from './filters.js';
 import { populateDropdowns } from './filters.js';
 import { toggleControls } from './filters.js';
 import { loadPinned } from './pinnedManager.js';
-import { hideAlert } from './alerts/alertUtils.js';
 
 async function initApp() {
   // Use a dynamic key based on URL, user input, or fallback
