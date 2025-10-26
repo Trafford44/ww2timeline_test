@@ -48,9 +48,15 @@ export function reportError(userMessage, error, context = {}, retryCallback = nu
   });
 }
 
-export function handleError(err, context = "Unknown") {
+export function errorHandler(err, context = "Unknown") {
   console.error(`[${context}]`, err);
+
+  if (typeof reportError === "function") {
+    reportError(`Error in ${context}`, err, options.metadata || {}, options.retryCallback);
+  }
+
   showAlert(`Error in ${context}: ${err.message}`, "error", {
-    dismissible: true
+    dismissible: true,
+    retryCallback: options.retryCallback
   });
 }
