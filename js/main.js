@@ -51,7 +51,9 @@ async function initApp() {
   
   const config = await loadConfig(domainKey);
   console.log("🧩 Loaded domain config:", config.domain);
-  
+
+  throw new Error("Simulated error for testing");
+ 
   features = config.features;
   domain = config.domain;
   settings = config.settings;
