@@ -48,3 +48,9 @@ export function reportError(userMessage, error, context = {}, retryCallback = nu
   });
 }
 
+export function handleError(err, context = "Unknown") {
+  console.error(`[${context}]`, err);
+  showAlert(`Error in ${context}: ${err.message}`, "error", {
+    dismissible: true
+  });
+}
