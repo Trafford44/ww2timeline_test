@@ -10,6 +10,7 @@
   cursor: pointer;
   font-size: 0.85rem;     /* slightly smaller text */
   gap: 0.5em; /* adds space between children */  
+  align-items: center;
 }
 
 .alert-error { background: #fdd; color: #900; }
