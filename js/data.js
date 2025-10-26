@@ -23,7 +23,6 @@ export async function fetchData(features, domain, settings) {
     } else if (dataSource === "googleSheets") {
       data = await loadGoogleSheet();
     }
-throw new Error("Simulated error for testing");
 
     dataset = Array.isArray(data) ? data : [];
     return dataset;
