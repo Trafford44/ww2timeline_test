@@ -1,5 +1,5 @@
 export async function loadConfig(domainKey) {
-  logAction("loadConfig" { domainKey });
+  logAction("loadConfig", { domainKey });
  
   try {
       const [featuresRes, themeRes, domainRes, settingsRes] = await Promise.all([
