@@ -81,9 +81,21 @@ rmation
  *   dismissible: true
  * });
 
-6. Permission or Access Warnings
-If a user tries to access a restricted feature:
-showAlert("You don’t have permission to view this section.", "warning");
+    showAlert("Tip: You can drag cards to reorder them.", "info", {
+      autoDismiss: 8000
+    });
+    
+    showAlert("Session expired", "error", {
+      autoDismiss: true
+    });
+    
+    showAlert("Retry failed", "error", {
+      autoDismiss: false
+    });
+
+  6. Permission or Access Warnings
+  If a user tries to access a restricted feature:
+  showAlert("You don’t have permission to view this section.", "warning");
 
 
  */
@@ -121,13 +133,17 @@ export function showAlert(message, type = "error", options = {}) {
   container.appendChild(alert);
 
   // Handle auto-dismiss
-  if (options.autoDismiss === true) {
-    const dismissDelay = 10000; // 10 seconds
+  if (options.autoDismiss) {
+    const dismissDelay = typeof options.autoDismiss === "number"
+      ? options.autoDismiss
+      : 10000; // default to 10 seconds
+  
     setTimeout(() => {
       console.log("Auto-dismissing alert after", dismissDelay, "ms");
       container.removeChild(alert);
     }, dismissDelay);
   }
+
 }
 
 
