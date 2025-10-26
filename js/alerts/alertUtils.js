@@ -102,7 +102,7 @@ rmation
 
 export function hideAlert() {
   const container = document.getElementById("alert-container");
-  container.innerHTML = ""
+  if (container) { container.innerHTML = "" };
 }
 
 export function showAlert(message, type = "error", options = {}) {
