@@ -31,9 +31,7 @@ export function setupOptions(applyFilters) {
     const hidePinnedToggle = document.getElementById("hidePinnedToggle");
     const challengeModeToggle = document.getElementById("challengeModeToggle");
     const themeSelect = document.getElementById("themeToggleButton");
-    
-    console.log("Theme select:", themeSelect);
-    console.log("🔧 setupOptions() is running");
+
     
     // === Load saved options ===
     // localStorage is a browser API that lets you store key/value pairs persistently in the user’s browser.
@@ -76,7 +74,7 @@ export function setupOptions(applyFilters) {
     // Listeners are correct, they call saveOptions() and applyFilters()
     if (hideWatchedToggle) {
       hideWatchedToggle.addEventListener("change", () => {
-        console.log("🔄 Hide Watched toggled");
+        //console.log("🔄 Hide Watched toggled");
         saveOptions();
         applyFilters();
       });
@@ -84,7 +82,7 @@ export function setupOptions(applyFilters) {
   
     if (hidePinnedToggle) {
       hidePinnedToggle.addEventListener("change", () => {
-        console.log("🔄 Hide Pinned toggled");
+        //console.log("🔄 Hide Pinned toggled");
         saveOptions();
         applyFilters();
       });
@@ -92,7 +90,7 @@ export function setupOptions(applyFilters) {
   
     if (challengeModeToggle) {
       challengeModeToggle.addEventListener("change", () => {
-        console.log("🔄 Challenge Mode toggled");
+        //console.log("🔄 Challenge Mode toggled");
         saveOptions();
         applyFilters();
       });
@@ -106,7 +104,7 @@ export function setupOptions(applyFilters) {
         localStorage.setItem('theme', theme);
         themeSelect.textContent = theme === 'dark' ? '☀️ Toggle Light Mode' : '🌙 Toggle Dark Mode';
         
-        console.log(`🎨 Theme changed to ${theme}`);
+        //console.log(`🎨 Theme changed to ${theme}`);
         
         saveOptions();
       });
