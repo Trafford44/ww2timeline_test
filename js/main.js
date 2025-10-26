@@ -34,8 +34,8 @@ function applySettings() {
     if (initialPrompt && settings.noDataMessage) {
       initialPrompt.textContent = settings.noDataMessage;
     }
-  } catch (err) {
-    handleError(err, "applySettings");
+  } catch (error) {
+    handleError(error, "applySettings");
   }     
 }
 
@@ -51,8 +51,8 @@ function applyFeatureVisibility() {
     if (!features.enableOptionsPanel) document.querySelector('.options-panel')?.remove();
     if (!features.enableLegendPanel) document.querySelector('.timeline-legend')?.remove();
     if (!features.enableStatsPanel) document.querySelector('.stats-panel')?.remove();
-  } catch (err) {
-    handleError(err, "applyFeatureVisibility");
+  } catch (error) {
+    handleError(error, "applyFeatureVisibility");
   }       
 }
 
@@ -107,8 +107,8 @@ function applyFeatureVisibility() {
   
   
   
-   } catch (err) {
-     errorHandler(err, "initApp", {
+   } catch (error) {
+     errorHandler(error, "initApp", {
        metadata: { domain, settings },
        retryCallback: () => fetchData(features, domain, settings)
      });
@@ -166,8 +166,8 @@ function loadFeatures() {
       });
     }  
    
-  } catch (err) {
-    handleError(err, "loadFeatures");
+  } catch (error) {
+    handleError(error, "loadFeatures");
   }  
 }
 
