@@ -79,7 +79,7 @@ function applyFeatureVisibility() {
    try {  
     const config = await loadConfig(domainKey);
         
-    throw new Error("Simulated error for testing");
+    // throw new Error("Simulated error for testing");
    
     features = config.features;
     domain = config.domain;
