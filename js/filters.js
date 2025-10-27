@@ -3,6 +3,7 @@ import { updateStats } from './stats.js';
 import { dataset } from './data.js';
 import { isPinned } from './pinnedManager.js';
 import { logAction } from './alerts/logger.js';
+import { errorHandler } from './alerts/errorUtils.js';
 
 // --- 1. DOM Element References ---
 export const searchInput = document.getElementById('searchInput');
@@ -31,7 +32,7 @@ export function toggleControls(enable) {
       platformFilter, eventYearFilter, periodFilter, pinnedFilter, clearFilters
     ].forEach(el => el.disabled = !enable);
   } catch (error) {
-    handleError(error, "toggleControls");
+    errorHandler(error, "toggleControls");
   }      
 }
 
@@ -71,7 +72,7 @@ export function populateDropdowns(fullData) {
       eventYearFilter.innerHTML = '<option value="">Event Year: All</option>' + eventYears.map(y => `<option value="${y}">${y}</option>`).join("");
       periodFilter.innerHTML = '<option value="">Period: All</option>' + periods.map(p => `<option value="${p}">${p}</option>`).join("");
   } catch (error) {
-    handleError(error, "populateDropdowns");
+    errorHandler(error, "populateDropdowns");
   }     
 }
 
@@ -99,7 +100,7 @@ export function parseSearchQuery(query) {
     return { filters, keywords };
 
   } catch (error) {
-    handleError(error, "parseSearchQuery");
+    errorHandler(error, "parseSearchQuery");
   }    
 }
 
@@ -126,7 +127,7 @@ function getFilterValues() {
       challengeMode: challengeModeToggle?.checked
     };
   } catch (error) {
-    handleError(error, "getFilterValues");
+    errorHandler(error, "getFilterValues");
   }     
 }
 
@@ -160,7 +161,7 @@ export function setupExportButton(filtered) {
         });
       });
   } catch (error) {
-    handleError(error, "setupExportButton");
+    errorHandler(error, "setupExportButton");
   }      
 }
 
@@ -228,7 +229,7 @@ function shouldIncludeEvent(event, values) {
   
     return true;
   } catch (error) {
-    handleError(error, "shouldIncludeEvent");
+    errorHandler(error, "shouldIncludeEvent");
   }     
 }
 
@@ -259,7 +260,7 @@ export function applyFilters(data) {
     updateStats(filtered, totalEvents);
     setupExportButton(filtered);
   } catch (error) {
-    handleError(error, "applyFilters");
+    errorHandler(error, "applyFilters");
   }   
 }
 
