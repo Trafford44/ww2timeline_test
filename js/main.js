@@ -4,7 +4,7 @@ import { domainKey } from './domain.js';
 import { enableTracing, disableTracing, getRecentActions } from './alerts/logger.js';
 import { debouncedLogAction } from './alerts/logger.js';
 import { errorHandler } from './alerts/errorUtils.js';
-import { logAction } from './alerts/logger.js';
+import { logActivity } from './alerts/logger.js';
 
 export let features = {};
 let domain = {};
@@ -16,7 +16,7 @@ let settings = {};
 // Updates placeholder text and no-data message in key input elements
 // Logs the action and handles errors via
 function applySettings() {
-  logAction("applySettings");
+  logActivity("info", "applySettings");
  
   try {
     // set the browser title. Use default if either are blank/null
@@ -45,7 +45,7 @@ function applySettings() {
 // Removes corresponding DOM elements if disabled
 // Logs the action and handles errors via handleError
 function applyFeatureVisibility() {
- logAction("applyFeatureVisibility"); 
+ logActivity("info", "applyFeatureVisibility"); 
  try {
     if (!features.enableFilterPanel) document.querySelector('.filter-panel')?.remove();
     if (!features.enableOptionsPanel) document.querySelector('.options-panel')?.remove();
@@ -84,7 +84,7 @@ function applyFeatureVisibility() {
     features = config.features;
     domain = config.domain;
     settings = config.settings;
-    logAction("initApp", { domain });
+    logActivity("info", "initApp", { domain });
      
     applySettings();
     applyFeatureVisibility();
@@ -122,7 +122,7 @@ function applyFeatureVisibility() {
 // Collapses button panel if both are disabled
 // Logs the action and handles errors via handleError
 function loadFeatures(data) {
-  logAction("loadFeatures"); 
+  logActivity("info", "loadFeatures"); 
   try {
     if (features.enableWikipedia) {
       import('./wiki.js').then(({ loadWikipediaSummaries }) => {
