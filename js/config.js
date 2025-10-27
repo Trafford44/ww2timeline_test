@@ -42,6 +42,6 @@ export async function loadConfig(domainKey) {
       return { features, theme, domain, settings };
     
   } catch (error) {
-    errorHandler(error, "loadConfig");
+    errorHandler(error, "loadConfig - failed while loading configuration data");
   }        
 }
