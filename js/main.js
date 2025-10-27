@@ -35,7 +35,7 @@ function applySettings() {
       initialPrompt.textContent = settings.noDataMessage;
     }
   } catch (error) {
-    errorHandler(error, "applySettings");
+    errorHandler(error, "applySettings - Failed while configurng initial UI text and browser title");
   }     
 }
 
@@ -52,7 +52,7 @@ function applyFeatureVisibility() {
     if (!features.enableLegendPanel) document.querySelector('.timeline-legend')?.remove();
     if (!features.enableStatsPanel) document.querySelector('.stats-panel')?.remove();
   } catch (error) {
-    errorHandler(error, "applyFeatureVisibility");
+    errorHandler(error, "applyFeatureVisibility - Failed while setting feature visibility");
   }       
 }
 
@@ -108,7 +108,7 @@ function applyFeatureVisibility() {
   
   
    } catch (error) {
-     errorHandler(error, "initApp", {
+     errorHandler(error, "initApp - Failed while initialising app", {
        metadata: { domain, settings },
        retryCallback: () => fetchData(features, domain, settings)
      });
@@ -167,7 +167,7 @@ function loadFeatures(data) {
     }  
    
   } catch (error) {
-    errorHandler(error, "loadFeatures");
+    errorHandler(error, "loadFeatures - Fail on loading app features");
   }  
 }
 
