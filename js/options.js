@@ -1,4 +1,4 @@
-import { logAction } from './alerts/logger.js';
+import { logActivity } from './alerts/logger.js';
 
 // setupOptions()
 // Initializes and wires up the options panel, restoring saved toggle states and enabling persistent user preferences.
@@ -24,7 +24,7 @@ import { logAction } from './alerts/logger.js';
 // Logging:
 //   Uses console.log() for setup tracing and toggle changes
 export function setupOptions(applyFilters) {
-  logAction("setupOptions", { applyFilters });
+  logActivity("info", "setupOptions", { applyFilters });
  
   try {
     const hideWatchedToggle = document.getElementById("hideWatchedToggle");
