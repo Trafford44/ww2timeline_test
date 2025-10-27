@@ -113,6 +113,7 @@ export async function renderTimeline(filteredData) {
 
   } catch (error) {
     errorHandler(error, "renderTimeline");
+    throw error; //bubble it up
   }       
 }
 
@@ -201,6 +202,7 @@ function createEventCard(event, index) {
 
   } catch (error) {
     errorHandler(error, "createEventCard");
+    throw error; //bubble it up    
   }         
 }
 
