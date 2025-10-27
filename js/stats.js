@@ -1,4 +1,5 @@
-import { logAction } from './alerts/logger.js';
+import { logActivity } from './alerts/logger.js';
+import { errorHandler } from './alerts/errorUtils.js';
 
 // updateStats()
 // Generates and displays summary statistics for the currently filtered dataset.
@@ -25,7 +26,7 @@ import { logAction } from './alerts/logger.js';
 // Logging:
 //   Uses console.log() to trace invocation and filtered count
 export function updateStats(filteredEvents, totalEvents) {
-  logAction("updateStats", { filteredEvents, totalEvents });
+  logActivity("info", "updateStats", { filteredEvents, totalEvents });
  
   try {
       const statsContent = document.getElementById("statsContent");
@@ -70,6 +71,6 @@ export function updateStats(filteredEvents, totalEvents) {
         <br><b>Top Platforms:</b> ${topPlatformList}
       `;
   } catch (error) {
-    handleError(error, "updateStats");
+    errorHandler(error, "updateStats");
   }       
 }
