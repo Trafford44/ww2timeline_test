@@ -167,6 +167,7 @@ export function showAlert(message, type = "error", options = {}) {
     const dismissDelay = typeof options.autoDismiss === "number"
       ? options.autoDismiss
       : 10000; // default to 10 seconds
+console.log(`dismiss delay ${dismissDelay}`);
 
     setTimeout(() => {
       console.log("Auto-dismissing alert after", dismissDelay, "ms");
