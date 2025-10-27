@@ -99,7 +99,7 @@ rmation
 
 
  */
-import { logActivity } from './alerts/logger.js';
+import { logActivity } from './logger.js';
 
 export function hideAlert() {
   const container = document.getElementById("alert-container");
