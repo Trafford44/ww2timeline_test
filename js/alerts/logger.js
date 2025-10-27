@@ -130,9 +130,17 @@ const throttleConfig = {
   loadLocalJSON: 0,
   submitForm: 2000
 };
-const throttleMap = new Map();
-const recentActions = [];
 
+const throttleMap = new Map();
+const recentActivities = [];
+
+// Icon mapping for activity types
+const activityIcons = {
+  action: "🎯",         // More precise than 🟢 — represents intentional user or system action
+  information: "ℹ️",    // Informational message
+  warning: "⚠️",        // Non-breaking issue or edge case
+  debug: "🕷️"           // Historical nod to mainframe bugs — love this touch
+};
 
 export function enableTracing() {
   tracingEnabled = true;
@@ -144,17 +152,18 @@ export function disableTracing() {
   console.log("🔕 Tracing disabled");
 }
 
-
 function innerLog(entry) {
-  console.log("🧭 Action logged:", entry);
-  recentActions.push(entry);
-  if (recentActions.length > 100) recentActions.shift(); // cap at 100
+  const icon = activityIcons[entry.type] || "🔍";
+  console.log(`${icon} [${entry.type.toUpperCase()}] ${entry.label}`, entry);
+  recentActivities.push(entry);
+  if (recentActivities.length > 100) recentActivities.shift(); // cap at 100
 }
 
-export function logAction(action, params = {}, result = null, options = {}) {
+export function logActivity(type = "action", params = {}, label = "Unnamed activity", options = {}) {
   const force = options.force || false;
   if (!tracingEnabled && !force) return;
-  const throttleMs = throttleConfig[action] || 0;
+
+  const throttleMs = throttleConfig[label] || 0;
 
   const entry = {
     timestampUTC: new Date().toISOString(),
@@ -162,24 +171,23 @@ export function logAction(action, params = {}, result = null, options = {}) {
       timeZone: "Pacific/Auckland",
       hour12: false
     }),
-    action,
-    params,
-    result
+    type,
+    label,
+    params
   };
 
   if (throttleMs > 0 && !force) {
-    if (!throttleMap.has(action)) {
-      throttleMap.set(action, throttle(innerLog, throttleMs));
+    if (!throttleMap.has(label)) {
+      throttleMap.set(label, throttle(innerLog, throttleMs));
     }
-    throttleMap.get(action)(entry);
+    throttleMap.get(label)(entry);
   } else {
     innerLog(entry);
   }
 }
 
+export const debouncedLogActivity = debounce(logActivity, 500);
 
-export const debouncedLogAction = debounce(logAction, 500);  // after 500ms idle
-
-export function getRecentActions(count = 10) {
-  return recentActions.slice(-count);
+export function getRecentActivities(count = 10) {
+  return recentActivities.slice(-count);
 }
