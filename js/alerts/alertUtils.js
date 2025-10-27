@@ -116,8 +116,12 @@ export function hideAlert() {
 
 export function showAlert(message, type = "error", options = {}) {
 
-  console.log("🔔 showAlert triggered:", message);
-  logActivity("info", "showAlert");
+  console.log("🔔 showAlert triggered:", {
+    message,
+    type,
+    options
+  });
+  logActivity("info", "showAlert xx", { message, type, options });
   
   const container = document.getElementById("alert-container");
   if (!container) return;
