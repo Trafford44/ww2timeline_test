@@ -163,6 +163,15 @@ logActivity("debug", { userId, sessionId }, "User toggled challenge mode");
 Use when tracing opt-in user actions for support or telemetry.
 */
 
+/*
+🧠 Usage Examples
+js
+logActivity("setupExport", "information", { filteredCount: 0 }, null);
+logActivity("applyFilters", "action", { filters }, filteredEvents);
+logActivity("parseSearchQuery", "debug", { query }, parsedResult);
+logActivity("populateDropdowns", "warning", { missing: "Platform" }, null);
+*/
+
 // logger.js
 
 import { throttle, debounce } from './utils.js';
