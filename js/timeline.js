@@ -8,7 +8,7 @@ import { loadConfig } from './config.js';
 import { domainKey } from './domain.js';
 import { hideAlert } from './alerts/alertUtils.js';
 import { errorHandler } from './alerts/errorUtils.js';
-import { logAction } from './alerts/logger.js';
+import { logActivity } from './alerts/logger.js';
 
 let domain = {};
 
@@ -20,7 +20,7 @@ let domain = {};
 function groupEventsByYear(filteredData) {
   const grouped = {};
 
-  logAction("groupEventsByYear", { filteredData });
+  logActivity("info", "groupEventsByYear", { filteredData });
  
   try {
     
@@ -46,7 +46,7 @@ function groupEventsByYear(filteredData) {
 }
 
 export async function renderTimeline(filteredData) {
-  logAction("renderTimeline", { filteredData });
+  logActivity("info", "renderTimeline", { filteredData });
  
   try {
         
@@ -123,7 +123,7 @@ export async function renderTimeline(filteredData) {
  * @returns {HTMLElement} The event card DOM element without listeners.
  */
 function createEventCard(event, index) {
-  logAction("createEventCard", { event, index });
+  logActivity("info", "createEventCard", { event, index });
  
   try {
   
@@ -206,7 +206,7 @@ function createEventCard(event, index) {
 
 // note yet used - supposed to add "..." on notes
 function createToggleDescription(description) {
-  logAction("createToggleDescription", { description });
+  logActivity("info", "createToggleDescription", { description });
  
   try {
   
@@ -251,7 +251,7 @@ function createToggleDescription(description) {
 // - if event.Platform is null, just use teh text 'link'
 // - if both are null, put nothing
 function renderPlatformField(platform, link) {
-  logAction("renderPlatformField", { platform, link });
+  logActivity("info", "renderPlatformField", { platform, link });
  
   try {
     
@@ -272,7 +272,7 @@ function renderPlatformField(platform, link) {
 
 
 function toggleText(iconElement, targetId) {
-  logAction("toggleText", { iconElement, targetId });
+  logActivity("info", "toggleText", { iconElement, targetId });
  
   try {
     
@@ -296,7 +296,7 @@ function toggleText(iconElement, targetId) {
  * @param {object} event - The event data object.
  */
 function attachEventCardListeners(card, event) {
-  logAction("attachEventCardListeners", { card, event });
+  logActivity("info", "attachEventCardListeners", { card, event });
  
   try {  
     const pinSpan = card.querySelector(".pin-icon");
