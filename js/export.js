@@ -3,7 +3,7 @@ import { logActivity } from './alerts/logger.js';
 import { showAlert } from './alerts/alertUtils.js';
 
 export function setupExport(events) {
-  logAction("setupExport", { events });
+  logActivity("info", "setupExport", { events });
   try {
     if (!Array.isArray(events) || events.length === 0) {
       logActivity("information", "setupExport", { filteredCount: 0 });
