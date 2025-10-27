@@ -124,7 +124,7 @@
 // Gemini provided teh latest version.
 // Scenario,            Call (Conceptual),New Call
 // User Clicks Export,   "logActivity('action', 'submitForm', { type: 'export' });"
-// Filtered Data Empty,   "logActivity('information', 'noEventsForExport', { reason: 'filtered out' });"
+// Filtered Data Empty,   "logActivity('info', 'noEventsForExport', { reason: 'filtered out' });"
 // Throttled Data Fetch,   "logActivity('action', 'fetchData', { url });"
 // Config Error,   "logActivity('bug', 'configLoadFailed', error);"
 
@@ -166,7 +166,7 @@ Use when tracing opt-in user actions for support or telemetry.
 /*
 🧠 Usage Examples
 js
-logActivity("information", "setupExport", { filteredCount: 0 }, null);
+logActivity("info", "setupExport", { filteredCount: 0 }, null);
 logActivity("action", "applyFilters", { filters }, filteredEvents);
 logActivity("debug", "parseSearchQuery", { query }, parsedResult);
 logActivity("warning", "populateDropdowns", { missing: "Platform" }, null);
@@ -181,7 +181,7 @@ let tracingEnabled = true;
 const LOG_CONFIG = {
   // Configuration for console display, based on activity type
   action:      { icon: '🚀', style: 'color: #3f72af; font-weight: bold;' },
-  information: { icon: 'ℹ️', style: 'color: #198754;' },
+  info: { icon: 'ℹ️', style: 'color: #198754;' },
   warning:     { icon: '⚠️', style: 'color: #ffc107;' },
   bug:         { icon: '🕷️', style: 'color: #dc3545; font-weight: bold;' }
 };
@@ -216,7 +216,7 @@ export function disableTracing() {
  * This function handles the final output and persistence of the logging mechanism. 
  * It is called by logActivity() either directly or via a throttling mechanism.
  * * @param {Object} entry - The complete activity entry object.
- * @param {string} entry.type - The category of the activity ('action', 'information', 'warning', or 'bug').
+ * @param {string} entry.type - The category of the activity ('action', 'info', 'warning', or 'bug').
  * @param {string} entry.activity - The descriptive name of the activity (used as the throttling key).
  * @param {Object} entry.params - The parameters/context associated with the activity.
  * @param {any} entry.result - The result or output of the activity.
@@ -225,7 +225,7 @@ export function disableTracing() {
  */
 function innerLog(entry) {
   const { type, activity, params, result } = entry;
-  const config = LOG_CONFIG[type] || LOG_CONFIG['information'];
+  const config = LOG_CONFIG[type] || LOG_CONFIG['info'];
 
   // Use the appropriate console method for better filtering in DevTools
   let logMethod = console.log;
@@ -254,9 +254,9 @@ function innerLog(entry) {
 // --- Exported Activity Logging Function ---
 
 /**
- * Logs an application activity (Action, Information, Warning, or Bug) to the console,
+ * Logs an application activity (Action, Info, Warning, or Bug) to the console,
  * applying an appropriate icon, while respecting tracing and throttling rules.
- * * @param {('action'|'information'|'warning'|'bug')} type - The category of the activity.
+ * * @param {('action'|'info'|'warning'|'bug')} type - The category of the activity.
  * @param {string} activity - The main description of the activity (previously 'action').
  * @param {Object} [params={}] - Optional parameters related to the activity.
  * @param {any} [result=null] - Optional result of the activity.
