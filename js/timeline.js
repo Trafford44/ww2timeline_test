@@ -200,7 +200,7 @@ function createEventCard(event, index) {
     return card;
 
   } catch (error) {
-    errorHandler(error, "renderTimeline");
+    errorHandler(error, "createEventCard");
   }         
 }
 
@@ -266,7 +266,7 @@ function renderPlatformField(platform, link) {
       return `<br><b>${label}:</b>`;
     }
   } catch (error) {
-    errorHandler(error, "createToggleDescription");
+    errorHandler(error, "renderPlatformField");
   }     
 }
 
