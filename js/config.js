@@ -1,4 +1,5 @@
 import { logAction } from './alerts/logger.js';
+import { errorHandler } from './alerts/errorUtils.js';
 
 
 // loadConfig(domainKey)
