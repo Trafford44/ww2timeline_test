@@ -4,6 +4,7 @@
 import { reportError } from './alerts/errorUtils.js';
 import { logAction } from './alerts/logger.js';
 import { showAlert } from './alerts/alertUtils.js';
+import { errorHandler } from './alerts/errorUtils.js';
 
 
 export let dataset = [];
@@ -30,7 +31,7 @@ export async function fetchData(features, domain, settings) {
     return dataset;
     
   } catch (error) {
-    handleError(error, "fetchData");
+    errorHandler(error, "fetchData");
     //dataset = [];
     return dataset;
   }
@@ -74,7 +75,7 @@ async function loadLocalJSON(domain) {
     return json;
 
   } catch (error) {
-    handleError(error, "loadLocalJSON");
+    errorHandler(error, "loadLocalJSON");
   }    
 }
 
@@ -95,6 +96,6 @@ async function loadGoogleSheet() {
     return json;
 
   } catch (error) {
-    handleError(error, "loadGoogleSheet");
+    errorHandler(error, "loadGoogleSheet");
   }   
 }
