@@ -1,7 +1,4 @@
 // data.js
-// logs actions, if functionality enabled (calls throttledLogAction)
-
-import { reportError } from './alerts/errorUtils.js';
 import { logAction } from './alerts/logger.js';
 import { showAlert } from './alerts/alertUtils.js';
 import { errorHandler } from './alerts/errorUtils.js';
@@ -10,18 +7,16 @@ import { errorHandler } from './alerts/errorUtils.js';
 export let dataset = [];
 
 export async function fetchData(features, domain, settings) {
-  const initialPrompt = document.getElementById("initialPrompt");
-  initialPrompt.textContent = `Loading data for ${domain.subject}...`;
-  showAlert(`Loading data for ${domain.subject}...`, "info", { autoDismiss: false });
-  
   logAction("fetchData", { features, domain, settings });
-
-  try {
+  try {  
+    const initialPrompt = document.getElementById("initialPrompt");
+    initialPrompt.textContent = `Loading data for ${domain.subject}...`;
+    showAlert(`Loading data for ${domain.subject}...`, "info", { autoDismiss: false });
+    
     const dataSource = settings?.dataSource || "localJSON";
     let data;
 
     if (dataSource === "localJSON") {
-
       data = await loadLocalJSON(domain);
     } else if (dataSource === "googleSheets") {
       data = await loadGoogleSheet();
@@ -31,8 +26,7 @@ export async function fetchData(features, domain, settings) {
     return dataset;
     
   } catch (error) {
-    errorHandler(error, "fetchData");
-    //dataset = [];
+    errorHandler(error, "fetchData - Failed on determining data source");
     return dataset;
   }
 }
@@ -58,10 +52,8 @@ async function loadLocalJSON(domain) {
     if (!url) {
       throw new Error(`No dataset mapped for domain: ${subject || "[empty subject]"}`);
     }
-  
       
-    const response = await fetch(url);
-  
+    const response = await fetch(url);  
   
     if (!response.ok) {
       throw new Error(`Fetch failed with status: ${response.status}`);
