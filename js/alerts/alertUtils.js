@@ -99,6 +99,7 @@ rmation
 
 
  */
+import { logActivity } from './alerts/logger.js';
 
 export function hideAlert() {
   const container = document.getElementById("alert-container");
@@ -114,6 +115,10 @@ export function hideAlert() {
 
 
 export function showAlert(message, type = "error", options = {}) {
+
+  console.log("🔔 showAlert triggered:", message);
+  logActivity("info", "showAlert");
+  
   const container = document.getElementById("alert-container");
   if (!container) return;
 
