@@ -116,12 +116,7 @@ export function hideAlert() {
 
 export function showAlert(message, type = "error", options = {}) {
 
-  console.log("🔔 showAlert triggered:", {
-    message,
-    type,
-    options
-  });
-  logActivity("info", "showAlert xx", { message, type, options });
+  logActivity("info", "showAlert", { message, type, options });
   
   const container = document.getElementById("alert-container");
   if (!container) return;
@@ -167,7 +162,8 @@ export function showAlert(message, type = "error", options = {}) {
     const dismissDelay = typeof options.autoDismiss === "number"
       ? options.autoDismiss
       : 10000; // default to 10 seconds
-console.log(`dismiss delay ${dismissDelay}`);
+
+    console.log(`dismiss delay ${dismissDelay}`);
 
     setTimeout(() => {
       console.log("Auto-dismissing alert after", dismissDelay, "ms");
