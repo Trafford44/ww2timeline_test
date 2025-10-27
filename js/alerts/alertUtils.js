@@ -119,7 +119,17 @@ export function showAlert(message, type = "error", options = {}) {
 
   const alert = document.createElement("div");
   alert.className = `alert alert-${type}`;
-  alert.innerHTML = `<span>${message}</span>`;
+
+  // Icon mapping
+  const icons = {
+    error: "❌",
+    success: "✅",
+    warning: "⚠️",
+    info: "ℹ️"
+  };
+
+  const icon = icons[type] || "⚠️"; // fallback to warning if unknown type
+  alert.innerHTML = `<span>${icon} ${message}</span>`;
 
   // Add Retry button if callback is provided
   if (options.retryCallback) {
@@ -148,13 +158,12 @@ export function showAlert(message, type = "error", options = {}) {
     const dismissDelay = typeof options.autoDismiss === "number"
       ? options.autoDismiss
       : 10000; // default to 10 seconds
-  
+
     setTimeout(() => {
       console.log("Auto-dismissing alert after", dismissDelay, "ms");
       container.removeChild(alert);
     }, dismissDelay);
   }
-
 }
 
 
