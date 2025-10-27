@@ -166,10 +166,10 @@ Use when tracing opt-in user actions for support or telemetry.
 /*
 🧠 Usage Examples
 js
-logActivity("setupExport", "information", { filteredCount: 0 }, null);
-logActivity("applyFilters", "action", { filters }, filteredEvents);
-logActivity("parseSearchQuery", "debug", { query }, parsedResult);
-logActivity("populateDropdowns", "warning", { missing: "Platform" }, null);
+logActivity("information", "setupExport", { filteredCount: 0 }, null);
+logActivity("action", "applyFilters", { filters }, filteredEvents);
+logActivity("debug", "parseSearchQuery", { query }, parsedResult);
+logActivity("warning", "populateDropdowns", { missing: "Platform" }, null);
 */
 
 // logger.js
