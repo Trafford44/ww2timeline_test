@@ -127,7 +127,7 @@ function createEventCard(event, index) {
   logActivity("info", "createEventCard", { event, index });
  
   try {
-  throw new Error("test error");
+  //throw new Error("test error");
     const card = document.createElement("div");
       
     card.className = `timeline-event ${index % 2 === 0 ? "left" : "right"}`;
