@@ -1,8 +1,8 @@
 import { errorHandler } from './alerts/errorUtils.js';
-import { logAction } from './alerts/logger.js';
+import { logActivity } from './alerts/logger.js';
 
 export function saveToLocal(key, value) {
-  logAction("saveToLocal", { key, value });
+  logActivity("info", "saveToLocal", { key, value });
   try {
     localStorage.setItem(key, JSON.stringify(value));
   } catch (error) {
@@ -11,7 +11,7 @@ export function saveToLocal(key, value) {
 }
 
 export function loadFromLocal(key) {
-  logAction("loadFromLocal", { key });  
+  logActivity("info", "loadFromLocal", { key });  
   try {
     const value = localStorage.getItem(key);
     return value ? JSON.parse(value) : null;
@@ -21,7 +21,7 @@ export function loadFromLocal(key) {
 }
 
 export function syncLocalState(records) {
-  logAction("syncLocalState", { records });  
+  logActivity("info", "syncLocalState", { records });  
   try {
     // Example usage — replace with your actual keys
     const filters = loadFromLocal("timelineFilters");
