@@ -1,5 +1,5 @@
 // data.js
-import { logAction } from './alerts/logger.js';
+import { logActivity } from './alerts/logger.js';
 import { showAlert } from './alerts/alertUtils.js';
 import { errorHandler } from './alerts/errorUtils.js';
 
@@ -7,7 +7,7 @@ import { errorHandler } from './alerts/errorUtils.js';
 export let dataset = [];
 
 export async function fetchData(features, domain, settings) {
-  logAction("fetchData", { features, domain, settings });
+  logActivity("info", "fetchData", { features, domain, settings });
   try {  
     const initialPrompt = document.getElementById("initialPrompt");
     initialPrompt.textContent = `Loading data for ${domain.subject}...`;
@@ -39,7 +39,7 @@ async function loadLocalJSON(domain) {
   //      const throttledFetchLog = throttle(logAction, 1000);
   //      const throttledLoadLog = throttle(logAction, 1000);
 
-  logAction("loadLocalJSON", { domain });
+  logActivity("info", "loadLocalJSON", { domain });
   try {
     const datasetMap = {
       "WWII Films": "testdata/ww2_infilm.json",
@@ -73,7 +73,7 @@ async function loadLocalJSON(domain) {
 
 async function loadGoogleSheet() {
 
-  logAction("loadGoogleSheet");
+  logActivity("info", "loadGoogleSheet");
   try {
     const response = await fetch("https://script.google.com/macros/s/AKfycbwuMhkWNZI71HWbZr18pe56ekjCVrn0SCliiFHOzIW60odC3CsOstRgUeMIEbg03xbeNA/exec");
     if (!response.ok) {
