@@ -35,7 +35,7 @@ function applySettings() {
       initialPrompt.textContent = settings.noDataMessage;
     }
   } catch (error) {
-    handleError(error, "applySettings");
+    errorHandler(error, "applySettings");
   }     
 }
 
@@ -52,7 +52,7 @@ function applyFeatureVisibility() {
     if (!features.enableLegendPanel) document.querySelector('.timeline-legend')?.remove();
     if (!features.enableStatsPanel) document.querySelector('.stats-panel')?.remove();
   } catch (error) {
-    handleError(error, "applyFeatureVisibility");
+    errorHandler(error, "applyFeatureVisibility");
   }       
 }
 
@@ -167,7 +167,7 @@ function loadFeatures(data) {
     }  
    
   } catch (error) {
-    handleError(error, "loadFeatures");
+    errorHandler(error, "loadFeatures");
   }  
 }
 
