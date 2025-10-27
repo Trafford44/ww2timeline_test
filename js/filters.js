@@ -261,6 +261,7 @@ export function applyFilters(data) {
     setupExportButton(filtered);
   } catch (error) {
     errorHandler(error, "applyFilters");
+    throw error; //bubble it up   
   }   
 }
 
