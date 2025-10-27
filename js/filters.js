@@ -2,7 +2,7 @@ import { renderTimeline } from './timeline.js';
 import { updateStats } from './stats.js';
 import { dataset } from './data.js';
 import { isPinned } from './pinnedManager.js';
-import { logAction } from './alerts/logger.js';
+import { logActivity } from './alerts/logger.js';
 import { errorHandler } from './alerts/errorUtils.js';
 
 // --- 1. DOM Element References ---
@@ -25,7 +25,7 @@ export const challengeModeToggle = document.getElementById("challengeModeToggle"
 // Applies .disabled = true/false to all relevant UI elements
 // Logs the action and handles errors via handleError
 export function toggleControls(enable) {
-  logAction("toggleControls", { enable });
+  logActivity("info", "toggleControls", { enable });
   try {
     [
       searchInput, watchedFilter, formatFilter, classificationFilter,
@@ -44,7 +44,7 @@ export function toggleControls(enable) {
 // Logs the action and handles errors via handleError
 export function populateDropdowns(fullData) {
 
-  logAction("populateDropdowns", { fullData });
+  logActivity("info", "populateDropdowns", { fullData });
   try {
       const formats = [...new Set(fullData.map(f => f.Format).filter(Boolean))].sort();
       const classifications = [...new Set(fullData.map(f => f.Classification).filter(Boolean))].sort();
@@ -84,7 +84,7 @@ export function populateDropdowns(fullData) {
 // Returns { filters, keywords }
 // Logs the action and handles errors via handleError
 export function parseSearchQuery(query) {
-  logAction("parseSearchQuery", { query });
+  logActivity("info", "parseSearchQuery", { query });
   try {  
     const terms = query.toLowerCase().split(/\s+/);
     const filters = {};
@@ -111,7 +111,7 @@ export function parseSearchQuery(query) {
 // Returns a structured object of filter values
 // Logs the action and handles errors via handleError
 function getFilterValues() {
-  logAction("getFilterValues");
+  logActivity("info", "getFilterValues");
   try {     
     return {
       search: parseSearchQuery(searchInput.value.trim()),
@@ -144,7 +144,7 @@ function getFilterValues() {
 // Error Handling: Catches DOM or import failures and delegates to handleError() with context "setupExportButton"
 // Logging: Uses logAction() to trace setup and filtered data
 export function setupExportButton(filtered) {
-  logAction("setupExportButton", { filtered });
+  logActivity("info", "setupExportButton", { filtered });
   try {    
       const oldButton = document.getElementById("exportButton");
       if (!oldButton) return;
@@ -174,7 +174,7 @@ export function setupExportButton(filtered) {
 // Returns true or false
 // Logs the action and handles errors via handleError
 function shouldIncludeEvent(event, values) {
-  logAction("shouldIncludeEvent", { event, values });
+  logActivity("info", "shouldIncludeEvent", { event, values });
   try {   
     const { search, watched, format, classification, platform, eventYear, period, pinned, hideWatched, hidePinned, challengeMode } = values;
     const { filters, keywords } = search;
@@ -242,7 +242,7 @@ function shouldIncludeEvent(event, values) {
 // Reinitializes export button with filtered data
 // Logs the action and handles errors via handleError
 export function applyFilters(data) {
-  logAction("applyFilters", { data });
+  logActivity("info", "applyFilters", { data });
   try {  
     const filterValues = getFilterValues();
     const totalEvents = data.length;  
