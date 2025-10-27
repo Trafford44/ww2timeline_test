@@ -17,7 +17,7 @@ import { errorHandler } from './alerts/errorUtils.js';
 // Output: Returns a unified config object { features, theme, domain, settings }
 // Error Handling: Catches fetch or parse failures and delegates to handleError() with context
 export async function loadConfig(domainKey) {
-  logActivity("loadConfig", { domainKey });
+  logActivity("info", "loadConfig", { domainKey });
  
   try {
       const [featuresRes, themeRes, domainRes, settingsRes] = await Promise.all([
