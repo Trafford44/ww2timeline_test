@@ -98,12 +98,12 @@ function createEventCard(event, index) {
         <br><b>${domain.labels?.FormatLabel || "Format"}:</b> ${event.Format || ""}
         <br><b>${domain.labels?.ClassificationLabel || "Classification"}:</b> ${event.Classification || ""}
         <br><b>${domain.labels?.RunningTimeLabel || "Running Time"}:</b> ${event.RunningTime || ""}
-        <br><b>${domain.labels?.HistoricalAccuracyLabel || "Historical Accuracy"}:</b> ${renderStars(event.HistoricalAccuracy)}
+        <br><b>${domain.labels?.HistoricalAccuracyLabel || "Historical Accuracy"}:</b> ${renderStars(event.HistoricalAccuracy || '')}
         ${createToggleDescription(event.ShortDescription)}
         ${renderPlatformField(event.Platform, event.PlatformLink)}
         <br><b>${domain.labels?.WikipediaLabel || "Wikipedia"}:</b> ${event.Wikipedia ? `<a href="${event.Wikipedia}" target="_blank">see details..</a>` : ""}
         <br><b>${domain.labels?.WatchedLabel || "Watched"}:</b> ${watchedStatus}
-        <br><b>${domain.labels?.RatingLabel || "Rating"}:</b> ${renderStars(event.Rating || 0)}
+        <br><b>${domain.labels?.RatingLabel || "Rating"}:</b> ${renderStars(event.Rating || '')}
         <span class="pin-icon" title="Click to pin/unpin this event">
             ${isPinned(event.RecordID) ? "📌" : "📍"}
         </span>
