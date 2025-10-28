@@ -76,7 +76,9 @@ function applyFeatureVisibility() {
  // Loads feature-specific modules (Wikipedia, map, local storage)
  // Logs the action and delegates error handling to errorHandler with metadata and retry callback
  async function initApp() { 
+   
    try {  
+     // 1. CONFIG LOADING (Will re-throw on error)
     const config = await loadConfig(domainKey);
         
     // throw new Error("Simulated error for testing");
@@ -84,33 +86,43 @@ function applyFeatureVisibility() {
     features = config.features;
     domain = config.domain;
     settings = config.settings;
-    logActivity("info", "initApp", { domain });
+    logActivity("info", "initApp: Config Loaded", { domain });
      
     applySettings();
     applyFeatureVisibility();
-  
+
+     // 2. DATA LOADING (Returns [] on error, but still needs to be inside the try)
     const data = await fetchData(features, domain, settings);
-  
+
+    if (data.length === 0) {
+      logActivity("warning", "initApp: No data available", { reason: "Data loading failed or returned empty set." });
+    }
+
+    // 3. UI and Logic Setup (Where applyFilters() lives)
     populateDropdowns(data);
     toggleControls(true);
   
-    // 1. Set up the options (load state, set checkboxes, attach listeners)
+    // Set up the options (load state, set checkboxes, attach listeners)
     if (features.enableOptionsPanel) {
       setupOptions(applyFilters);
     }
   
-    // 2. Apply filters (which now correctly reads the restored options state)
+    // If applyFilters() throws an error here, it's caught below.
     applyFilters(data);
   
-    // load data for features, if they turened on
+    // load data for features, if they turned on
     loadFeatures(data);
   
   
-  
    } catch (error) {
-     errorHandler(error, "initApp - Failed while initialising app", {
-       metadata: { domain, settings },
-       retryCallback: () => fetchData(features, domain, settings)
+    // This catch block now handles:
+    // 1. Errors from loadConfig (loadConfig re-throws)
+    // 2. Unexpected errors from ANY synchronous function (e.g., applyFilters, populateDropdowns)
+    
+    errorHandler(error, "initApp - Failed during application startup", {
+        // Use locally scoped variables if available
+        metadata: { domain: domain, settings: settings }, 
+        retryCallback: () => initApp()
      });
    }
 }
