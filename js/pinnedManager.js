@@ -11,7 +11,7 @@ const PINNED_KEY = "pinnedRecordIDs"; // Renamed key for clarity (from 'pinnedEv
  * Saves the current array of pinned IDs back to local storage using the robust helper.
  * @param {Array<string>} pinnedIds - Array of IDs to save.
  */
-function savePinned(pinnedIds) {
+export function savePinned(pinnedIds) {
     logActivity("information", "savePinned", { count: pinnedIds.length });
     // Uses the robust helper to handle QuotaExceededError
     saveToLocal(PINNED_KEY, pinnedIds);
@@ -21,7 +21,7 @@ function savePinned(pinnedIds) {
  * Loads the array of pinned IDs from local storage using the robust helper.
  * @returns {Array<string>} Array of pinned IDs, or [] on load failure/not found.
  */
-function loadPinned() {
+export function loadPinned() {
     // Uses the robust helper to handle JSON parsing errors
     // Ensure it defaults to an array on failure, which loadFromLocal is expected to do (returning null, which we convert here)
     const stored = loadFromLocal(PINNED_KEY);
