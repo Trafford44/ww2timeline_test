@@ -243,9 +243,19 @@ function shouldIncludeEvent(event, values) {
     // Event Year Filter
     if (eventYear && eventYearStr !== eventYear.trim()) return false;
 
-    // Watched Filter (Dropdown)
-    if (watched === "Yes" && watchedValue !== "yes") return false;
-    if (watched === "No" && watchedValue === "yes") return false;
+    // Watched Filter (Dropdown) - REFACTORED FOR ROBUSTNESS
+    switch (watched) {
+        case "Yes":
+            // If filter is "Yes", must be explicitly watched
+            if (watchedValue !== "yes") return false;
+            break;
+        case "No":
+            // If filter is "No", must NOT be watched
+            if (watchedValue === "yes") return false;
+            break;
+        // The default case handles "" (All) and any unexpected value, including the possible corrupted initial state,
+        // allowing the item to pass and act as "All".
+    }
     
     // Pinned Filter (Dropdown)
     if (pinned === "Yes" && !isPinnedStatus) return false;
