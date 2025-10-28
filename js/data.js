@@ -1,34 +1,28 @@
 // data.js
 import { logActivity } from './alerts/logger.js';
 import { showAlert } from './alerts/alertUtils.js';
-import { errorHandler } from './alerts/errorUtils.js';
-
 
 export let dataset = [];
 
 export async function fetchData(features, domain, settings) {
   logActivity("info", "fetchData", { features, domain, settings });
-  try {  
-    const initialPrompt = document.getElementById("initialPrompt");
-    initialPrompt.textContent = `Loading data for ${domain.subject}...`;
-    showAlert(`Loading data for ${domain.subject}...`, "info", { autoDismiss: false });
-    
-    const dataSource = settings?.dataSource || "localJSON";
-    let data;
+  
+  const initialPrompt = document.getElementById("initialPrompt");
+  initialPrompt.textContent = `Loading data for ${domain.subject}...`;
+  showAlert(`Loading data for ${domain.subject}...`, "info", { autoDismiss: false });
+  
+  const dataSource = settings?.dataSource || "localJSON";
+  let data;
 
-    if (dataSource === "localJSON") {
-      data = await loadLocalJSON(domain);
-    } else if (dataSource === "googleSheets") {
-      data = await loadGoogleSheet();
-    }
-
-    dataset = Array.isArray(data) ? data : [];
-    return dataset;
-    
-  } catch (error) {
-    errorHandler(error, "fetchData - Failed on determining data source");
-    return dataset;
+  if (dataSource === "localJSON") {
+    data = await loadLocalJSON(domain);
+  } else if (dataSource === "googleSheets") {
+    data = await loadGoogleSheet();
   }
+
+  dataset = Array.isArray(data) ? data : [];
+  return dataset;
+    
 }
 
 async function loadLocalJSON(domain) {
@@ -40,54 +34,47 @@ async function loadLocalJSON(domain) {
   //      const throttledLoadLog = throttle(logAction, 1000);
 
   logActivity("info", "loadLocalJSON", { domain });
-  try {
-    const datasetMap = {
-      "WWII Films": "testdata/ww2_infilm.json",
-      "Scientific Discoveries": "testdata/science.json"
-    };
-  
-    const subject = domain?.subject?.trim();
-    const url = datasetMap[subject || ""];
-  
-    if (!url) {
-      throw new Error(`No dataset mapped for domain: ${subject || "[empty subject]"}`);
-    }
-      
-    const response = await fetch(url);  
-  
-    if (!response.ok) {
-      throw new Error(`Fetch failed with status: ${response.status}`);
-    }
-  
-    const json = await response.json();
-    if (!json || typeof json !== "object") {
-      throw new Error("Invalid JSON structure received");
-    }
 
-    return json;
+  const datasetMap = {
+    "WWII Films": "testdata/ww2_infilm.json",
+    "Scientific Discoveries": "testdata/science.json"
+  };
 
-  } catch (error) {
-    errorHandler(error, "loadLocalJSON");
-  }    
+  const subject = domain?.subject?.trim();
+  const url = datasetMap[subject || ""];
+
+  if (!url) {
+    throw new Error(`No dataset mapped for domain: ${subject || "[empty subject]"}`);
+  }
+    
+  const response = await fetch(url);  
+
+  if (!response.ok) {
+    throw new Error(`Fetch failed with status: ${response.status}`);
+  }
+
+  const json = await response.json();
+  if (!json || typeof json !== "object") {
+    throw new Error("Invalid JSON structure received");
+  }
+
+  return json;
+
 }
 
 async function loadGoogleSheet() {
 
   logActivity("info", "loadGoogleSheet");
-  try {
-    const response = await fetch("https://script.google.com/macros/s/AKfycbwuMhkWNZI71HWbZr18pe56ekjCVrn0SCliiFHOzIW60odC3CsOstRgUeMIEbg03xbeNA/exec");
-    if (!response.ok) {
-      throw new Error(`Fetch failed with status: ${response.status}`);
-    }
-  
-    const json = await response.json();
-    if (!json || typeof json !== "object") {
-      throw new Error("Invalid JSON structure received from Google Sheets");
-    }
-  
-    return json;
+  const response = await fetch("https://script.google.com/macros/s/AKfycbwuMhkWNZI71HWbZr18pe56ekjCVrn0SCliiFHOzIW60odC3CsOstRgUeMIEbg03xbeNA/exec");
+  if (!response.ok) {
+    throw new Error(`Fetch failed with status: ${response.status}`);
+  }
 
-  } catch (error) {
-    errorHandler(error, "loadGoogleSheet");
-  }   
+  const json = await response.json();
+  if (!json || typeof json !== "object") {
+    throw new Error("Invalid JSON structure received from Google Sheets");
+  }
+
+  return json;
+  
 }
