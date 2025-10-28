@@ -82,15 +82,19 @@ export function populateDropdowns(fullData) {
         
         if (formatFilter) {
             formatFilter.innerHTML = `<option value="">Format: All</option>` + createOptions(formats);
+            formatFilter.value = ""; // Explicitly set to default
         }   
         if (classificationFilter) {
             classificationFilter.innerHTML = `<option value="">Classification: All</option>` + createOptions(classifications);
+            classificationFilter.value = ""; // Explicitly set to default
         }   
         if (eventYearFilter) {
             eventYearFilter.innerHTML = `<option value="">Event Year: All</option>` + createOptions(eventYears);
+            eventYearFilter.value = ""; // Explicitly set to default
         }   
         if (periodFilter) {
             periodFilter.innerHTML = `<option value="">Period: All</option>` + createOptions(periods);
+            periodFilter.value = ""; // Explicitly set to default
         }   
         if (platformFilter) {
             platformFilter.innerHTML = `
@@ -102,7 +106,11 @@ export function populateDropdowns(fullData) {
                     return `<option value="${p}">${sentenceCase}</option>`;
                 }).join("")}
             `;
+            platformFilter.value = ""; // Explicitly set to default
         }
+        // CRITICAL FIX: Ensure the watched filter is explicitly set to the empty string
+        if (watchedFilter) watchedFilter.value = "";
+        
     } catch (error) {
         errorHandler(error, "populateDropdowns - Failed to populate dropdown menus");
     }
