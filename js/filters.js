@@ -243,19 +243,17 @@ function shouldIncludeEvent(event, values) {
     // Event Year Filter
     if (eventYear && eventYearStr !== eventYear.trim()) return false;
 
-    // Watched Filter (Dropdown) - REFACTORED FOR ROBUSTNESS
-    switch (watched) {
-        case "Yes":
-            // If filter is "Yes", must be explicitly watched
-            if (watchedValue !== "yes") return false;
-            break;
-        case "No":
-            // If filter is "No", must NOT be watched
-            if (watchedValue === "yes") return false;
-            break;
-        // The default case handles "" (All) and any unexpected value, including the possible corrupted initial state,
-        // allowing the item to pass and act as "All".
+    // Watched Filter (Dropdown) - RE-REFACTORED for maximum explicit control
+    // Case 1: Filter is set to 'Yes'
+    if (watched === "Yes") {
+        if (watchedValue !== "yes") return false;
+    } 
+    // Case 2: Filter is set to 'No'
+    else if (watched === "No") {
+        // Only reject events that ARE watched. This correctly includes "" (Not Watched) and "no" (Future Not Watched)
+        if (watchedValue === "yes") return false;
     }
+    // Case 3 (Implicit): Filter is "" (All), so we skip filtering.
     
     // Pinned Filter (Dropdown)
     if (pinned === "Yes" && !isPinnedStatus) return false;
@@ -303,6 +301,9 @@ export function applyFilters() {
         const filterValues = getFilterValues();
         const totalEvents = dataset.length;
         
+        // TEMPORARY DEBUG: Log the filter value to confirm initial state
+        console.log("DEBUG: Current Watched Filter Value:", filterValues.watched);
+
         // 2. Filtering Logic
         const filtered = dataset.filter(event => shouldIncludeEvent(event, filterValues));
         
