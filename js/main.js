@@ -108,7 +108,7 @@ function applyFeatureVisibility() {
     }
   
     // If applyFilters() throws an error here, it's caught below.
-    applyFilters(data);
+    applyFilters();
   
     // load data for features, if they turned on
     loadFeatures(data);
