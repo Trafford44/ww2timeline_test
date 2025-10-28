@@ -1,6 +1,4 @@
 import { logActivity } from './alerts/logger.js';
-import { errorHandler } from './alerts/errorUtils.js';
-
 
 // loadConfig(domainKey)
 // Fetches and assembles all configuration files for a given domain context.
@@ -19,29 +17,40 @@ import { errorHandler } from './alerts/errorUtils.js';
 export async function loadConfig(domainKey) {
   logActivity("info", "loadConfig", { domainKey });
  
-  try {
-      const [featuresRes, themeRes, domainRes, settingsRes] = await Promise.all([
-        fetch(`config/features_${domainKey}.json`),
-        fetch(`config/theme_${domainKey}.json`),
-        fetch(`config/domain_${domainKey}.json`),
-        fetch(`config/settings_${domainKey}.json`)
-      ]);
-      //change above lines (features, theme, domain, settings) to new settings file when changing domain to, for example, science (settings_science.json)
-      // was gettoing 404 when '../config/features_ww2infilm.json'
-      // From co-pilot:
-      // When you use: fetch('/config/features_ww2infilm.json')
-      // …the browser interprets that as:  http://yourdomain.com/config/features_ww2infilm.json
-      // But if your project is actually served from: http://yourdomain.com/ww2timeline_test/
-      // Then the correct path is: fetch('config/features_ww2infilm.json')
-      
-      const features = await featuresRes.json();
-      const theme = await themeRes.json();
-      const domain = await domainRes.json();
-      const settings = await settingsRes.json();
-    
-      return { features, theme, domain, settings };
-    
-  } catch (error) {
-    errorHandler(error, "loadConfig - failed while loading configuration data");
-  }        
+  // Any failure here (network, JSON parsing) will automatically reject the Promise
+  const [featuresRes, themeRes, domainRes, settingsRes] = await Promise.all([
+    fetch(`config/features_${domainKey}.json`),
+    fetch(`config/theme_${domainKey}.json`),
+    fetch(`config/domain_${domainKey}.json`),
+    fetch(`config/settings_${domainKey}.json`)
+  ]);
+  //change above lines (features, theme, domain, settings) to new settings file when changing domain to, for example, science (settings_science.json)
+  // was gettoing 404 when '../config/features_ww2infilm.json'
+  // From co-pilot:
+  // When you use: fetch('/config/features_ww2infilm.json')
+  // …the browser interprets that as:  http://yourdomain.com/config/features_ww2infilm.json
+  // But if your project is actually served from: http://yourdomain.com/ww2timeline_test/
+  // Then the correct path is: fetch('config/features_ww2infilm.json')
+
+  // It is helpful to check for non-200 HTTP status codes
+  if (!featuresRes.ok) {
+     throw new Error(`Failed to load features: ${featuresRes.status}`);
+  }
+  if (!themeRes.ok) {
+     throw new Error(`Failed to load theme: ${themeRes.status}`);
+  }  
+  if (!domainRes.ok) {
+     throw new Error(`Failed to load domains: ${domainRes.status}`);
+  }    
+  if (!settingsRes.ok) {
+     throw new Error(`Failed to load settings: ${settingsRes.status}`);
+  }   
+  
+  const features = await featuresRes.json();
+  const theme = await themeRes.json();
+  const domain = await domainRes.json();
+  const settings = await settingsRes.json();
+
+  return { features, theme, domain, settings };
+     
 }
