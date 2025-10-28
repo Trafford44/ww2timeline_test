@@ -12,7 +12,7 @@ const PINNED_KEY = "pinnedEvents";
  * @param {Array<string>} pinnedIds - Array of IDs to save.
  */
 export function savePinned(pinnedIds) {
-    logActivity("information", "savePinned", { count: pinnedIds.length });
+    logActivity("info", "savePinned", { count: pinnedIds.length });
     // Uses the robust helper to handle QuotaExceededError
     saveToLocal(PINNED_KEY, pinnedIds);
 }
@@ -36,7 +36,6 @@ export function loadPinned() {
  * @returns {boolean} True if the event is pinned.
  */
 export function isPinned(id) {
-    // R1: Removed try/catch. R2: Removed excessive logging inside this frequent check.
     if (!id) return false;
     
     // Convert array to Set temporarily for fast lookup and then check inclusion
