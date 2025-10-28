@@ -10,7 +10,7 @@ import { logActivity } from './alerts/logger.js';
  * @returns {Array<Object>} The sorted array, or the original array if sortOrder is default or invalid.
  */
 export function applySort(events, sortOrder) {
-    logActivity("information", "applySort initiated", { sortOrder, eventCount: events?.length });
+    logActivity("info", "applySort initiated", { sortOrder, eventCount: events?.length });
     
     // Safety check: ensure 'events' is an array.
     if (!Array.isArray(events)) {
