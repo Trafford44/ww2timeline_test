@@ -2,12 +2,11 @@ import { renderStars } from './stars.js';
 import { getPlatformIcons } from './platforms.js';
 import { applyFilters } from './filters.js';
 import { dataset } from './data.js';
-import { features } from './main.js';
-import { savePinned, loadPinned, isPinned, togglePinned } from './pinnedManager.js';
+import { isPinned, togglePinned } from './pinnedManager.js'; 
 import { loadConfig } from './config.js';
 import { domainKey } from './domain.js';
 import { hideAlert } from './alerts/alertUtils.js';
-import { errorHandler } from './alerts/errorUtils.js';
+import { errorHandler } from './alerts/errorUtils.js'; // KEPT for main async function
 import { logActivity } from './alerts/logger.js';
 
 let domain = {};
@@ -18,103 +17,33 @@ let domain = {};
  * @returns {object} An object where keys are years (string) and values are arrays of events.
  */
 function groupEventsByYear(filteredData) {
-  const grouped = {};
+    logActivity("info", "groupEventsByYear initiated", { count: filteredData?.length });
 
-  logActivity("info", "groupEventsByYear", { filteredData });
- 
-  try {
+    if (!Array.isArray(filteredData)) return {};
+
+    const grouped = {};
     
+    // Core Logic (No try/catch)
     filteredData.forEach(event => {
-      let year = "Unknown Year";
-      const rawYear = String(event.EventYear || "").trim();
-      if (/^\d{4}$/.test(rawYear)) {
-        year = rawYear;
-      } else if (rawYear.includes('–') || rawYear.includes('-')) {
-        year = rawYear.split(/[–-]/)[0].trim();
-      } else if (rawYear) {
-        year = rawYear.split(' ')[0];
-      }
-      if (!grouped[year]) grouped[year] = [];
-      grouped[year].push(event);
+        let year = "Unknown Year";
+        const rawYear = String(event.EventYear || "").trim();
+        
+        // Use more specific parsing for ranges and single years
+        if (/^\d{4}$/.test(rawYear)) {
+            year = rawYear;
+        } else if (rawYear.includes('–') || rawYear.includes('-')) {
+            // Take the first year in a range (e.g., 1999–2000 -> 1999)
+            year = rawYear.split(/[–-]/)[0].trim();
+        } else if (rawYear) {
+            // Take the first part of a messy string
+            year = rawYear.split(' ')[0];
+        }
+        
+        if (!grouped[year]) grouped[year] = [];
+        grouped[year].push(event);
     });
-  
+    
     return grouped;
-    
-  } catch (error) {
-    errorHandler(error, "groupEventsByYear");
-  }    
-}
-
-export async function renderTimeline(filteredData) {
-  logActivity("info", "renderTimeline", { filteredData });
- 
-  try {
-        
-      const timelineContainer = document.getElementById("timeline");
-      const initialPrompt = document.getElementById("initialPrompt");
-      
-      const config = await loadConfig(domainKey);
-      domain = config.domain;
-      
-      timelineContainer.innerHTML = "";
-    
-      if (filteredData.length === 0) {
-        initialPrompt.style.display = 'block';
-        initialPrompt.textContent = "No data found or all records filtered out.";
-        return;
-      }
-    
-      initialPrompt.style.display = 'none';
-      hideAlert();
-    
-      // Use the extracted utility function
-      const grouped = groupEventsByYear(filteredData); 
-    
-      const sortedYears = Object.keys(grouped).sort((a, b) => {
-        if (a === "Unknown Year") return 1;
-        if (b === "Unknown Year") return -1;
-        return parseInt(a) - parseInt(b);
-      });
-    
-      sortedYears.forEach(year => {
-        const eventsInYear = grouped[year];
-        const yearGroup = document.createElement("div");
-        yearGroup.className = "year-group";
-    
-        
-        const yearMarker = document.createElement("div");
-        yearMarker.className = "year-marker";
-        
-        const yearLabel = document.createElement("span");
-        yearLabel.className = "year-label";
-        yearLabel.textContent = year;
-        
-        const countSpan = document.createElement("span");
-        countSpan.className = "year-count";
-        countSpan.textContent = `(${eventsInYear.length} event${eventsInYear.length !== 1 ? 's' : ''})`;
-        
-        yearMarker.appendChild(yearLabel);
-        yearMarker.appendChild(countSpan);
-    
-        yearMarker.addEventListener("click", () => {
-          yearGroup.classList.toggle("collapsed");
-        });
-    
-        yearGroup.appendChild(yearMarker);
-    
-        eventsInYear.forEach((event, index) => {
-          const card = createEventCard(event, index);
-          attachEventCardListeners(card, event); 
-          yearGroup.appendChild(card);
-        });
-    
-        timelineContainer.appendChild(yearGroup);
-      });
-
-  } catch (error) {
-    errorHandler(error, "renderTimeline");
-    throw error; //bubble it up
-  }       
 }
 
 /**
@@ -124,173 +53,152 @@ export async function renderTimeline(filteredData) {
  * @returns {HTMLElement} The event card DOM element without listeners.
  */
 function createEventCard(event, index) {
-  logActivity("info", "createEventCard", { event, index });
- 
-  try {
-  //throw new Error("test error");
+    logActivity("info", "createEventCard initiated", { id: event.RecordID, title: event.Title });
+    
+    // Core Logic (No try/catch)
     const card = document.createElement("div");
-      
+    
     card.className = `timeline-event ${index % 2 === 0 ? "left" : "right"}`;
     
+    // Add classification class, safely handling missing or compound values
     if (event.Classification) {
-      card.classList.add(`classification-${String(event.Classification).split('/')[0].trim().replace(/\s/g, '-')}`);
+        const baseClass = String(event.Classification).split('/')[0].trim().replace(/\s/g, '-');
+        card.classList.add(`classification-${baseClass}`);
     }
     
     // Initialize Pinned status based on stored state
     if (isPinned(event.RecordID)) {
-      event.Pinned = true;
-      card.classList.add("pinned");
+        event.Pinned = true; // Update event object state for local rendering
+        card.classList.add("pinned");
     }
     
     card.dataset.id = event.RecordID;
-  
     
-    const watchedStatus = event.Watched && String(event.Watched).toLowerCase() === 'yes'
-      ? `Yes <span class="watched-status-icon" title="You have watched this event.">✔</span>`
-      : (event.Watched || "No");
-  
+    
+    const watchedStatus = (event.Watched && String(event.Watched).toLowerCase() === 'yes')
+        ? `Yes <span class="watched-status-icon" title="You have watched this event.">✔</span>`
+        : (event.Watched || "No");
+    
     const notesIndicator = event.Notes ? `<span class="notes-indicator" title="Click to view notes!">📝</span>` : '';
     const imageHTML = event.ImageURL
-      ? `<img src="${event.ImageURL}" alt="Poster for ${event.Title || 'Untitled Event'}" class="event-image">`
-      : '';
-  
+        ? `<img src="${event.ImageURL}" alt="Poster for ${event.Title || 'Untitled Event'}" class="event-image">`
+        : '';
+    
     const title = document.createElement("div");
     title.className = "event-title";
-    // RESTORED: Removed the extra span class to allow the original .event-title CSS to apply directly to the text node.
     title.innerHTML = `${imageHTML}${event.Title || "Untitled Event"}${event.YearOfIssue ? ` <span class="release-year">(${event.YearOfIssue})</span>` : ""}${notesIndicator}`;
     card.appendChild(title);
     
     const details = document.createElement("div");
     details.className = "event-details";
     
-    // add the card content
+    // Use optional chaining for safer access to domain labels
     details.innerHTML = `
-    <b>${domain.labels.PeriodLabel || "Format"}:</b> ${event.Period || ""}
-    <br><b>${domain.labels.FormatLabel || "Format"}:</b> ${event.Format || ""}
-    <br><b>${domain.labels.ClassificationLabel || "Format"}:</b> ${event.Classification || ""}
-    <br><b>${domain.labels.RunningTimeLabel || "Format"}:</b> ${event.RunningTime || ""}
-    <br><b>${domain.labels.HistoricalAccuracyLabel || "Format"}:</b> ${renderStars(event.HistoricalAccuracy)}
-    ${createToggleDescription(event.ShortDescription)}
-    ${renderPlatformField(event.Platform, event.PlatformLink)}
-    <br><b>${domain.labels.WikipediaLabel || "Format"}:</b> ${event.Wikipedia ? `<a href="${event.Wikipedia}" target="_blank">see details..</a>` : ""}
-    <br><b>${domain.labels.WatchedLabel || "Format"}:</b> ${watchedStatus}
-    <br><b>${domain.labels.RatingLabel || "Format"}:</b> ${renderStars(event.Rating || 0)}
-    <span class="pin-icon" title="Click to pin/unpin this event">
-      ${event.Pinned ? "📌" : "📍"}
-    </span>
-  `;
-  
+        <b>${domain.labels?.PeriodLabel || "Period"}:</b> ${event.Period || ""}
+        <br><b>${domain.labels?.FormatLabel || "Format"}:</b> ${event.Format || ""}
+        <br><b>${domain.labels?.ClassificationLabel || "Classification"}:</b> ${event.Classification || ""}
+        <br><b>${domain.labels?.RunningTimeLabel || "Running Time"}:</b> ${event.RunningTime || ""}
+        <br><b>${domain.labels?.HistoricalAccuracyLabel || "Historical Accuracy"}:</b> ${renderStars(event.HistoricalAccuracy)}
+        ${createToggleDescription(event.ShortDescription)}
+        ${renderPlatformField(event.Platform, event.PlatformLink)}
+        <br><b>${domain.labels?.WikipediaLabel || "Wikipedia"}:</b> ${event.Wikipedia ? `<a href="${event.Wikipedia}" target="_blank">see details..</a>` : ""}
+        <br><b>${domain.labels?.WatchedLabel || "Watched"}:</b> ${watchedStatus}
+        <br><b>${domain.labels?.RatingLabel || "Rating"}:</b> ${renderStars(event.Rating || 0)}
+        <span class="pin-icon" title="Click to pin/unpin this event">
+            ${isPinned(event.RecordID) ? "📌" : "📍"}
+        </span>
+    `;
+    
     card.appendChild(details);
-  
-    //add notes after the detail in its own div
+    
+    // Add notes after the detail in its own div
     if (event.Notes) {
-      const notes = document.createElement("div");
-      notes.className = "notes";
-      notes.textContent = `Notes: ${event.Notes}`;
-      card.appendChild(notes);
+        const notes = document.createElement("div");
+        notes.className = "notes";
+        notes.textContent = `Notes: ${event.Notes}`;
+        card.appendChild(notes);
     }
     
-    /*
-    // this section outputs all the below call detail for all records to console
-    console.log("Created Card Element Check:", {
-      eventClass: card.className,
-      titleClass: title.className,
-      detailsClass: details.className
-    });
-    */
     return card;
-
-  } catch (error) {
-    errorHandler(error, "createEventCard");
-    throw error; //bubble it up    
-  }         
 }
 
-// note yet used - supposed to add "..." on notes
 function createToggleDescription(description) {
-  logActivity("info", "createToggleDescription", { description });
- 
-  try {
-  
+    // Note: Removed logActivity call for high-frequency helper function
+    
+    // Core Logic (No try/catch)
     const MAX_LENGTH = 70;
     const descriptionText = description || "";
-  
+    
     // The unique ID will be used to link the button to the dots/hidden text.
-    // We'll use a simple timestamp or a unique event ID if available (e.g., event.id).
-    // Assuming a simple timestamp for a unique identifier here.
-    const uniqueId = 'desc-toggle-' + Date.now() + Math.floor(Math.random() * 1000); 
-  
+    // Using a reliable unique ID based on a random number.
+    const uniqueId = `desc-toggle-${Math.random().toString(36).substring(2, 9)}`;
+    
     if (descriptionText.length <= MAX_LENGTH) {
-      // If text is short, return the standard line.
-      return `<br><b>${domain.labels.ShortDescription || "Description"}:</b> ${descriptionText}`;
+        // If text is short, return the standard line.
+        return `<br><b>${domain.labels?.ShortDescription || "Description"}:</b> ${descriptionText}`;
     }
-  
+    
     // 1. Split the text
     const shortText = descriptionText.substring(0, MAX_LENGTH);
     const hiddenText = descriptionText.substring(MAX_LENGTH);
-  
-    // 2. Build the HTML structure with unique IDs
+    
+    // 2. Build the HTML structure
+    // NOTE: toggleText is defined below and must be globally accessible (i.e., defined outside modules or attached to window) 
+    // or referenced differently if you want to avoid inline 'onclick'.
     return `
-      <br><b>${domain.labels.ShortDescription || "Description"}:</b> 
-      <span 
-        class="description-toggle-icon"
-        data-target-id="${uniqueId}"
-        onclick="toggleText(this, '${uniqueId}')"
-        title="Click to expand/collapse description"
-      >
-        📖
-      </span>
-      ${shortText}
-      <span id="${uniqueId}-dots">...</span>
-      <span id="${uniqueId}-more" style="display: none;">${hiddenText}</span>
+        <br><b>${domain.labels?.ShortDescription || "Description"}:</b> 
+        <span 
+            class="description-toggle-icon"
+            data-target-id="${uniqueId}"
+            title="Click to expand/collapse description"
+        >
+            📖
+        </span>
+        ${shortText}
+        <span id="${uniqueId}-dots">...</span>
+        <span id="${uniqueId}-more" style="display: none;">${hiddenText}</span>
     `;
-  } catch (error) {
-    errorHandler(error, "createToggleDescription");
-  }    
 }
 
-// - if event.PlatformLink has a value (a url), make a link to the platform using event.Platform as the link text
-// - if event.Platform is null, just use teh text 'link'
-// - if both are null, put nothing
 function renderPlatformField(platform, link) {
-  logActivity("info", "renderPlatformField", { platform, link });
- 
-  try {
+    // Note: Removed logActivity call for high-frequency helper function
+
+    // Core Logic (No try/catch)
+    const label = domain.labels?.PlatformLabel || "Platform"; // Defaulted to 'Platform'
     
-    const label = domain.labels.PlatformLabel || "Format";
-  
     if (link) {
-      const linkText = platform || "link";
-      return `<br><b>${label}:</b> <a href="${link}" target="_blank">${linkText}</a> ${getPlatformIcons(platform)}`;
+        const linkText = platform || "link";
+        // NOTE: getPlatformIcons(platform) ensures consistent icons regardless of link presence
+        return `<br><b>${label}:</b> <a href="${link}" target="_blank">${linkText}</a> ${getPlatformIcons(platform)}`;
     } else if (platform) {
-      return `<br><b>${label}:</b> ${platform} ${getPlatformIcons(platform)}`;
+        return `<br><b>${label}:</b> ${platform} ${getPlatformIcons(platform)}`;
     } else {
-      return `<br><b>${label}:</b>`;
+        // Only return the label if both platform and link are null/empty, otherwise return nothing.
+        // Returning just the label with an empty string might be confusing in the UI.
+        return ''; 
     }
-  } catch (error) {
-    errorHandler(error, "renderPlatformField");
-  }     
 }
 
 
+// RETAINING this function, but it MUST be attached to the window object 
+// for the inline 'onclick' in createToggleDescription to work.
+// Alternatively, remove the inline 'onclick' and rely on the DOM listener below.
 function toggleText(iconElement, targetId) {
-  logActivity("info", "toggleText", { iconElement, targetId });
- 
-  try {
-    
+    // Note: Removed logActivity call for high-frequency helper function
+
+    // Core Logic (No try/catch)
     const dots = document.getElementById(targetId + "-dots");
     const moreText = document.getElementById(targetId + "-more");
-  
+    
+    if (!dots || !moreText) return;
+
     const isCollapsed = moreText.style.display === "none";
-  
+    
     dots.style.display = isCollapsed ? "none" : "inline";
     moreText.style.display = isCollapsed ? "inline" : "none";
     iconElement.textContent = isCollapsed ? "📕" : "📖";
-
-  } catch (error) {
-    errorHandler(error, "toggleText");
-  }      
 }
+
 
 /**
  * Attaches event listeners to the event card for interaction (pinning and notes).
@@ -298,41 +206,125 @@ function toggleText(iconElement, targetId) {
  * @param {object} event - The event data object.
  */
 function attachEventCardListeners(card, event) {
-  logActivity("info", "attachEventCardListeners", { card, event });
- 
-  try {  
-    const pinSpan = card.querySelector(".pin-icon");
-    // Now querying the notes div which is a direct child of 'card' again
+    logActivity("info", "attachEventCardListeners initiated", { id: event.RecordID });
     
-    // Pinning Listener
-    pinSpan.addEventListener("click", (e) => {
-      e.stopPropagation();
-      event.Pinned = !event.Pinned;
-      card.classList.toggle("pinned", event.Pinned); // Update visual class
-      pinSpan.innerHTML = event.Pinned ? "📌" : "📍"; // Update pin emoji
-      togglePinned(event.RecordID); // Update local storage
-      applyFilters(dataset); // Re-render/Update view based on new pin state
-    });
-  
-    // Notes Toggle Listener
+    // Core Logic (No try/catch)
+    const pinSpan = card.querySelector(".pin-icon");
     const notesDiv = card.querySelector(".notes");
     const titleDiv = card.querySelector(".event-title");
-  
-    if (notesDiv && titleDiv) {
-      titleDiv.addEventListener("click", () => {
-        notesDiv.classList.toggle("show");
-      });
+    
+    // --- Pinning Listener ---
+    if (pinSpan) {
+        pinSpan.addEventListener("click", (e) => {
+            e.stopPropagation();
+            
+            // Toggle in local storage and get the new status
+            const isNowPinned = togglePinned(event.RecordID); 
+            event.Pinned = isNowPinned; // Update local JS object state
+            
+            card.classList.toggle("pinned", isNowPinned); // Update visual class
+            pinSpan.innerHTML = isNowPinned ? "📌" : "📍"; // Update pin emoji
+            
+            // Re-render/Update view based on new pin state (calls applyFilters with no args now!)
+            applyFilters(); 
+        });
     }
     
-    // Description toggle listener
+    // --- Notes Toggle Listener (Clicking the Title) ---
+    if (notesDiv && titleDiv) {
+        titleDiv.addEventListener("click", () => {
+            notesDiv.classList.toggle("show");
+        });
+    }
+    
+    // --- Description Toggle Listener (DOM-based) ---
     card.querySelectorAll(".description-toggle-icon").forEach((icon) => {
-      icon.addEventListener("click", () => {
-        const targetId = icon.dataset.targetId;
-        toggleText(icon, targetId);
-      });
+        icon.addEventListener("click", () => {
+            const targetId = icon.dataset.targetId;
+            // Call the shared toggle logic
+            toggleText(icon, targetId); 
+        });
     });
-  
-  } catch (error) {
-    errorHandler(error, "attachEventCardListeners");
-  }   
+}
+
+
+// Main Rendering Function (Asynchronous, Retains `try/catch`)
+
+
+export async function renderTimeline(filteredData) {
+    logActivity("action", "renderTimeline initiated", { filteredCount: filteredData?.length });
+    
+    try {
+        const timelineContainer = document.getElementById("timeline");
+        const initialPrompt = document.getElementById("initialPrompt");
+        
+        // Load configuration and set the domain labels
+        const config = await loadConfig(domainKey);
+        domain = config.domain || {}; // Ensure domain is an object, even if config fails
+        
+        if (!timelineContainer || !initialPrompt) {
+            throw new Error("Timeline or initial prompt container not found.");
+        }
+
+        timelineContainer.innerHTML = "";
+        
+        if (!Array.isArray(filteredData) || filteredData.length === 0) {
+            initialPrompt.style.display = 'block';
+            initialPrompt.textContent = "No data found or all records filtered out.";
+            return;
+        }
+        
+        initialPrompt.style.display = 'none';
+        hideAlert();
+        
+        const grouped = groupEventsByYear(filteredData); 
+        
+        const sortedYears = Object.keys(grouped).sort((a, b) => {
+            // Ensure "Unknown Year" always appears last
+            if (a === "Unknown Year") return 1;
+            if (b === "Unknown Year") return -1;
+            // Convert to number for proper sorting
+            return parseInt(a) - parseInt(b);
+        });
+        
+        sortedYears.forEach(year => {
+            const eventsInYear = grouped[year];
+            const yearGroup = document.createElement("div");
+            yearGroup.className = "year-group";
+            
+            const yearMarker = document.createElement("div");
+            yearMarker.className = "year-marker";
+            
+            const yearLabel = document.createElement("span");
+            yearLabel.className = "year-label";
+            yearLabel.textContent = year;
+            
+            const countSpan = document.createElement("span");
+            countSpan.className = "year-count";
+            countSpan.textContent = `(${eventsInYear.length} event${eventsInYear.length !== 1 ? 's' : ''})`;
+            
+            yearMarker.appendChild(yearLabel);
+            yearMarker.appendChild(countSpan);
+            
+            // Collapse listener for the whole year group
+            yearMarker.addEventListener("click", () => {
+                yearGroup.classList.toggle("collapsed");
+            });
+            
+            yearGroup.appendChild(yearMarker);
+            
+            eventsInYear.forEach((event, index) => {
+                const card = createEventCard(event, index);
+                attachEventCardListeners(card, event); 
+                yearGroup.appendChild(card);
+            });
+            
+            timelineContainer.appendChild(yearGroup);
+        });
+
+    } catch (error) {
+        // CATCH: This catches loadConfig failures or fatal DOM rendering bugs.
+        errorHandler(error, "renderTimeline failed.");
+        throw error; //bubble it up to initApp
+    }
 }
