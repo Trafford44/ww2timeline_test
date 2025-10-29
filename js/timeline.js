@@ -256,114 +256,101 @@ function attachEventCardListeners(card, event) {
 
 
 // Main Rendering Function (Asynchronous, Retains `try/catch`)
-
-
 export async function renderTimeline(filteredData) {
-    logActivity("action", "renderTimeline initiated", { filteredCount: filteredData?.length });
-    
-    try {
-        const timelineContainer = document.getElementById("timeline");
-        const initialPrompt = document.getElementById("initialPrompt");
-        
-        // Load configuration and set the domain labels
-        const config = await loadConfig(domainKey);
-        domain = config.domain || {}; // Ensure domain is an object, even if config fails
-        
-        if (!timelineContainer || !initialPrompt) {
-            throw new Error("Timeline or initial prompt container not found.");
-        }
+  logActivity("action", "renderTimeline initiated", { filteredCount: filteredData?.length });
 
-        timelineContainer.innerHTML = "";
-        
-        if (!Array.isArray(filteredData) || filteredData.length === 0) {
-            initialPrompt.style.display = 'block';
-            initialPrompt.textContent = "No data found or all records filtered out.";
-            return;
-        }
-        
-        initialPrompt.style.display = 'none';
-        //hideAlert();
-        
-        const grouped = groupEventsByYear(filteredData); 
-        
-        const sortedYears = Object.keys(grouped).sort((a, b) => {
-            // Ensure "Unknown Year" always appears last
-            if (a === "Unknown Year") return 1;
-            if (b === "Unknown Year") return -1;
-            // Convert to number for proper sorting
-            return parseInt(a) - parseInt(b);
-        });
+  try {
+    const timelineContainer = document.getElementById("timeline");
+    const initialPrompt = document.getElementById("initialPrompt");
 
-        const failedItems = [];
-        
-        sortedYears.forEach(year => {
-            const eventsInYear = grouped[year];
-            const yearGroup = document.createElement("div");
-            yearGroup.className = "year-group";
-            
-            const yearMarker = document.createElement("div");
-            yearMarker.className = "year-marker";
-            
-            const yearLabel = document.createElement("span");
-            yearLabel.className = "year-label";
-            yearLabel.textContent = year;
-            
-            const countSpan = document.createElement("span");
-            countSpan.className = "year-count";
-            countSpan.textContent = `(${eventsInYear.length} event${eventsInYear.length !== 1 ? 's' : ''})`;
-            
-            yearMarker.appendChild(yearLabel);
-            yearMarker.appendChild(countSpan);
-            
-            // Collapse listener for the whole year group
-            yearMarker.addEventListener("click", () => {
-                yearGroup.classList.toggle("collapsed");
-            });
-            
-            yearGroup.appendChild(yearMarker);
+    const config = await loadConfig(domainKey);
+    domain = config.domain || {};
 
-            //  putting a try catch here since all errors from createEventCard are lost in the forEach
-            // since a separate stack.  This code captures all the errors (since the tr/catch is within 
-            // the forEach and shows as a single alert
-            
-            
-            sortedYears.forEach(year => {
-              const eventsInYear = grouped[year];
-              const yearGroup = document.createElement("div");
-              // ... setup yearGroup ...
-            
-              eventsInYear.forEach((event, index) => {
-                try {
-                  const card = createEventCard(event, index);
-                  attachEventCardListeners(card, event);
-                  yearGroup.appendChild(card);
-                } catch (err) {
-                  failedItems.push(event.id || event.name || `Event ${index}`);
-                  logger.error("createEventCard failed", { event, err });
-                }
-              });
-            
-              timelineContainer.appendChild(yearGroup);
-            });
-            
-            // ✅ After all years processed
-            if (failedItems.length > 0) {
-              const summary = failedItems.length === 1
-                ? `1 event failed to render: ${failedItems[0]}`
-                : `${failedItems.length} events failed to render.`;
-            
-              setTimeout(() => {
-                showAlert(summary, "error", {
-                  dismissible: true,
-                  retryCallback: () => retryFailedItems(failedItems)
-                });
-              }, 0);
-            }
-        
-
-    } catch (error) {
-        // CATCH: This catches loadConfig failures or fatal DOM rendering bugs.
-        errorHandler(error, "renderTimeline failed.");
-        throw error; //bubble it up to initApp
+    if (!timelineContainer || !initialPrompt) {
+      throw new Error("Timeline or initial prompt container not found.");
     }
+
+    timelineContainer.innerHTML = "";
+
+    if (!Array.isArray(filteredData) || filteredData.length === 0) {
+      initialPrompt.style.display = "block";
+      initialPrompt.textContent = "No data found or all records filtered out.";
+      return;
+    }
+
+    initialPrompt.style.display = "none";
+    // hideAlert(); // optional, if alerts should be cleared before rendering
+
+    const grouped = groupEventsByYear(filteredData);
+    const sortedYears = Object.keys(grouped).sort((a, b) => {
+        // Ensure "Unknown Year" always appears last
+        if (a === "Unknown Year") return 1;
+        if (b === "Unknown Year") return -1;
+        // Convert to number for proper sorting
+        return parseInt(a) - parseInt(b);
+    });
+
+    const failedItems = [];
+
+    sortedYears.forEach(year => {
+      const eventsInYear = grouped[year];
+      const yearGroup = document.createElement("div");
+      yearGroup.className = "year-group";
+
+      const yearMarker = document.createElement("div");
+      yearMarker.className = "year-marker";
+
+      const yearLabel = document.createElement("span");
+      yearLabel.className = "year-label";
+      yearLabel.textContent = year;
+
+      const countSpan = document.createElement("span");
+      countSpan.className = "year-count";
+      countSpan.textContent = `(${eventsInYear.length} event${eventsInYear.length !== 1 ? "s" : ""})`;
+
+      yearMarker.appendChild(yearLabel);
+      yearMarker.appendChild(countSpan);
+
+      // Collapse listener for the whole year group
+      yearMarker.addEventListener("click", () => {
+        yearGroup.classList.toggle("collapsed");
+      });
+
+      yearGroup.appendChild(yearMarker);
+
+        //  putting a try catch here since all errors from createEventCard are lost in the forEach
+        // since a separate stack.  This code captures all the errors (since the tr/catch is within 
+        // the forEach and shows as a single alert
+      eventsInYear.forEach((event, index) => {
+        try {
+          const card = createEventCard(event, index);
+          attachEventCardListeners(card, event);
+          yearGroup.appendChild(card);
+        } catch (err) {
+          failedItems.push(event.id || event.name || `Event ${index}`);
+          logger.error("createEventCard failed", { event, err });
+        }
+      });
+
+      timelineContainer.appendChild(yearGroup);
+    });
+
+    if (failedItems.length > 0) {
+      const summary =
+        failedItems.length === 1
+          ? `1 event failed to render: ${failedItems[0]}`
+          : `${failedItems.length} events failed to render.`;
+
+      setTimeout(() => {
+        showAlert(summary, "error", {
+          dismissible: true,
+          retryCallback: () => retryFailedItems(failedItems)
+        });
+      }, 0);
+    }
+  } catch (error) {
+    // CATCH: This catches loadConfig failures or fatal DOM rendering bugs.
+    errorHandler(error, "renderTimeline failed.");
+    throw error;
+  }
 }
