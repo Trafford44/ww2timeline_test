@@ -157,6 +157,8 @@ export function showAlert(message, type = "error", options = {}) {
 
   container.appendChild(alert);
 
+  console.log(`alert.innerHTML ${alert.innerHTML}`);
+
   // Handle auto-dismiss
   if (options.autoDismiss) {
     const dismissDelay = typeof options.autoDismiss === "number"
