@@ -83,11 +83,7 @@ function createEventCard(event, index) {
     const imageHTML = event.ImageURL
         ? `<img src="${event.ImageURL}" alt="Poster for ${event.Title || 'Untitled Event'}" class="event-image">`
         : '';
-    
-    // --- TESTING: Simulate an error at the lowest layer (Rendering) ---
-    throw new Error("Simulated error for testing in createEventCard()");
-    // --- END TESTING ---
-    
+
     const title = document.createElement("div");
     title.className = "event-title";
     title.innerHTML = `${imageHTML}${event.Title || "Untitled Event"}${event.YearOfIssue ? ` <span class="release-year">(${event.YearOfIssue})</span>` : ""}${notesIndicator}`;
