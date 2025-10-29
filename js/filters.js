@@ -322,6 +322,12 @@ export function applyFilters() {
         }
         
         console.log("Number of results:", filtered.length);
+
+    
+    // --- TESTING: Simulate an error at the lowest layer (Rendering) ---
+    throw new Error("Simulated error for testing in applyFilters()");
+    // --- END TESTING ---
+    
         
         renderTimeline(filtered);
         updateStats(filtered, totalEvents);
