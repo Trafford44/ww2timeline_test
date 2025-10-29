@@ -321,13 +321,7 @@ export function applyFilters() {
             countDisplay.textContent = `Showing ${filtered.length} of ${dataset.length} record${dataset.length !== 1 ? "s" : ""}`;
         }
         
-        console.log("Number of results:", filtered.length);
-
-    
-    // --- TESTING: Simulate an error at the lowest layer (Rendering) ---
-    throw new Error("Simulated error for testing in applyFilters()");
-    // --- END TESTING ---
-    
+        console.log("Number of results:", filtered.length); 
         
         renderTimeline(filtered);
         updateStats(filtered, totalEvents);
