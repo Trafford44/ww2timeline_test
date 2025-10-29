@@ -318,7 +318,7 @@ export function applyFilters() {
         // 3. UI Updates
         const countDisplay = document.getElementById("filterCount");
         if (countDisplay) {
-            countDisplay.textContent = `Showing ${filtered.length} of ${dataset.length} record${dataset.length !== 1 ? "s" : ""}`;
+            countDisplay.textContent = `Showing ${filtered.length} of ${dataset.length} event${dataset.length !== 1 ? "s" : ""}`;
         }
         
         console.log("Number of results:", filtered.length); 
