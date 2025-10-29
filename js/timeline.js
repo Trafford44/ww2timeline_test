@@ -323,20 +323,33 @@ export async function renderTimeline(filteredData) {
             //  putting a try catch here since all errors from createEventCard are lost in the forEach
             // since a separate stack.  This code captures all the errors (since the tr/catch is within 
             // the forEach and shows as a single alert
-            const failedItems = [];            
-            eventsInYear.forEach((event, index) => {
-              try {
-                const card = createEventCard(event, index);
-                attachEventCardListeners(card, event); 
-                yearGroup.appendChild(card);
-              } catch (err) {
-                failedItems.push(event.id || event.name || `Event ${index}`);
-                logActivity("bug","createEventCard failed", { event, err });
-              }
+            const failedItems = [];
+            
+            sortedYears.forEach(year => {
+              const eventsInYear = grouped[year];
+              const yearGroup = document.createElement("div");
+              // ... setup yearGroup ...
+            
+              eventsInYear.forEach((event, index) => {
+                try {
+                  const card = createEventCard(event, index);
+                  attachEventCardListeners(card, event);
+                  yearGroup.appendChild(card);
+                } catch (err) {
+                  failedItems.push(event.id || event.name || `Event ${index}`);
+                  logger.error("createEventCard failed", { event, err });
+                }
+              });
+            
+              timelineContainer.appendChild(yearGroup);
             });
             
+            // ✅ After all years processed
             if (failedItems.length > 0) {
-              const summary = `${failedItems.length} events failed to render.`;
+              const summary = failedItems.length === 1
+                ? `1 event failed to render: ${failedItems[0]}`
+                : `${failedItems.length} events failed to render.`;
+            
               setTimeout(() => {
                 showAlert(summary, "error", {
                   dismissible: true,
@@ -344,9 +357,7 @@ export async function renderTimeline(filteredData) {
                 });
               }, 0);
             }
-            
-            timelineContainer.appendChild(yearGroup);
-        });
+
 
     } catch (error) {
         // CATCH: This catches loadConfig failures or fatal DOM rendering bugs.
