@@ -16,7 +16,7 @@ export async function fetchData(features, domain, settings) {
   const loadingMessage = `Loading data for ${domain?.subject || 'application'} from ${dataSource}...`;
   if (initialPrompt) initialPrompt.textContent = loadingMessage;
   // Store the alert instance so we can dismiss it later
-  const loadingAlert = showAlert(loadingMessage, "info", { autoDismiss: false });
+  // const loadingAlert = showAlert(loadingMessage, "info", { autoDismiss: false });
 
   try {
       if (dataSource === "localJSON") {
@@ -46,7 +46,7 @@ export async function fetchData(features, domain, settings) {
       
   } finally {
       // 3. UI Cleanup (Crucial!)
-      if (loadingAlert) loadingAlert.dismiss(); // Dismiss the persistent loading alert
+      // if (loadingAlert) loadingAlert.dismiss(); // Dismiss the persistent loading alert
       if (initialPrompt) initialPrompt.textContent = ''; // Clear the initial prompt
   }
 }
