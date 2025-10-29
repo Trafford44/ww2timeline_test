@@ -26,8 +26,8 @@
 
 .year-marker::after {
   content: "▼";
-  font-size: 0em;
-  margin-left: 8px;
+  font-size: 0.8em;
+  margin-left: 0px;
   transition: transform 0.2s ease;
 }
 
