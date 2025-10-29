@@ -293,6 +293,8 @@ export async function renderTimeline(filteredData) {
             // Convert to number for proper sorting
             return parseInt(a) - parseInt(b);
         });
+
+        const failedItems = [];
         
         sortedYears.forEach(year => {
             const eventsInYear = grouped[year];
@@ -323,7 +325,7 @@ export async function renderTimeline(filteredData) {
             //  putting a try catch here since all errors from createEventCard are lost in the forEach
             // since a separate stack.  This code captures all the errors (since the tr/catch is within 
             // the forEach and shows as a single alert
-            const failedItems = [];
+            
             
             sortedYears.forEach(year => {
               const eventsInYear = grouped[year];
@@ -340,25 +342,23 @@ export async function renderTimeline(filteredData) {
                   logger.error("createEventCard failed", { event, err });
                 }
               });
-
-                // ✅ After all years processed
-                if (failedItems.length > 0) {
-                  const summary = failedItems.length === 1
-                    ? `1 event failed to render: ${failedItems[0]}`
-                    : `${failedItems.length} events failed to render.`;
-                
-                  setTimeout(() => {
-                    showAlert(summary, "error", {
-                      dismissible: true,
-                      retryCallback: () => retryFailedItems(failedItems)
-                    });
-                  }, 0);
-                }
-                
+            
               timelineContainer.appendChild(yearGroup);
             });
             
-
+            // ✅ After all years processed
+            if (failedItems.length > 0) {
+              const summary = failedItems.length === 1
+                ? `1 event failed to render: ${failedItems[0]}`
+                : `${failedItems.length} events failed to render.`;
+            
+              setTimeout(() => {
+                showAlert(summary, "error", {
+                  dismissible: true,
+                  retryCallback: () => retryFailedItems(failedItems)
+                });
+              }, 0);
+            }
         
 
     } catch (error) {
