@@ -282,7 +282,7 @@ export async function renderTimeline(filteredData) {
         }
         
         initialPrompt.style.display = 'none';
-        hideAlert();
+        //hideAlert();
         
         const grouped = groupEventsByYear(filteredData); 
         
