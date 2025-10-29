@@ -357,7 +357,7 @@ export async function renderTimeline(filteredData) {
                 });
               }, 0);
             }
-
+        }
 
     } catch (error) {
         // CATCH: This catches loadConfig failures or fatal DOM rendering bugs.
