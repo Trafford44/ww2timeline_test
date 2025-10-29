@@ -32,7 +32,11 @@ export async function fetchData(features, domain, settings) {
       if (!Array.isArray(data)) {
           throw new Error(`Data source (${dataSource}) did not return a valid array.`);
       }
-
+    
+    // --- TESTING: Simulate an error at the lowest layer (Rendering) ---
+    throw new Error("Simulated error for testing in applyFilters()");
+    // --- END TESTING ---
+    
       dataset = data;
       logActivity("action", "fetchData successful", { count: dataset.length, dataSource });
       return dataset;
