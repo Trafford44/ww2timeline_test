@@ -12,7 +12,7 @@ import { applyFilters, populateDropdowns, toggleControls } from './filters.js';
 import { loadPinned } from './pinnedManager.js';
 
 // --- Alerts ---
-import ( hideAlert } from './alerts/alertUtils.js';
+import { hideAlert } from './alerts/alertUtils.js';
 
 export let features = {};
 let domain = {};
