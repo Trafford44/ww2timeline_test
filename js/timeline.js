@@ -330,7 +330,7 @@ export async function renderTimeline(filteredData) {
                 yearGroup.appendChild(card);
               } catch (err) {
                 failedItems.push(event.id || event.name || `Event ${index}`);
-                logger.error("createEventCard failed", { event, err });
+                logActivity("bug","createEventCard failed", { event, err });
               }
             });
             
