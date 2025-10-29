@@ -89,13 +89,7 @@ function createEventCard(event, index) {
     title.className = "event-title";
     title.innerHTML = `${imageHTML}${event.Title || "Untitled Event"}${event.YearOfIssue ? ` <span class="release-year">(${event.YearOfIssue})</span>` : ""}${notesIndicator}`;
     card.appendChild(title);
-
-
-    
-    // --- TESTING: Simulate an error at the lowest layer (Rendering) ---
-    throw new Error("Simulated error for testing in applyFilters()");
-    // --- END TESTING ---
-    
+  
     const details = document.createElement("div");
     details.className = "event-details";
     
