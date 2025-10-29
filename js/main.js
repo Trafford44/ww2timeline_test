@@ -35,7 +35,9 @@ function applySettings() {
         
         const searchInput = document.getElementById("searchInput");
         const initialPrompt = document.getElementById("initialPrompt");
-
+   // --- TESTING: Simulate an error at the lowest layer (Rendering) ---
+    throw new Error("Simulated error for testing in applyFilters()");
+    // --- END TESTING ---
         if (searchInput && settings.searchPlaceholder) {
             searchInput.placeholder = settings.searchPlaceholder;
         }
