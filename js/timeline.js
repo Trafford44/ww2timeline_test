@@ -336,16 +336,14 @@ export async function renderTimeline(filteredData) {
             });
             
             if (failedItems.length > 0) {
-              const summary = failedItems.length === 1
-                ? `1 event failed to render: ${failedItems[0]}`
-                : `${failedItems.length} events failed to render.`;
-            
-              showAlert(summary, "error", {
-                dismissible: true,
-                retryCallback: () => retryFailedItems(failedItems)
-              });
+              const summary = `${failedItems.length} events failed to render.`;
+              setTimeout(() => {
+                showAlert(summary, "error", {
+                  dismissible: true,
+                  retryCallback: () => retryFailedItems(failedItems)
+                });
+              }, 0);
             }
-
             
             timelineContainer.appendChild(yearGroup);
         });
