@@ -11,6 +11,8 @@ import { fetchData } from './data.js';
 import { applyFilters, populateDropdowns, toggleControls } from './filters.js';
 import { loadPinned } from './pinnedManager.js';
 
+// --- Alerts ---
+import ( hideAlert } from './alerts/alertUtils.js';
 
 export let features = {};
 let domain = {};
@@ -105,6 +107,8 @@ async function initApp() {
         
         // Load feature-specific modules (Wikipedia, map, local storage)
         loadFeatures(data);
+
+        hideAlert();
         
     } catch (error) {
         // This catch block handles major failures during startup
