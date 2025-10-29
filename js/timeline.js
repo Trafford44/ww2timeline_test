@@ -88,6 +88,12 @@ function createEventCard(event, index) {
     title.className = "event-title";
     title.innerHTML = `${imageHTML}${event.Title || "Untitled Event"}${event.YearOfIssue ? ` <span class="release-year">(${event.YearOfIssue})</span>` : ""}${notesIndicator}`;
     card.appendChild(title);
+
+
+    
+    // --- TESTING: Simulate an error at the lowest layer (Rendering) ---
+    throw new Error("Simulated error for testing in applyFilters()");
+    // --- END TESTING ---
     
     const details = document.createElement("div");
     details.className = "event-details";
@@ -312,12 +318,33 @@ export async function renderTimeline(filteredData) {
             });
             
             yearGroup.appendChild(yearMarker);
-            
+
+            //  putting a try catch here since all errors from createEventCard are lost in the forEach
+            // since a separate stack.  This code captures all the errors (since the tr/catch is within 
+            // the forEach and shows as a single alert
+            const failedItems = [];            
             eventsInYear.forEach((event, index) => {
+              try {
                 const card = createEventCard(event, index);
                 attachEventCardListeners(card, event); 
                 yearGroup.appendChild(card);
+              } catch (err) {
+                failedItems.push(event.id || event.name || `Event ${index}`);
+                logger.error("createEventCard failed", { event, err });
+              }
             });
+            
+            if (failedItems.length > 0) {
+              const summary = failedItems.length === 1
+                ? `1 event failed to render: ${failedItems[0]}`
+                : `${failedItems.length} events failed to render.`;
+            
+              showAlert(summary, "error", {
+                dismissible: true,
+                retryCallback: () => retryFailedItems(failedItems)
+              });
+            }
+
             
             timelineContainer.appendChild(yearGroup);
         });
