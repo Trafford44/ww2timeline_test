@@ -3,7 +3,7 @@
   left: 50%;
   transform: translateX(-50%);
   top: -1.0em;
-  font-size: 1.5em;
+  font-size: 1.3em;
   font-weight: bold;
   color: #fff;
   background: #00a8e1;
@@ -13,7 +13,7 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   white-space: nowrap;
   display: flex;
-  gap: 12px;
+  gap: 4px;
   align-items: center;
   justify-content: center;
   cursor: pointer;
@@ -26,7 +26,7 @@
 
 .year-marker::after {
   content: "▼";
-  font-size: 0.8em;
+  font-size: 0em;
   margin-left: 8px;
   transition: transform 0.2s ease;
 }
