@@ -251,7 +251,7 @@ function shouldIncludeEvent(event, values) {
     // Event Year Filter
     if (eventYear && eventYearStr !== eventYear.trim()) return false;
 
-    // Watched Filter (Dropdown) - RE-REFACTORED for maximum explicit control
+    // Watched Filter (Dropdown) - Logic remains robust: "" = All, "Yes", "No"
     // Case 1: Filter is set to 'Yes'
     if (watched === "Yes") {
         if (watchedValue !== "yes") return false;
@@ -332,6 +332,29 @@ export function applyFilters() {
     }
 }
 
+/**
+ * Resets all filter values (dropdowns, search, toggles) to their default states
+ * and reapplies filters.
+ */
+export function resetFilters() {
+    // Reset Dropdowns and Search
+    if (watchedFilter) watchedFilter.value = "";
+    if (formatFilter) formatFilter.value = "";
+    if (classificationFilter) classificationFilter.value = "";
+    if (platformFilter) platformFilter.value = "";
+    if (eventYearFilter) eventYearFilter.value = "";
+    if (periodFilter) periodFilter.value = "";
+    if (searchInput) searchInput.value = "";
+    if (pinnedFilter) pinnedFilter.value = "";
+
+    // Reset Toggles
+    if (hideWatchedToggle) hideWatchedToggle.checked = false;
+    if (hidePinnedToggle) hidePinnedToggle.checked = false; 
+    if (challengeModeToggle) challengeModeToggle.checked = false;
+
+    applyFilters();
+}
+
 // Event Wiring
 // Filter & Toggle Listeners are now correctly wired to call applyFilters() without arguments.
 // This ensures they use the internal, up-to-date 'dataset' and 'getFilterValues()'
@@ -352,21 +375,9 @@ challengeModeToggle?.addEventListener("change", applyFilters);
 if (searchInput) searchInput.addEventListener("input", applyFilters);
 
 
-if (clearFilters) clearFilters.addEventListener("click", () => {
-    // Reset Dropdowns and Search
-    if (watchedFilter) watchedFilter.value = "";
-    if (formatFilter) formatFilter.value = "";
-    if (classificationFilter) classificationFilter.value = "";
-    if (platformFilter) platformFilter.value = "";
-    if (eventYearFilter) eventYearFilter.value = "";
-    if (periodFilter) periodFilter.value = "";
-    if (searchInput) searchInput.value = "";
-    if (pinnedFilter) pinnedFilter.value = "";
+if (clearFilters) clearFilters.addEventListener("click", resetFilters);
 
-    // Reset Toggles
-    if (hideWatchedToggle) hideWatchedToggle.checked = false;
-    if (hidePinnedToggle) hidePinnedToggle.checked = false; 
-    if (challengeModeToggle) challengeModeToggle.checked = false;
 
-    applyFilters();
-});
+// CRITICAL: Call resetFilters on module load to ensure all filter states are initially set to "" (All)
+// This aggressively fixes the initial state issue that 'Clear Filters' solves manually.
+resetFilters();
