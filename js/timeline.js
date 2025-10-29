@@ -300,8 +300,9 @@ export async function renderTimeline(filteredData) {
 
       const countSpan = document.createElement("span");
       countSpan.className = "year-count";
-      countSpan.textContent = `(${eventsInYear.length} event${eventsInYear.length !== 1 ? "s" : ""})`;
-
+      //countSpan.textContent = `(${eventsInYear.length} event${eventsInYear.length !== 1 ? "s" : ""})`;
+      countSpan.textContent = `(${eventsInYear.length})`;
+      
       yearMarker.appendChild(yearLabel);
       yearMarker.appendChild(countSpan);
 
