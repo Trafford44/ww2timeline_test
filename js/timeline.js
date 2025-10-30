@@ -9,7 +9,7 @@ import { hideAlert } from './alerts/alertUtils.js';
 import { showAlert } from './alerts/alertUtils.js';
 import { errorHandler } from './alerts/errorUtils.js'; // KEPT for main async function
 import { logActivity } from './alerts/logger.js';
-import { extractYear } from "./utils/dateUtils.js";
+import { extractYear } from "./dateUtils.js";
 
 let domain = {};
 
