@@ -35,3 +35,39 @@ export function extractYear(rawDate) {
 
   return "Unknown Year";
 }
+
+
+/*
+Example Usage
+const { startYear, endYear } = extractDateRange(event.EventDate);
+
+if (endYear) {
+  // It's a date range — apply range-specific logic
+  renderDateRangeBadge(startYear, endYear);
+} else {
+  // Single year — use for grouping or display
+  renderYearBadge(startYear);
+}
+*/
+export function extractDateRange(rawDate) {
+  if (!rawDate) return { startYear: "Unknown Year", endYear: null };
+
+  const trimmed = rawDate.trim();
+
+  // Match full date range: e.g. 20/9/1929 - 29/9/1929
+  const fullRangeMatch = trimmed.match(
+    /(\d{1,2}\/\d{1,2}\/(\d{4}))\s*[-–]\s*(\d{1,2}\/\d{1,2}\/(\d{4}))/
+  );
+
+  if (fullRangeMatch) {
+    return {
+      startYear: fullRangeMatch[2],
+      endYear: fullRangeMatch[4]
+    };
+  }
+
+  // Fallback to single year
+  const singleYear = extractYear(trimmed);
+  return { startYear: singleYear, endYear: null };
+}
+
