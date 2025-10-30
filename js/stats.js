@@ -1,4 +1,5 @@
 import { logActivity } from './alerts/logger.js';
+import { isPinned } from "./pinnedManager.js";
 
 // updateStats()
 // Generates and displays summary statistics for the currently filtered dataset.
@@ -67,7 +68,8 @@ export function updateStats(filteredEvents, totalEvents) {
         if ((event.Watched || "").toLowerCase() === "yes") watchedCount++;
 
         // Pinned Status (assuming a boolean/truthy property or check)
-        if (event.Pinned) pinnedCount++; 
+        if (isPinned(event.RecordID)) pinnedCount++;
+        //if (event.Pinned) pinnedCount++; 
 
         // Classification
         const classification = event.Classification || "Unclassified";
