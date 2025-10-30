@@ -59,17 +59,12 @@ export function updateStats(filteredEvents, totalEvents) {
     const byClassification = {};
     const topPlatforms = {};
 
-    // Note on Pinned: Your original code used `event.Pinned` which is usually a separate property.
-    // If you are using a separate pinned manager, you should import and use `isPinned(event.RecordID)` here
-    // to ensure consistency with the filtering logic. (Assuming 'Pinned' property is used for now).
-
     filteredEvents.forEach(event => {
         // Watch Status
         if ((event.Watched || "").toLowerCase() === "yes") watchedCount++;
 
         // Pinned Status (assuming a boolean/truthy property or check)
         if (isPinned(event.RecordID)) pinnedCount++;
-        //if (event.Pinned) pinnedCount++; 
 
         // Classification
         const classification = event.Classification || "Unclassified";
