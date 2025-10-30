@@ -31,7 +31,7 @@ export function extractYear(rawDate) {
   if (fallbackMatch) return fallbackMatch[0];
 
   // 🚨 Log unrecognized formats
-  logActivity("diagnostic", "extractYear:unrecognized", { rawDate });
+  logActivity("warning", "extractYear:unrecognized", { rawDate });
 
   return "Unknown Year";
 }
