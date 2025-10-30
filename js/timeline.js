@@ -9,6 +9,7 @@ import { hideAlert } from './alerts/alertUtils.js';
 import { showAlert } from './alerts/alertUtils.js';
 import { errorHandler } from './alerts/errorUtils.js'; // KEPT for main async function
 import { logActivity } from './alerts/logger.js';
+import { extractYear } from "./utils/dateUtils.js";
 
 let domain = {};
 
@@ -28,17 +29,7 @@ function groupEventsByYear(filteredData) {
     filteredData.forEach(event => {
         let year = "Unknown Year";
         const rawYear = String(event.EventYear || "").trim();
-        
-        // Use more specific parsing for ranges and single years
-        if (/^\d{4}$/.test(rawYear)) {
-            year = rawYear;
-        } else if (rawYear.includes('–') || rawYear.includes('-')) {
-            // Take the first year in a range (e.g., 1999–2000 -> 1999)
-            year = rawYear.split(/[–-]/)[0].trim();
-        } else if (rawYear) {
-            // Take the first part of a messy string
-            year = rawYear.split(' ')[0];
-        }
+        const year = extractYear(event.EventDate);
         
         if (!grouped[year]) grouped[year] = [];
         grouped[year].push(event);
