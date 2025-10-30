@@ -10,6 +10,7 @@ This function ensures consistent year grouping for timeline rendering, even when
 It’s modular, safe, and ready for future extension to handle full date ranges or timeline filters.
 */
 
+
 // Extracts a usable year from any date string or range
 export function extractYear(rawDate) {
   if (!rawDate) {
@@ -49,6 +50,8 @@ if (endYear) {
   renderYearBadge(startYear);
 }
 */
+// for future use, at this stage
+// It returns startYear, and endYear as null if not a range
 export function extractDateRange(rawDate) {
   if (!rawDate) return { startYear: "Unknown Year", endYear: null };
 
