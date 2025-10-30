@@ -27,7 +27,6 @@ function groupEventsByYear(filteredData) {
     
     // Core Logic (No try/catch)
     filteredData.forEach(event => {
-        let year = "Unknown Year";
         const rawYear = String(event.EventYear || "").trim();
         const year = extractYear(event.EventDate);
         
