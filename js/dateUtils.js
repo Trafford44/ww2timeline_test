@@ -13,7 +13,7 @@ It’s modular, safe, and ready for future extension to handle full date ranges 
 // Extracts a usable year from any date string or range
 export function extractYear(rawDate) {
   if (!rawDate) {
-    logActivity("diagnostic", "extractYear:missing", { rawDate });
+    logActivity("warning", "extractYear:missing", { rawDate });
     return "Unknown Year";
   }
 
