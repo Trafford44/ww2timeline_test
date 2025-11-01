@@ -147,39 +147,49 @@ function createEventCard(event, index) {
     return card;
 }
 
+
 function createToggleDescription(description) {
     // Note: Removed logActivity call for high-frequency helper function
-    
     // Core Logic (No try/catch)
+
     const MAX_LENGTH = 70;
     const descriptionText = description || "";
-    
+    // domain is assumed to be available globally
+
     // The unique ID will be used to link the button to the dots/hidden text.
-    // Using a reliable unique ID based on a random number.
+    // Using a reliable unique ID based on a random number.  
     const uniqueId = `desc-toggle-${Math.random().toString(36).substring(2, 9)}`;
     
     if (descriptionText.length <= MAX_LENGTH) {
-        // If text is short, return the standard line.
         return `<br><b>${domain.labels?.ShortDescription || "Description"}:</b> ${descriptionText}`;
     }
     
     // 1. Split the text
     const shortText = descriptionText.substring(0, MAX_LENGTH);
-    const hiddenText = descriptionText.substring(MAX_LENGTH);
+    let hiddenText = descriptionText.substring(MAX_LENGTH);
     
+    // Check if the first character of the hidden text is a space. If so, remove it.  To address issue where space appears at start of hidden text.
+    if (hiddenText.startsWith(' ')) {
+        hiddenText = hiddenText.substring(1);
+    }
+
     // 2. Build the HTML structure
     // NOTE: toggleText is defined below and must be globally accessible (i.e., defined outside modules or attached to window) 
-    // or referenced differently if you want to avoid inline 'onclick'.
+    // or referenced differently if you want to avoid inline 'onclick'.    
+    // Wrap the short text in span, 'description-short-text', to make it clickable as well.
     return `
         <br><b>${domain.labels?.ShortDescription || "Description"}:</b> 
         <span 
             class="description-toggle-icon"
             data-target-id="${uniqueId}"
             title="Click to expand/collapse description"
+            style="cursor: pointer;"
         >
             📖
         </span>
-        ${shortText}
+        <span class="description-short-text" data-target-id="${uniqueId}" style="cursor: pointer;">
+            ${shortText}
+        </span>
         <span id="${uniqueId}-dots">...</span>
         <span id="${uniqueId}-more" style="display: none;">${hiddenText}</span>
     `;
@@ -205,24 +215,47 @@ function renderPlatformField(platform, link) {
 }
 
 
-// RETAINING this function, but it MUST be attached to the window object 
+/**
+ * Toggles the visibility of the "..." and the full description text, and updates the icon.
+ * NOTE: This function assumes the icon is always the element immediately preceding 
+ * the 'description-short-text' span in the DOM.
+ * Also, it MUST be attached to the window object 
 // for the inline 'onclick' in createToggleDescription to work.
 // Alternatively, remove the inline 'onclick' and rely on the DOM listener below.
-function toggleText(iconElement, targetId) {
-    // Note: Removed logActivity call for high-frequency helper function
+ * * @param {HTMLElement} element - The clickable element (icon or short text).
+ * @param {string} targetId - The unique ID linking the parts (e.g., 'desc-toggle-xxxxxxx').
+ */
+function toggleText(element, targetId) {
+    const dots = document.getElementById(targetId + '-dots');
+    const moreText = document.getElementById(targetId + '-more');
 
-    // Core Logic (No try/catch)
-    const dots = document.getElementById(targetId + "-dots");
-    const moreText = document.getElementById(targetId + "-more");
-    
-    if (!dots || !moreText) return;
+    if (!dots || !moreText) {
+        console.error("Toggle elements not found for ID:", targetId);
+        return;
+    }
 
-    const isCollapsed = moreText.style.display === "none";
-    
-    dots.style.display = isCollapsed ? "none" : "inline";
-    moreText.style.display = isCollapsed ? "inline" : "none";
-    iconElement.textContent = isCollapsed ? "📕" : "📖";
+    // Determine the icon element: If the clicked element is the short text span, 
+    // the icon is its previous sibling (the description-toggle-icon).
+    const iconElement = element.classList.contains('description-toggle-icon') ? 
+        element : 
+        element.previousElementSibling;
+
+    // Check if the text is currently expanded (i.e., dots are hidden)
+    const isExpanded = dots.style.display === 'none';
+
+    if (isExpanded) {
+        // Collapse: Hide more text, show dots
+        dots.style.display = 'inline';
+        moreText.style.display = 'none';
+        iconElement.textContent = '📖'; // Change icon to 'Read More' (book)
+    } else {
+        // Expand: Hide dots, show more text
+        dots.style.display = 'none';
+        moreText.style.display = 'inline';
+        iconElement.textContent = '📕'; // Change icon to 'Close/Collapse' (minus sign)
+    }
 }
+
 
 
 /**
@@ -263,11 +296,12 @@ function attachEventCardListeners(card, event) {
     }
     
     // --- Description Toggle Listener (DOM-based) ---
-    card.querySelectorAll(".description-toggle-icon").forEach((icon) => {
-        icon.addEventListener("click", () => {
-            const targetId = icon.dataset.targetId;
+    // Select both the icon AND the new short text span
+    card.querySelectorAll(".description-toggle-icon, .description-short-text").forEach((element) => {
+        element.addEventListener("click", () => {
+            const targetId = element.dataset.targetId;
             // Call the shared toggle logic
-            toggleText(icon, targetId); 
+            toggleText(element, targetId); 
         });
     });
 }
