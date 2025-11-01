@@ -58,7 +58,7 @@ export function enrichData(data) {
   return data.map(event => {
     const normalisedDate = normaliseEventDate(event.EventDate || event.EventYear);
     const eventYear = normalisedDate?.getFullYear?.() || event.EventYear || "Unknown";
-
+console.log("Raw:", event.EventDate, "Normalized:", normalisedDate);
     return {
       ...event,
       normalisedDate,

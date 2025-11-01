@@ -122,9 +122,9 @@ export function getLocalTimestamp() {
 
 
 export function normaliseEventDate(rawDate) {
-  if (!rawDate || typeof rawDate !== "string") return null;
+  if (!rawDate) return null;
 
-  const trimmed = rawDate.trim();
+  const trimmed = String(rawDate).trim(); // ← Coerce to string here
 
   // ISO format
   const iso = new Date(trimmed);
@@ -151,4 +151,5 @@ export function normaliseEventDate(rawDate) {
 
   return null;
 }
+
 
