@@ -1,3 +1,13 @@
 {
-  "showLevel2Events": true
+  "showLevel2Events": true,
+  "locale": "en-NZ",
+  "timezone": "Pacific/Auckland",
+  "dateFormat": {
+    "year": "numeric",
+    "month": "short",
+    "day": "numeric"
+  },
+  "timeFormat": {
+    "hour12": false
+  }
 }

@@ -1,4 +1,6 @@
 import { logActivity } from './alerts/logger.js';
+let generalSettings = null; // This will hold the settings object after it's loaded
+
 
 /*
 This utility extracts a usable year from a wide variety of date formats found in historical event data. It handles:
@@ -10,6 +12,19 @@ This utility extracts a usable year from a wide variety of date formats found in
 This functioD(date, yn ensures consistent year grouping for timeline rendering, even when input formats vary. 
 It’s modularD(date, y, safe, and ready for future extension to handle full date ranges or timeline filters.
 */
+
+
+/**
+ * Initializes the date utility module with required settings.
+ * This must be called once the configuration has been loaded.
+ * @param {object} settings - The 'general' settings object loaded from settings_general.json.
+ */
+export function initializeDateUtils(settings) {
+    if (!settings) {
+        throw new Error("Date utilities must be initialized with settings.");
+    }
+    generalSettings = settings;
+}
 
 
 // Extracts a usable year from any date string or range
@@ -76,16 +91,64 @@ export function extractDateRange(rawDate) {
 }
 
 
-export function getLocalTimestamp() {
-  return new Date().toLocaleString("en-NZ", {
-    timeZone: "Pacific/Auckland",
-    hour12: false
-  });
+/**
+ * Converts a date or year value into a localized date string.
+ * @param {Date|string|number} date - The date object or string/timestamp.
+ * @param {number} [year] - A fallback year if date is falsy.
+ * @returns {string} The localized date string.
+ */
+export function convertToLocalDate(date, year) {
+    if (!generalSettings) {
+        // Essential check to ensure initialization happened
+        throw new Error("Date utilities not initialized. Call initializeDateUtils first.");
+    }
+    return new Date(date || year).toLocaleDateString(generalSettings.locale, generalSettings.dateFormat);
 }
 
-export function convertToLocalDate(date, year) {
-  return new Date(date || year).toLocaleDateString("en-NZ", {
-    year: 'numeric', month: 'short', day: 'numeric'
-  });
+/**
+ * Gets the current localized timestamp, including the configured timezone.
+ * @returns {string} The localized date and time string.
+ */
+export function getLocalTimestamp() {
+    if (!generalSettings) {
+        throw new Error("Date utilities not initialized. Call initializeDateUtils first.");
+    }
+    return new Date().toLocaleString(generalSettings.locale, {
+        timeZone: generalSettings.timezone,
+        ...generalSettings.timeFormat
+    });
+}
+
+
+
+export function normaliseEventDate(rawDate) {
+  if (!rawDate || typeof rawDate !== "string") return null;
+
+  const trimmed = rawDate.trim();
+
+  // ISO format
+  const iso = new Date(trimmed);
+  if (!isNaN(iso)) return iso;
+
+  // DD/MM/YYYY
+  const match = trimmed.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+  if (match) {
+    const [_, day, month, year] = match;
+    return new Date(`${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`);
+  }
+
+  // YYYY range (e.g., "1939-1945") — use start year
+  const range = trimmed.match(/^(\d{4})\s*[–-]\s*\d{4}$/);
+  if (range) {
+    return new Date(`${range[1]}-01-01`);
+  }
+
+  // Single year
+  const yearOnly = trimmed.match(/^(\d{4})$/);
+  if (yearOnly) {
+    return new Date(`${yearOnly[1]}-01-01`);
+  }
+
+  return null;
 }
 

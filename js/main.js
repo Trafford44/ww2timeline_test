@@ -10,6 +10,7 @@ import { setupOptions } from './options.js';
 import { fetchData } from './data.js';
 import { applyFilters, populateDropdowns, toggleControls } from './filters.js';
 import { loadPinned } from './pinnedManager.js';
+import { initializeDateUtils, convertToLocalDate, getLocalTimestamp } from './dateUtils.js';
 
 // --- Alerts ---
 import { hideAlert } from './alerts/alertUtils.js';
@@ -74,6 +75,10 @@ async function initApp() {
     try { 
         // 1. CONFIG LOADING
         const config = await loadConfig(domainKey);
+        
+        // 1.2. Initialize the date utility module with the general settings object
+        // We pass the settings object we just loaded (config.general) to the utility functions.
+        initializeDateUtils(config.general);
         
         features = config.features;
         domain = config.domain;

@@ -175,6 +175,7 @@ logActivity("warning", "populateDropdowns", { missing: "Platform" }, null);
 // logger.js
 
 import { throttle, debounce } from './utils.js';
+import { getLocalTimestamp } from '../dateUtils.js';
 
 let tracingEnabled = false;
 
@@ -272,10 +273,7 @@ export function logActivity(type, activity, params = {}, result = null, options 
 
   const entry = {
     timestampUTC: new Date().toISOString(),
-    timestampLocal: new Date().toLocaleString("en-NZ", {
-      timeZone: "Pacific/Auckland",
-      hour12: false
-    }),
+    timestampLocal: getLocalTimestamp(),
     type,       // NEW: The category of the log
     activity,   // RENAMED: The descriptive string (previously 'action')
     params,

@@ -2,6 +2,7 @@
 import { logActivity } from './alerts/logger.js';
 import { showAlert } from './alerts/alertUtils.js';
 import { errorHandler } from './alerts/errorUtils.js';
+import { normaliseEventDate, convertToLocalDate } from "./dateUtils.js";
 
 export let dataset = [];
 
@@ -33,7 +34,9 @@ export async function fetchData(features, domain, settings) {
           throw new Error(`Data source (${dataSource}) did not return a valid array.`);
       }
    
-      dataset = data;
+      const enriched = enrichData(data); 
+      dataset = enriched;
+
       logActivity("action", "fetchData successful", { count: dataset.length, dataSource });
       return dataset;
       
@@ -51,6 +54,21 @@ export async function fetchData(features, domain, settings) {
   }
 }
 
+export function enrichData(data) {
+  return data.map(event => {
+    const normalisedDate = normaliseEventDate(event.EventDate || event.EventYear);
+    const eventYear = normalisedDate?.getFullYear?.() || event.EventYear || "Unknown";
+
+    return {
+      ...event,
+      normalisedDate,
+      eventYear,
+      formattedLocalDate: normalisedDate
+        ? convertToLocalDate(normalisedDate)
+        : "Unknown"
+    };
+  });
+}
 
 
 async function loadLocalJSON(domain) {

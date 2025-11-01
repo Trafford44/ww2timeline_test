@@ -1,16 +1,13 @@
 import { renderStars } from './stars.js';
 import { getPlatformIcons } from './platforms.js';
 import { applyFilters } from './filters.js';
-import { dataset } from './data.js';
 import { isPinned, togglePinned } from './pinnedManager.js'; 
 import { loadConfig } from './config.js';
 import { domainKey } from './domain.js';
-import { hideAlert } from './alerts/alertUtils.js';
 import { showAlert } from './alerts/alertUtils.js';
 import { errorHandler } from './alerts/errorUtils.js'; // KEPT for main async function
 import { logActivity } from './alerts/logger.js';
-import { extractYear } from "./dateUtils.js";
-import { convertToLocalDate } from './dateUtils.js';
+
 
 let domain = {};
 
@@ -19,24 +16,60 @@ let domain = {};
  * @param {Array<object>} filteredData - The list of event records to group.
  * @returns {object} An object where keys are years (string) and values are arrays of events.
  */
-function groupEventsByYear(filteredData) {
-    logActivity("info", "groupEventsByYear initiated", { count: filteredData?.length });
+export function groupEventsByYear(filteredData) {
+  logActivity("info", "groupEventsByYear initiated", { count: filteredData?.length });
 
-    if (!Array.isArray(filteredData)) return {};
+  if (!Array.isArray(filteredData)) return {};
 
-    const grouped = {};
-    
-    // Core Logic (No try/catch)
-    filteredData.forEach(event => {
-        const rawYear = String(event.EventDate|| "").trim();
-        const year = extractYear(rawYear);
-        
-        if (!grouped[year]) grouped[year] = [];
-        grouped[year].push(event);
+  const grouped = {};
+
+  // Group by extracted year from normalisedDate
+  filteredData.forEach(event => {
+    const year = event.eventYear || "Unknown";
+
+    if (!grouped[year]) grouped[year] = [];
+    grouped[year].push(event);
+  });
+
+  // Sort within each year group
+  Object.keys(grouped).forEach(year => {
+    grouped[year].sort((a, b) => {
+      const timeA = a.normalisedDate?.getTime?.();
+      const timeB = b.normalisedDate?.getTime?.();
+
+      if (
+        timeA === timeB ||
+        timeA === undefined ||
+        timeB === undefined ||
+        isNaN(timeA) ||
+        isNaN(timeB)
+      ) {
+        const titleA = String(a.Title || "").toLowerCase();
+        const titleB = String(b.Title || "").toLowerCase();
+        return titleA.localeCompare(titleB);
+      }
+
+      return timeA - timeB;
     });
-    
-    return grouped;
+
+    // Optional debug log
+    /*
+    console.log(`📅 Sorted events for ${year}:`);
+    grouped[year].forEach((event, i) => {
+      const stamp = event.formattedDateNZ || "Invalid Date";
+      const title = event.Title || "undefined";
+      console.log(`  ${i + 1}. ${stamp} — ${title}`);
+    });
+    */
+  });
+
+  return grouped;
 }
+
+
+
+
+
 
 /**
  * Creates the base HTML structure for an event card.
@@ -240,16 +273,13 @@ function attachEventCardListeners(card, event) {
 }
 
 
+
 function renderLevel2Event(event) {
   const wrapper = document.createElement("div");
-  // UPDATED CLASS NAME
-  wrapper.className = "timeline-level2-event"; 
+  wrapper.className = "timeline-level2-event";
   wrapper.dataset.id = event.RecordID;
 
-  // date uses toLocaleDateString which is safer than complex date formatting
-  const date = new Date(event.EventDate || event.EventYear).toLocaleDateString("en-NZ", {
-    year: 'numeric', month: 'short', day: 'numeric'
-  });
+  const date = event.formattedLocalDate || "Unknown";
 
   const left = document.createElement("div");
   left.className = "timeline-side left";
