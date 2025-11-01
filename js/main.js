@@ -17,6 +17,7 @@ import { hideAlert } from './alerts/alertUtils.js';
 export let features = {};
 let domain = {};
 let settings = {};
+let general;
 
 /**
  * Configures initial UI text and browser title based on domain and settings.
@@ -77,6 +78,7 @@ async function initApp() {
         features = config.features;
         domain = config.domain;
         settings = config.settings;
+        general = config.general;
         logActivity("info", "initApp: Config Loaded", { domain });
         
         applySettings();
@@ -108,7 +110,7 @@ async function initApp() {
         // Load feature-specific modules (Wikipedia, map, local storage)
         loadFeatures(data);
 
-        hideAlert();
+        //hideAlert();
         
     } catch (error) {
         // This catch block handles major failures during startup

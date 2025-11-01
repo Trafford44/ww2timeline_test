@@ -19,7 +19,7 @@
     "platform": ["Archive", "Google Scholar"]
   },
   "externalSources": {
-    "wikipedia": true,
+    "qikipedia": true,
     "mapThumb": true
   }
 }

@@ -21,3 +21,32 @@ h1 {
   text-align: center;
   margin-bottom: 20px;
 }
+
+/* --- GLOBAL LINK STYLES (Pure CSS) --- */
+a {
+    color: #2563eb; /* Standard Blue */
+    text-decoration: underline;
+    transition: color 0.2s ease;
+}
+a:hover {
+    color: #1e40af; /* Darker Blue on hover */
+}
+
+/* --- INFO INDICATOR CSS (Styles for the Unicode character) --- */
+.info-indicator { 
+    color: #333; /* Black text */
+    cursor: pointer; 
+    font-size: 0.9em; /* Adjust size for visibility */
+    margin-left: 5px;
+    vertical-align: middle;
+    transition: opacity 0.15s;
+    margin-right: 5px; 
+    font-weight: 400; 
+    line-height: 1; 
+    display: inline-block;
+}
+
+.info-indicator:hover {
+    opacity: 0.7; /* Simple visual feedback */
+}
+/* --- END INFO INDICATOR CSS --- */

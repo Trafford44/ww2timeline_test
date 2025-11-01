@@ -94,13 +94,6 @@
 // window.debouncedLogAction = debouncedLogAction;
 
 
-export function getLocalTimestamp() {
-  return new Date().toLocaleString("en-NZ", {
-    timeZone: "Pacific/Auckland",
-    hour12: false
-  });
-}
-
 
 export function throttle(fn, limit = 1000) {
   let lastCall = 0;

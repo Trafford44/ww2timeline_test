@@ -10,6 +10,7 @@ import { showAlert } from './alerts/alertUtils.js';
 import { errorHandler } from './alerts/errorUtils.js'; // KEPT for main async function
 import { logActivity } from './alerts/logger.js';
 import { extractYear } from "./dateUtils.js";
+import { convertToLocalDate } from './dateUtils.js';
 
 let domain = {};
 
@@ -27,7 +28,7 @@ function groupEventsByYear(filteredData) {
     
     // Core Logic (No try/catch)
     filteredData.forEach(event => {
-        const rawYear = String(event.EventYear || "").trim();
+        const rawYear = String(event.EventDate|| "").trim();
         const year = extractYear(rawYear);
         
         if (!grouped[year]) grouped[year] = [];
@@ -239,16 +240,104 @@ function attachEventCardListeners(card, event) {
 }
 
 
+function renderLevel2Event(event) {
+  const wrapper = document.createElement("div");
+  // UPDATED CLASS NAME
+  wrapper.className = "timeline-level2-event"; 
+  wrapper.dataset.id = event.RecordID;
+
+  // date uses toLocaleDateString which is safer than complex date formatting
+  const date = new Date(event.EventDate || event.EventYear).toLocaleDateString("en-NZ", {
+    year: 'numeric', month: 'short', day: 'numeric'
+  });
+
+  const left = document.createElement("div");
+  left.className = "timeline-side left";
+  left.innerHTML = `<span class="level2-event-date">${date}</span>`;
+
+  const dot = document.createElement("div");
+  dot.className = "timeline-dot";
+  // The dot color is now controlled purely by CSS classes (default black).
+
+
+  const right = document.createElement("div");
+  right.className = "timeline-side right";
+
+  // Info indicator appears only if either Wikipedia AND ShortDescription exist.
+  const hasInfo = event.Wikipedia || event.ShortDescription;
+  const infoIndicator = hasInfo ? `<span class="info-indicator" title="More information.">&#x24D8;</span>` : '';          
+  const title = `<div class="level2-event-title">${event.Title || "Untitled Event"}${infoIndicator}</div>`;
+  
+  // Build content for the collapsible details panel
+  let detailsContent = '';
+  const wikipediaLabel = domain.labels?.WikipediaLabel || "Wikipedia";
+
+  if (event.ShortDescription) {
+      detailsContent += `<p class="mb-2">${event.ShortDescription}</p>`;
+  }
+  
+  if (event.Wikipedia) {
+      // Add a simple link using the label from the domain configuration
+      detailsContent += `
+          <p class="mt-2">
+              <b>${wikipediaLabel}:</b> 
+              <a href="${event.Wikipedia}" target="_blank">
+                  view link
+              </a>
+          </p>
+      `;
+  }
+
+  // Fallback if no details at all
+  if (!detailsContent) {
+      detailsContent = '<p class="no-details-message">No details available.</p>';
+  }
+  
+  // Ensure 'hidden' class is present for closed by default
+  // The CSS fix ensures that this 'hidden' class now works correctly.
+  const descriptionHTML = `<div class="level2-event-details hidden">${detailsContent}</div>`;
+
+  right.innerHTML = title + descriptionHTML;
+
+  wrapper.appendChild(left);
+  wrapper.appendChild(dot);
+  wrapper.appendChild(right);
+  
+  // --- Listener to show/hide details on click ---
+  wrapper.addEventListener("click", () => {
+      const detailsDiv = wrapper.querySelector(".level2-event-details");
+      const dotEl = wrapper.querySelector(".timeline-dot");
+      
+      if (detailsDiv && dotEl) {
+          // Toggle visibility of details
+          detailsDiv.classList.toggle('hidden');
+          
+          // Toggle the dot-open class to change color
+          // If detailsDiv is no longer hidden (i.e., open), add dot-open class (Red: #ef4444)
+          const isNowOpen = !detailsDiv.classList.contains('hidden');
+          dotEl.classList.toggle('dot-open', isNowOpen);
+      }
+  });
+
+  return wrapper;
+}
+
+
+
+
+
 // Main Rendering Function (Asynchronous, Retains `try/catch`)
 export async function renderTimeline(filteredData) {
   logActivity("action", "renderTimeline initiated", { filteredCount: filteredData?.length });
 
   try {
-    const timelineContainer = document.getElementById("timeline");
+    const timelineContainer = document.getElementById("timelineContainer");
     const initialPrompt = document.getElementById("initialPrompt");
 
     const config = await loadConfig(domainKey);
     domain = config.domain || {};
+    const showLevel2Events = config.general?.showLevel2Events === true;
+
 
     if (!timelineContainer || !initialPrompt) {
       throw new Error("Timeline or initial prompt container not found.");
@@ -263,7 +352,7 @@ export async function renderTimeline(filteredData) {
     }
 
     initialPrompt.style.display = "none";
-    // hideAlert(); // optional, if alerts should be cleared before rendering
+   
 
     const grouped = groupEventsByYear(filteredData);
     const sortedYears = Object.keys(grouped).sort((a, b) => {
@@ -279,7 +368,7 @@ export async function renderTimeline(filteredData) {
     sortedYears.forEach(year => {
       const eventsInYear = grouped[year];
       const yearGroup = document.createElement("div");
-      yearGroup.className = "year-group";
+      yearGroup.className = "year-group"; // This element contains the year marker and all events
 
       const yearMarker = document.createElement("div");
       yearMarker.className = "year-marker";
@@ -302,21 +391,30 @@ export async function renderTimeline(filteredData) {
       });
 
       yearGroup.appendChild(yearMarker);
+      
 
         //  putting a try catch here since all errors from createEventCard are lost in the forEach
         // since a separate stack.  This code captures all the errors (since the tr/catch is within 
         // the forEach and shows as a single alert
       eventsInYear.forEach((event, index) => {
         try {
-          const card = createEventCard(event, index);
-          attachEventCardListeners(card, event);
-          yearGroup.appendChild(card);
+          if (String(event.EventLevel || "").toLowerCase() === "level2") {
+            if (showLevel2Events) {
+              const dot = renderLevel2Event(event);
+              yearGroup.appendChild(dot);
+            }
+          } else {
+            const card = createEventCard(event, index);
+            attachEventCardListeners(card, event);
+            yearGroup.appendChild(card);
+          }
         } catch (err) {
           failedItems.push(event.id || event.name || `Event ${index}`);
           logActivity("bug","createEventCard failed", { event, err });
         }
       });
-
+      
+      // Add the whole year container to the timeline
       timelineContainer.appendChild(yearGroup);
     });
 

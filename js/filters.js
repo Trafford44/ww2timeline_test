@@ -62,7 +62,7 @@ export function populateDropdowns(fullData) {
         // --- Data Extraction & Sorting ---
         const formats = [...new Set(fullData.map(f => f.Format).filter(Boolean))].sort();
         const classifications = [...new Set(fullData.map(f => f.Classification).filter(Boolean))].sort();
-        const eventYears = [...new Set(fullData.map(f => f.EventYear).filter(Boolean))].sort();
+        const eventYears = [...new Set(fullData.map(f => f.EventDate).filter(Boolean))].sort();
         const periods = [...new Set(fullData.map(f => f.Period).filter(Boolean))].sort();
         
         // Platform extraction logic: FlatMap, clean commas, split, trim, deduplicate
@@ -220,7 +220,7 @@ function shouldIncludeEvent(event, values) {
     const eventClassification = (event.Classification || "").toLowerCase();
     const eventPeriod = (event.Period || "").toLowerCase();
     const eventPlatform = (event.Platform || "").toLowerCase();
-    const eventYearStr = String(event.EventYear || "").trim();
+    const eventDateStr = String(event.EventDate || "").trim();
     const eventFormat = (event.Format || "").toLowerCase();
     const isPinnedStatus = isPinned(event.RecordID);
     
@@ -249,7 +249,7 @@ function shouldIncludeEvent(event, values) {
     if (period && eventPeriod !== period.toLowerCase()) return false;
     
     // Event Year Filter
-    if (eventYear && eventYearStr !== eventYear.trim()) return false;
+    if (eventYear && eventDateStr !== eventYear.trim()) return false;
 
     // Watched Filter (Dropdown) - Logic remains robust: "" = All, "Yes", "No"
     // Case 1: Filter is set to 'Yes'
@@ -285,7 +285,7 @@ function shouldIncludeEvent(event, values) {
     if (filters.watched === "no" && watchedValue === "yes") return false;
     
     // Event Year Search Filter (Using exact match for year, like dropdown)
-    if (filters.year && eventYearStr !== filters.year.trim()) return false;
+    if (filters.year && eventDateStr !== filters.year.trim()) return false;
     
     // --- All checks passed ---
     return true;
@@ -308,10 +308,7 @@ export function applyFilters() {
     try {
         const filterValues = getFilterValues();
         const totalEvents = dataset.length;
-        
-        // TEMPORARY DEBUG: Log the filter value to confirm initial state
-        console.log("DEBUG: Current Watched Filter Value:", filterValues.watched);
-
+    
         // 2. Filtering Logic
         const filtered = dataset.filter(event => shouldIncludeEvent(event, filterValues));
         
@@ -321,7 +318,7 @@ export function applyFilters() {
             countDisplay.textContent = `Showing ${filtered.length} of ${dataset.length} event${dataset.length !== 1 ? "s" : ""}`;
         }
         
-        console.log("Number of results:", filtered.length); 
+        logActivity("info", `Number of filtered results: ${filtered.length}`, {}, null, { force: true });
         
         renderTimeline(filtered);
         updateStats(filtered, totalEvents);

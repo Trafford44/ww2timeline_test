@@ -1,4 +1,5 @@
 import { logActivity } from './alerts/logger.js';
+
 /*
 This utility extracts a usable year from a wide variety of date formats found in historical event data. It handles:
   Exact years (e.g. "1945")
@@ -6,8 +7,8 @@ This utility extracts a usable year from a wide variety of date formats found in
   Full dates (e.g. "17/9/1939" or "1944-06-06" → extracts year)
   Messy strings (e.g. "Build up to war 1939" → extracts first 4-digit year)
   Fallbacks to "Unknown Year" if no valid year is found
-This function ensures consistent year grouping for timeline rendering, even when input formats vary. 
-It’s modular, safe, and ready for future extension to handle full date ranges or timeline filters.
+This functioD(date, yn ensures consistent year grouping for timeline rendering, even when input formats vary. 
+It’s modularD(date, y, safe, and ready for future extension to handle full date ranges or timeline filters.
 */
 
 
@@ -72,5 +73,19 @@ export function extractDateRange(rawDate) {
   // Fallback to single year
   const singleYear = extractYear(trimmed);
   return { startYear: singleYear, endYear: null };
+}
+
+
+export function getLocalTimestamp() {
+  return new Date().toLocaleString("en-NZ", {
+    timeZone: "Pacific/Auckland",
+    hour12: false
+  });
+}
+
+export function convertToLocalDate(date, year) {
+  return new Date(date || year).toLocaleDateString("en-NZ", {
+    year: 'numeric', month: 'short', day: 'numeric'
+  });
 }
 

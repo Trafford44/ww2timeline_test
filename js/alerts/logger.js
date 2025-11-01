@@ -176,7 +176,7 @@ logActivity("warning", "populateDropdowns", { missing: "Platform" }, null);
 
 import { throttle, debounce } from './utils.js';
 
-let tracingEnabled = true;
+let tracingEnabled = false;
 
 const LOG_CONFIG = {
   // Configuration for console display, based on activity type
@@ -264,7 +264,7 @@ function innerLog(entry) {
  */
 export function logActivity(type, activity, params = {}, result = null, options = {}) {
   const force = options.force || false;
-  
+
   // Note: We check against the THROTTLE CONFIGURATION KEY, which is still the 'activity' string
   const throttleMs = throttleConfig[activity] || 0; 
   

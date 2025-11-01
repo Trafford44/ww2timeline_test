@@ -1,3 +1,10 @@
+        .year-group {
+            position: relative;
+            margin-bottom: 40px; /* Space between year groups */
+            /* Crucial: Must be block to contain floating cards */
+            clear: both; 
+        }
+
 .year-marker {
   position: absolute;
   left: 50%;
@@ -35,6 +42,7 @@
   transform: rotate(-90deg);
 }
 
-.year-group.collapsed .timeline-event {
+.year-group.collapsed .timeline-event,
+.year-group.collapsed .timeline-level2-event { /* Added level2 event collapse */
   display: none;
 }

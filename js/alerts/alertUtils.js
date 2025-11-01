@@ -104,7 +104,6 @@ import { logActivity } from './logger.js';
 export function hideAlert() {
   const container = document.getElementById("alert-container");
   if (container) {
-    console.log("hiding alert");
     container.style.opacity = "0";
     setTimeout(() => {
       container.innerHTML = "";
