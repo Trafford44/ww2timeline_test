@@ -32,6 +32,11 @@ So even though the syntax is the same, the condition inside the @media block tel
     display: block;
     margin: 10px auto;
   }
+
+  /* ✅ Hide spine dot when cards are centered */
+  .timeline-dot-l1 {
+    display: none;
+  }  
 }
 
 @media (max-width: 480px) {

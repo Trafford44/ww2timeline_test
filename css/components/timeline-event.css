@@ -16,9 +16,22 @@
     bottom: 0;
     left: 50%; 
     width: 2px;
-    background-color: var(--spine-color); 
+    background-color: var(green); 
     transform: translateX(-50%); 
     z-index: 1; 
+}
+
+.timeline-dot-l1 {
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  background-color: blue; /* or use var(--blue) if defined */
+  border: 2px solid #fdfdfa;
+  border-radius: 50%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
 }
 
 .timeline-event {
@@ -121,7 +134,7 @@
   text-align: left;
   padding-left: 8px;
   /* following added to horizontally align date and title (left & right) 
-  justify-content: flex-start; */
+  justify-content: flex-start;*/
 }
 
 .timeline-dot {

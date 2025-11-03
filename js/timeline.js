@@ -108,7 +108,8 @@ function createEventCard(event, index) {
     const imageHTML = event.ImageURL
         ? `<img src="${event.ImageURL}" alt="Poster for ${event.Title || 'Untitled Event'}" class="event-image">`
         : '';
-
+   
+    
     const title = document.createElement("div");
     title.className = "event-title";
     title.innerHTML = `${imageHTML}${event.Title || "Untitled Event"}${event.YearOfIssue ? ` <span class="release-year">(${event.YearOfIssue})</span>` : ""}${notesIndicator}`;
@@ -144,6 +145,24 @@ function createEventCard(event, index) {
         card.appendChild(notes);
     }
     
+    // Append the card first
+    const container = document.querySelector(".timeline-container");
+    container.appendChild(card);
+
+// Create and append the dot
+const l1Dot = document.createElement("div");
+l1Dot.className = "timeline-dot-l1";
+l1Dot.dataset.id = event.RecordID;
+document.querySelector(".timeline-container").appendChild(l1Dot);
+
+// Position the dot after layout stabilizes
+requestAnimationFrame(() => {
+    const cardRect = card.getBoundingClientRect();
+    const containerRect = document.querySelector(".timeline-container").getBoundingClientRect();
+    const offsetY = cardRect.top - containerRect.top + card.offsetHeight / 2;
+    l1Dot.style.top = `${offsetY}px`;
+});
+
     return card;
 }
 
@@ -307,7 +326,7 @@ function attachEventCardListeners(card, event) {
 }
 
 
-
+// Function updated to use the new .level2-event-header class
 function renderLevel2Event(event) {
   const wrapper = document.createElement("div");
   wrapper.className = "timeline-level2-event";
@@ -385,7 +404,6 @@ function renderLevel2Event(event) {
 
   return wrapper;
 }
-
 
 
 
@@ -481,6 +499,22 @@ export async function renderTimeline(filteredData) {
       // Add the whole year container to the timeline
       timelineContainer.appendChild(yearGroup);
     });
+
+    // Ensures each timeline dot stays centered on its card as the user scrolls.
+    // This compensates for layout shifts caused by absolute positioning and dynamic content height.
+    window.addEventListener("scroll", () => {
+      document.querySelectorAll(".timeline-dot-l1").forEach(dot => {
+        const cardId = dot.dataset.id;
+        const card = document.querySelector(`.timeline-event[data-id="${cardId}"]`);
+        if (card) {
+          const cardRect = card.getBoundingClientRect();
+          const containerRect = document.querySelector(".timeline-container").getBoundingClientRect();
+          const offsetY = cardRect.top - containerRect.top + card.offsetHeight / 2;
+          dot.style.top = `${offsetY}px`;
+        }
+      });
+    });
+
 
     if (failedItems.length > 0) {
       const summary =
