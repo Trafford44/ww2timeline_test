@@ -1,15 +1,9 @@
-        .year-group {
-            position: relative;
-            margin-bottom: 40px; /* Space between year groups */
-            /* Crucial: Must be block to contain floating cards */
-            clear: both; 
-        }
 
 .year-marker {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  top: -1.0em;
+  top: -1.0em; 
   font-size: 1.3em;
   font-weight: bold;
   color: #fff;

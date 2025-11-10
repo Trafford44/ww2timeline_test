@@ -84,7 +84,7 @@ function createEventCard(event, index) {
     const card = document.createElement("div");
     
     card.className = `timeline-event ${index % 2 === 0 ? "left" : "right"}`;
-    
+
     // Add classification class, safely handling missing or compound values
     if (event.Classification) {
         const baseClass = String(event.Classification).split('/')[0].trim().replace(/\s/g, '-');
@@ -149,19 +149,12 @@ function createEventCard(event, index) {
     const container = document.querySelector(".timeline-container");
     container.appendChild(card);
 
-// Create and append the dot
-const l1Dot = document.createElement("div");
-l1Dot.className = "timeline-dot-l1";
-l1Dot.dataset.id = event.RecordID;
-document.querySelector(".timeline-container").appendChild(l1Dot);
+    // Create and append the dot to the CARD, not the container
+    const l1Dot = document.createElement("div");
+    l1Dot.className = "timeline-dot-l1";
+    l1Dot.dataset.id = event.RecordID;
+    card.appendChild(l1Dot); // <--- ATTACHED TO CARD
 
-// Position the dot after layout stabilizes
-requestAnimationFrame(() => {
-    const cardRect = card.getBoundingClientRect();
-    const containerRect = document.querySelector(".timeline-container").getBoundingClientRect();
-    const offsetY = cardRect.top - containerRect.top + card.offsetHeight / 2;
-    l1Dot.style.top = `${offsetY}px`;
-});
 
     return card;
 }
@@ -415,6 +408,7 @@ export async function renderTimeline(filteredData) {
   try {
     const timelineContainer = document.getElementById("timelineContainer");
     const initialPrompt = document.getElementById("initialPrompt");
+    let layoutIndex = 0; // This counter tracks the position of ALL Level 1 events globally.
 
     const config = await loadConfig(domainKey);
     domain = config.domain || {};
@@ -486,7 +480,8 @@ export async function renderTimeline(filteredData) {
               yearGroup.appendChild(dot);
             }
           } else {
-            const card = createEventCard(event, index);
+            const card = createEventCard(event, layoutIndex);
+            layoutIndex++; // Increment only for Level 1 events
             attachEventCardListeners(card, event);
             yearGroup.appendChild(card);
           }
@@ -498,21 +493,6 @@ export async function renderTimeline(filteredData) {
       
       // Add the whole year container to the timeline
       timelineContainer.appendChild(yearGroup);
-    });
-
-    // Ensures each timeline dot stays centered on its card as the user scrolls.
-    // This compensates for layout shifts caused by absolute positioning and dynamic content height.
-    window.addEventListener("scroll", () => {
-      document.querySelectorAll(".timeline-dot-l1").forEach(dot => {
-        const cardId = dot.dataset.id;
-        const card = document.querySelector(`.timeline-event[data-id="${cardId}"]`);
-        if (card) {
-          const cardRect = card.getBoundingClientRect();
-          const containerRect = document.querySelector(".timeline-container").getBoundingClientRect();
-          const offsetY = cardRect.top - containerRect.top + card.offsetHeight / 2;
-          dot.style.top = `${offsetY}px`;
-        }
-      });
     });
 
 
@@ -535,3 +515,4 @@ export async function renderTimeline(filteredData) {
     throw error;
   }
 }
+

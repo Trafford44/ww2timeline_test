@@ -1,38 +1,50 @@
 
 .timeline-container {
-    position: relative; 
-    padding-top: 20px;
-    /* Using padding and overflow to clear floats */
-    overflow: hidden;
-    margin: 0 auto;
-    max-width: 900px; /* Constrain container width */
+  position: relative; 
+  padding-top: 20px;
+  /* Using padding and overflow to clear floats */
+  overflow: hidden;
+  margin: 0 auto;
+  max-width: 900px; /* Constrain container width */
 }
 
 /* Central Spine */
 .timeline-container::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 50%; 
-    width: 2px;
-    background-color: var(green); 
-    transform: translateX(-50%); 
-    z-index: 1; 
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%; 
+  width: 2px;
+  background-color: #555; /*  alo change .timeline::before | background in layout.css */
+  transform: translateX(-50%); 
+  z-index: 1; 
 }
+
 
 .timeline-dot-l1 {
   position: absolute;
   width: 15px;
   height: 15px;
-  background-color: blue; /* or use var(--blue) if defined */
+  background-color: blue; 
   border: 2px solid #fdfdfa;
-  border-radius: 50%;
-  left: 50%;
-  transform: translateX(-50%);
+  border-radius: 50%;  
+  top: 50%; 
+  /*
+  Note on left: -12.5%
+  -------------------------
+  This positions the dot slightly to the left of the card's left edge, placing on the spine but it's brittle because 
+  its success depends entirely upon the width of the card and the size of the dot. If the card width changes 
+  (especially on responsive layouts), that percentage will break the alignment. 
+  The best practice for positioning an element relative to a container's edge—and slightly outside of it—is to use a 
+  combination of percentage and pixel values in the calc() function.  Gemini wasn't able to get this to approach work correctly.
+  */
+  left: -12.5%;   /* bit of a hack, until a proper solution.  Only works for right cards */
+  transform: translate(-50%, -50%);   
   z-index: 3;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
 }
+
 
 .timeline-event {
   position: relative;
@@ -62,6 +74,7 @@
   clear: both;
   margin-left: auto;
 }
+
 
 .timeline-event:hover {
   transform: translateY(-3px);

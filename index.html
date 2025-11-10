@@ -43,8 +43,8 @@
           <tr><td><span class="platform-icon icon-Beamafilm"></span></td><td>Beamafilm</td></tr>
           <tr><td><span class="platform-icon icon-AroVision"></span></td><td>AroVision</td></tr>
           <tr><td><span class="platform-icon icon-Plex"></span></td><td>Plex</td></tr>
-          <tr><td><span class="platform-icon icon-MUBI"></span></td><td>MUBI</td></tr>
-          <tr><td><span class="platform-icon icon-Disney"></span></td><td>Disney+</td></tr>
+          <tr><td><span class="platform-icon icon-MUBI"></td><td>MUBI</td></tr>
+          <tr><td><span class="platform-icon icon-Disney"></td><td>Disney+</td></tr>
         </table>
         <div class="legend-group">
           <h3>Other Symbols</h3>
@@ -114,16 +114,15 @@
   <div id="initialPrompt" class="initial-prompt">Loading data...</div>
   <div id="alert-container"></div>
   
-  <!-- Timeline Container -->
-  <div class="timeline" id="timeline"></div>
-
-
-  <!-- Timeline Container --> 
-  <div class="timeline">
+  <!-- UNIFIED Timeline Container -->
+  <div class="timeline" id="timeline">
+    <!-- This inner container is where the spine is drawn and where JS appends event content. -->
     <div class="timeline-container" id="timelineContainer">
-          <!-- Timeline visualization will be rendered here -->
+          <!-- Timeline visualization will be rendered here by timeline.js -->
     </div>
   </div>
+  <!-- Removed the duplicate <div> below -->
+
 
   <!-- App Entry -->
   <script type="module" src="js/main.js"></script>

@@ -20,7 +20,7 @@
   position: relative;
   margin-bottom: 80px;
   width: 100%;
-  padding-top: 30px;
+  padding-top: 30px;  
 }
 
 .year-group::after {
@@ -28,3 +28,12 @@
   display: table;
   clear: both;
 }
+
+/* Found this in year-marker.css, but it belongs here.  Comment out since it makes no diff, it seems
+        .year-group {
+            position: relative;
+            margin-bottom: 40px; /* Space between year groups */
+            /* Crucial: Must be block to contain floating cards *//*
+            clear: both; 
+        }
+            */
