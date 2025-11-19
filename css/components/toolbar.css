@@ -105,7 +105,7 @@ body.hamburger-open {
     position: fixed;
     top: 0;
     right: 0;
-    width: 280px; /* Panel Width */
+    width: 100px; /* Panel Width */
     height: 100vh;
     z-index: 999;
     /* HIDE: Push off to the right */
