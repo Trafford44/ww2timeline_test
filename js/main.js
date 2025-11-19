@@ -1,3 +1,4 @@
+// --- Core Imports ---
 import { loadConfig } from './config.js';
 import { domainKey } from './domain.js';
 
@@ -12,9 +13,11 @@ import { applyFilters, populateDropdowns, toggleControls } from './filters.js';
 import { loadPinned } from './pinnedManager.js';
 import { initializeDateUtils, convertToLocalDate, getLocalTimestamp } from './dateUtils.js';
 
-// --- Alerts ---
-import { hideAlert } from './alerts/alertUtils.js';
 
+// --- Toolbar ---
+import { initializeToolbarListeners, renderMinimap } from './toolbar.js';
+
+// --- Global State ---
 export let features = {};
 let domain = {};
 let settings = {};
@@ -112,11 +115,18 @@ async function initApp() {
         // Final call to apply filters and render the timeline
         applyFilters();
         
+        // Minimap Initial Render - called after data loads and initial filters apply.
+        renderMinimap(data);
+    
         // Load feature-specific modules (Wikipedia, map, local storage)
         loadFeatures(data);
 
-        //hideAlert();
-        
+        // 4. Toolbar Setup
+        // Initialize all toolbar event listeners (handles panel toggles)
+        initializeToolbarListeners(); 
+
+
+
     } catch (error) {
         // This catch block handles major failures during startup
         errorHandler(error, "initApp - Failed during application startup", {
@@ -180,5 +190,5 @@ function loadFeatures(data) {
     }   
 }
 
-
+// Start the application
 initApp();

@@ -1,0 +1,184 @@
+/* ============================
+   Top Toolbar
+   ============================ */
+.toolbar-top {
+  position: fixed;
+  top: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: var(--toolbar-bg, #f8f8f8);
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  transition: transform 0.3s ease; 
+}
+
+.toolbar-top button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: var(--toolbar-icon, #333);
+}
+
+.toolbar-top button:hover {
+  color: var(--toolbar-icon-hover, #0077cc);
+}
+
+/* ============================
+   Hamburger Menu
+   ============================ */
+.toolbar-hamburger {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 280px; /* Panel Width */
+    height: 100vh;
+    z-index: 999;
+    /* HIDE: Push off to the left */
+    transform: translateX(-100%); 
+    transition: transform 0.3s ease-out;
+}
+/*
+.toolbar-hamburger button {
+  background-color: var(--hamburger-bg, #0077cc);
+  color: #fff;
+  border: none;
+  padding: 0.5rem 0.75rem;
+  font-size: 1rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+*/
+.toolbar-hamburger.active {
+    /* SHOW: Bring into view */
+    transform: translateX(0); 
+}
+
+.toolbar-hamburger button:hover {
+  background-color: var(--hamburger-hover, #005fa3);
+}
+
+/* Optional: Slide-out panel triggered by hamburger */
+#hamburgerPanel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 240px; 
+  height: 100vh; 
+  background: var(--panel-bg, #fff);
+  z-index: 999;
+  transform: translateX(-100%); /* HIDE: Push off to the left */
+  transition: transform 0.3s ease;
+  box-shadow: 2px 0 6px rgba(0, 0, 0, 0.15);
+  padding-top: 50px; 
+}
+
+#hamburgerPanel.active {
+  transform: translateX(0); /* SHOW: Bring into view */
+}
+
+/* BODY SHIFTING (CRITICAL for minimizing overlap issues) */
+
+body {
+    transition: margin-right 0.3s ease, margin-left 0.3s ease; 
+}
+
+body.minimap-open {
+     /* Shifts content to the left to make space for the right panel */
+     margin-right: 280px; 
+}
+
+body.hamburger-open {
+     /* Shifts content to the right to make space for the left panel */
+     margin-left: 280px; 
+}
+
+/* ============================
+   Timeline Mini-map Panel
+   ============================ */
+.timeline-minimap {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 280px; /* Panel Width */
+    height: 100vh;
+    z-index: 999;
+    /* HIDE: Push off to the right */
+    transform: translateX(100%); 
+    transition: transform 0.3s ease-out;
+}
+
+/* CRITICAL: Class added by JS to show the minimap */
+.timeline-minimap.open {
+  transform: translateX(0); /* SHOW: Brings the panel into view */
+}
+
+.minimap-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--border-color, #eee);
+    margin-bottom: 0.5rem;
+}
+
+.minimap-controls button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 0.25rem;
+    color: var(--toolbar-icon, #333);
+}
+
+#minimapContent {
+    overflow-y: auto;
+    /* Calculated height to fit below the controls */
+    height: calc(100vh - 80px); 
+    padding: 0 0.5rem;
+}
+
+.minimap-year {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.9rem;
+  color: var(--minimap-text, #444);
+  cursor: pointer;
+  
+}
+
+.minimap-year:hover {
+  background-color: var(--minimap-hover, #eef);
+}
+
+
+.minimap-year.active-year {
+  font-weight: bold;
+  color: var(--minimap-active, #0077cc);
+  background-color: var(--minimap-highlight, #ddeeff);
+  border-left: 3px solid #0077cc;
+}
+
+/* MINIMAP HANDLE */
+.minimap-handle {
+    position: fixed;
+    top: 50%; 
+    right: 0; 
+    transform: translateY(-50%); 
+    z-index: 998; 
+    cursor: pointer;
+    transition: right 0.3s ease, transform 0.3s ease; 
+}
+
+/* Handle moves when minimap is open */
+body.minimap-open .minimap-handle {
+    right: 280px; 
+}
+
+.minimap-handle:hover {
+  background-color: var(--minimap-handle-hover, #005fa3);
+}
