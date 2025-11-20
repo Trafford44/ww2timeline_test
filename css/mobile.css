@@ -20,6 +20,11 @@ So even though the syntax is the same, the condition inside the @media block tel
     width: 90% !important;
     clear: both;
   }
+  
+  .timeline-container {
+    max-width: 100%;   /* full width on mobile */
+    margin: 0;         /* no centering margin */
+  }
 
   .timeline-event.left,
   .timeline-event.right {

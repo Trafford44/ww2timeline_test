@@ -2,10 +2,10 @@
 .timeline-container {
   position: relative; 
   padding-top: 20px;
-  /* Using padding and overflow to clear floats */
-  overflow: hidden;
+  overflow: visible; /* let overlay panels sit above */
   margin: 0 auto;
   max-width: 900px; /* Constrain container width */
+  z-index: 1;              /* ensure it sits below panels */
 }
 
 /* Central Spine */

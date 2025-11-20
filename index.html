@@ -5,172 +5,162 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>WW2 Film Timeline</title>
-  <!-- Load Tailwind CSS (CRITICAL) -->
-  <script src="https://cdn.tailwindcss.com"></script> 
   <link rel="stylesheet" href="css/main.css" />
 </head>
 <body id="appBody">
 
+
     <!-- 1. TOP TOOLBAR (Includes Hamburger, Legend, Stats, Options, Filters) -->
-    <!-- 1. TOP TOOLBAR (Styled with Tailwind utility classes) -->
-    <div class="fixed top-4 left-1/2 -translate-x-1/2 flex gap-4 p-2 bg-white rounded-xl shadow-xl z-50" id="toolbarTop">
-        <button id="hamburgerToggle" class="p-2 text-xl text-gray-700 hover:text-primary rounded-full transition" title="Toggle Options & Settings">☰</button> 
-        <button id="legendToggle" class="p-2 text-xl text-gray-700 hover:text-primary rounded-full transition" title="Toggle Legend">📚</button>
-        <button id="statsToggle" class="p-2 text-xl text-gray-700 hover:text-primary rounded-full transition" title="Toggle Stats">📊</button>
-        <button id="optionsToggle" class="p-2 text-xl text-gray-700 hover:text-primary rounded-full transition" title="Toggle Options">⚙️</button>
-        <button id="filtersToggle" class="p-2 text-xl text-gray-700 hover:text-primary rounded-full transition" title="Toggle Filters">🔍</button>
+    <div id="toolbarTop">
+        <button id="hamburgerToggle" title="Toggle Options & Settings">☰</button> 
+        <button id="legendToggle" title="Toggle Legend">📚</button>
+        <button id="statsToggle" title="Toggle Stats">📊</button>
+        <button id="optionsToggle" title="Toggle Options">⚙️</button>
+        <button id="filtersToggle" title="Toggle Filters">🔍</button>
         <!-- Updated: Icon only (🌙) to signify the switch to dark mode -->
-        <button id="themeToggleButton_Toolbar" class="p-2 text-xl text-gray-700 hover:text-primary rounded-full transition group" title="Toggle Theme">🌙</button>
+        <button id="themeToggleButton_Toolbar" title="Toggle Theme">🌙</button>
     </div>
 
+
     <!-- 2. LEFT SLIDING PANEL (Tailwind for look, Custom CSS for slide) -->
-    <aside class="toolbar-hamburger bg-gray-50 shadow-2xl" id="hamburgerPanel">
-        <div class="p-4 flex justify-between items-center border-b border-gray-200">
-            <h3 class="text-xl font-bold text-primary">Options & Settings</h3>
-            <button id="hamburgerClose" class="text-gray-400 text-2xl focus:outline-none border-none bg-transparent" aria-label="Close menu">✖</button>
-        </div>
-        <div id="hamburgerContent" class="p-4">
-            <p class="text-gray-600">Your settings and configuration options will appear here.</p>
-        </div>
-    </aside>
+<aside class="toolbar-hamburger" id="hamburgerPanel">
+  <div class="panel-header">
+    <h3 class="panel-title">Options & Settings</h3>
+    <button id="hamburgerClose" class="panel-close" aria-label="Close menu">✖</button>
+  </div>
+  <div id="hamburgerContent" class="panel-body">
+    <p class="panel-muted">Your settings and configuration options will appear here.</p>
+  </div>
+</aside>
 
     <!-- 3. RIGHT SLIDING PANEL (Minimap) -->
-    <aside class="timeline-minimap bg-gray-50 shadow-2xl" id="timelineMinimap">
-        <div class="p-4 flex justify-between items-center border-b border-gray-200">
-            <h3 class="text-xl font-bold text-primary">Timeline Map</h3>
-            <button id="minimapClose" class="text-gray-400 text-2xl focus:outline-none border-none bg-transparent" aria-label="Close minimap">✖</button>
-        </div>
-        <div id="minimapContent" class="p-4 h-[calc(100vh-6rem)] overflow-y-auto">
-            <div class="text-center text-gray-500">Loading minimap data...</div>
-        </div>
+    <aside class="timeline-minimap" id="timelineMinimap">
+    <div class="panel-header">
+        <h3 class="panel-title">Timeline Map</h3>
+        <button id="minimapClose" class="panel-close" aria-label="Close minimap">✖</button>
+    </div>
+    <div id="minimapContent" class="panel-body panel-scroll">
+        <div class="panel-center-muted">Loading minimap data...</div>
+    </div>
     </aside>
 
-    <!-- 4. Minimap Drag/Click Handle (Tailwind for look, Custom CSS for position) -->
-    <div id="minimapHandle" class="minimap-handle bg-[rgb(0_0_0/0.1)] hover:bg-gray-300 text-gray-500 shadow-lg p-2 rounded-l-xl" title="Toggle Timeline Minimap">
-       <!-- <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"></circle>
-            <polyline points="12 8 8 12 12 16"></polyline>
-            <line x1="8" y1="12" x2="8" y2="12"></line>
-        </svg> -->
-
-        <svg id="minimapIcon" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 transition-transform duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="15 18 9 12 15 6"></polyline>
-        </svg>    
+    <!-- 4. Minimap Drag/Click Handle (Local CSS) -->
+    <div id="minimapHandle" class="minimap-handle" title="Toggle Timeline Minimap">
+    <svg id="minimapIcon" xmlns="http://www.w3.org/2000/svg" class="minimap-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="15 18 9 12 15 6"></polyline>
+    </svg>
     </div>
 
     <!-- 5. MAIN TIMELINE CONTENT -->
     <!-- Keeps Tailwind classes as they are standard for the main content layout -->
-    <div class="container mx-auto px-4" id="mainAppContent">
+    <div class="container" id="mainAppContent">
         
         <!-- Filter/Search Panel (Your Existing Details Panels) -->
-        <details class="timeline-legend my-4 p-4 bg-white rounded-lg shadow-md" id="legendPanel">
-            <summary class="font-semibold text-lg cursor-pointer">Legend</summary>
-            <!-- Content moved from your original HTML -->
-            <div class="legend-content pt-2">
-                <div class="legend-group">
-                    <h3>Classification Color</h3>
-                    <table>
-                        <tr><td class="legend-box classification-Documentary"></td><td><strong>Documentary</strong> (Solid Green line)</td></tr>
-                        <tr><td class="legend-box classification-Dramatisation"></td><td><strong>Dramatisation</strong> (Solid Amber line)</td></tr>
-                        <tr><td class="legend-box classification-Fiction"></td><td><strong>Fiction</strong> (Solid Red line)</td></tr>
-                    </table>
-                </div>
-                <div class="legend-group">
-                    <h3>Historical Accuracy Rating</h3>
-                    <table>
-                        <tr><td><span class="rating-stars">★★★★★</span></td><td>Highly accurate, closely follows historical records.</td></tr>
-                        <tr><td><span class="rating-stars">★★★★☆</span></td><td>Mostly accurate, with some dramatized elements.</td></tr>
-                        <tr><td><span class="rating-stars">★★★☆☆</span></td><td>Balanced mix of fact and fiction.</td></tr>
-                        <tr><td><span class="rating-stars">★★☆☆☆</span></td><td>Loosely based on history.</td></tr>
-                        <tr><td><span class="rating-stars">★☆☆☆☆</span></td><td>Fictional story with minimal historical grounding.</td></tr>
-                    </table>
-                </div>
-                <h3>Platform/s</h3>
-                <table>
-                    <tr><td><span class="platform-icon icon-Netflix"></span></td><td>Netflix</td></tr>
-                    <tr><td><span class="platform-icon icon-Prime"></span></td><td>Prime Video</td></tr>
-                    <tr><td><span class="platform-icon icon-YouTube"></span></td><td>YouTube</td></tr>
-                    <tr><td><span class="platform-icon icon-Apple"></span></td><td>Apple TV</td></tr>
-                    <tr><td><span class="platform-icon icon-TVNZ"></span></td><td>TVNZ</td></tr>
-                    <tr><td><span class="platform-icon icon-Neon"></span></td><td>Neon</td></tr>
-                    <tr><td><span class="platform-icon icon-Beamafilm"></span></td><td>Beamafilm</td></tr>
-                    <tr><td><span class="platform-icon icon-AroVision"></span></td><td>AroVision</td></tr>
-                    <tr><td><span class="platform-icon icon-Plex"></span></td><td>Plex</td></tr>
-                    <tr><td><span class="platform-icon icon-MUBI"></td><td>MUBI</td></tr>
-                    <tr><td><span class="platform-icon icon-Disney"></td><td>Disney+</td></tr>
-                </table>
-                <div class="legend-group">
-                    <h3>Other Symbols</h3>
-                    <table>
-                        <tr><td><span class="watched-status-icon">✔</span></td><td>Film has been <strong>Watched</strong></td></tr>
-                        <tr><td><span class="notes-indicator">&#9999;</span></td><td>Film has <strong>Notes</strong> (Click card to view)</td></tr>
-                        <tr><td><span class="pin-icon">📌</span></td><td>Film is <strong>Pinned</strong> as a favorite</td></tr>
-                    </table>
-                </div>
+        <details class="timeline-legend">
+        <summary>Timeline Legend</summary>
+        <div class="legend-content">
+            <div class="legend-group">
+            <h3>Classification Color</h3>
+            <table>
+                <tr><td class="legend-box classification-Documentary"></td><td><strong>Documentary</strong> (Solid Green line)</td></tr>
+                <tr><td class="legend-box classification-Dramatisation"></td><td><strong>Dramatisation</strong> (Solid Amber line)</td></tr>
+                <tr><td class="legend-box classification-Fiction"></td><td><strong>Fiction</strong> (Solid Red line)</td></tr>
+            </table>
             </div>
+            <div class="legend-group">
+            <h3>Historical Accuracy Rating</h3>
+            <table>
+                <tr><td><span class="rating-stars">★★★★★</span></td><td>Highly accurate, closely follows historical records.</td></tr>
+                <tr><td><span class="rating-stars">★★★★☆</span></td><td>Mostly accurate, with some dramatized elements.</td></tr>
+                <tr><td><span class="rating-stars">★★★☆☆</span></td><td>Balanced mix of fact and fiction.</td></tr>
+                <tr><td><span class="rating-stars">★★☆☆☆</span></td><td>Loosely based on history.</td></tr>
+                <tr><td><span class="rating-stars">★☆☆☆☆</span></td><td>Fictional story with minimal historical grounding.</td></tr>
+            </table>
+            </div>
+            <h3>Platform/s</h3>
+            <table>
+            <tr><td><span class="platform-icon icon-Netflix"></span></td><td>Netflix</td></tr>
+            <tr><td><span class="platform-icon icon-Prime"></span></td><td>Prime Video</td></tr>
+            <tr><td><span class="platform-icon icon-YouTube"></span></td><td>YouTube</td></tr>
+            <tr><td><span class="platform-icon icon-Apple"></span></td><td>Apple TV</td></tr>
+            <tr><td><span class="platform-icon icon-TVNZ"></span></td><td>TVNZ</td></tr>
+            <tr><td><span class="platform-icon icon-Neon"></span></td><td>Neon</td></tr>
+            <tr><td><span class="platform-icon icon-Beamafilm"></span></td><td>Beamafilm</td></tr>
+            <tr><td><span class="platform-icon icon-AroVision"></span></td><td>AroVision</td></tr>
+            <tr><td><span class="platform-icon icon-Plex"></span></td><td>Plex</td></tr>
+            <tr><td><span class="platform-icon icon-MUBI"></span></td><td>MUBI</td></tr>
+            <tr><td><span class="platform-icon icon-Disney"></span></td><td>Disney+</td></tr>
+            </table>
+            <div class="legend-group">
+            <h3>Other Symbols</h3>
+            <table>
+                <tr><td><span class="watched-status-icon">✔</span></td><td>Film has been <strong>Watched</strong></td></tr>
+                <tr><td><span class="notes-indicator">&#9999;</span></td><td>Film has <strong>Notes</strong> (Click card to view)</td></tr>
+                <tr><td><span class="pin-icon">📌</span></td><td>Film is <strong>Pinned</strong> as a favorite</td></tr>
+            </table>
+            </div>
+        </div>
         </details>
-        
-        <!-- Stats Panel -->
-        <details class="stats-panel my-4 p-4 bg-white rounded-lg shadow-md" id="statsPanel">
-            <summary class="font-semibold text-lg cursor-pointer">Statistics</summary>
-            <div id="statsContent" class="pt-2"></div>
+            
+        <details class="stats-panel">
+        <summary>Stats</summary>
+        <div id="statsContent" style="padding: 10px; font-size: 0.95em;"></div>
+        </details>
+    
+        <details class="options-panel">
+        <summary>Options</summary>
+        <div class="controls">
+            <label><input type="checkbox" id="hideWatchedToggle"> Hide Watched Films</label>
+            <label><input type="checkbox" id="hidePinnedToggle"> Hide Pinned Films</label>
+            <label><input type="checkbox" id="challengeModeToggle"> Challenge Mode (Unwatched + Unpinned)</label>
+        </div>
+        <div class="options-button-panel">
+            <button class="options" id="exportButton">📥 Export</button>
+            <button class="options" id="themeToggleButton">🌙 Toggle Dark Mode</button>
+        </div>
         </details>
 
-        <!-- Options Panel -->
-        <details class="options-panel my-4 p-4 bg-white rounded-lg shadow-md" id="optionsPanel">
-            <summary class="font-semibold text-lg cursor-pointer">Options</summary>
-            <div class="controls pt-2">
-                <label><input type="checkbox" id="hideWatchedToggle"> Hide Watched Films</label>
-                <label><input type="checkbox" id="hidePinnedToggle"> Hide Pinned Films</label>
-                <label><input type="checkbox" id="challengeModeToggle"> Challenge Mode (Unwatched + Unpinned)</label>
-            </div>
-            <div class="options-button-panel mt-4">
-                <button class="options" id="exportButton">📥 Export</button>
-                <button class="options" id="themeToggleButton">🌙 Toggle Dark Mode</button>
-            </div>
-        </details>
-
-        <!-- Filter Panel -->
-        <details class="filter-panel my-4 p-4 bg-white rounded-lg shadow-md" id="filterPanel">
-            <summary class="font-semibold text-lg cursor-pointer">Filter Options</summary>
-            <div class="controls pt-2">
-                <input type="text" id="searchInput" placeholder="Search..." disabled>
-                <select id="watchedFilter" disabled>
-                    <option value="">Watched: All</option>
-                    <option value="Yes">Watched: Yes</option>
-                    <option value="No">Watched: No</option>
-                </select>
-                <select id="formatFilter" disabled>
-                    <option value="">Format: All</option>
-                </select>
-                <select id="classificationFilter" disabled>
-                    <option value="">Classification: All</option>
-                </select>
-                <select id="platformFilter" disabled>
-                    <option value="">Platform/s: All</option>
-                </select>
-                <select id="eventYearFilter" disabled>
-                    <option value="">Event Year: All</option>
-                </select>
-                <select id="periodFilter" disabled>
-                    <option value="">Period: All</option>
-                </select>
-                <select id="pinnedFilter" disabled>
-                    <option value="">Pinned: All</option>
-                    <option value="Yes">Pinned: Yes</option>
-                    <option value="No">Pinned: No</option>
-                </select>
-                <button id="clearFilters">Clear Filters</button>      
-            </div>    
-            <div id="filterCount" class="filter-count mt-2">Showing 0 records</div>
-        </details>
+            <!-- Filter Panel -->
+        <details class="filter-panel">
+        <summary>Filter Options</summary>
+        <div class="controls">
+        <input type="text" id="searchInput" placeholder="Search..." disabled>
+        <select id="watchedFilter" disabled>
+            <option value="">Watched: All</option>
+            <option value="Yes">Watched: Yes</option>
+            <option value="No">Watched: No</option>
+        </select>
+        <select id="formatFilter" disabled>
+            <option value="">Format: All</option>
+        </select>
+        <select id="classificationFilter" disabled>
+            <option value="">Classification: All</option>
+        </select>
+        <select id="platformFilter" disabled>
+            <option value="">Platform/s: All</option>
+        </select>
+        <select id="eventYearFilter" disabled>
+            <option value="">Event Year: All</option>
+        </select>
+        <select id="periodFilter" disabled>
+            <option value="">Period: All</option>
+        </select>
+        <select id="pinnedFilter" disabled>
+            <option value="">Pinned: All</option>
+            <option value="Yes">Pinned: Yes</option>
+            <option value="No">Pinned: No</option>
+        </select>
+        <button id="clearFilters">Clear Filters</button>      
+        </div>    
+        <div id="filterCount" class="filter-count">Showing 0 records</div>
+    </details>
 
 
         <!-- Timeline Header and Data -->
         <h1 class="text-3xl font-bold mb-4 text-center">WW2 Film Timeline</h1>
         
-        <div id="timeline" class="space-y-6">
-            <p id="initialPrompt" class="text-center text-gray-500">Loading data...</p>
+        <div class="timeline" id="timeline">
+            <div id="initialPrompt" class="initial-prompt">Loading data...</div>
             <div class="timeline-container" id="timelineContainer">
                 <!-- Timeline visualization will be rendered here by timeline.js -->
             </div>
