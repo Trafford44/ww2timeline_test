@@ -108,13 +108,20 @@
    ============================ */
 #timelineMinimap {
   position: fixed;
-  top: 0;
+  top: 90px;
   right: 0;
-  width: 100px;              /* match hamburger for consistency */
-  height: 100vh;
+  width: 100px;              /* match with handle: body.minimap-open #minimapHandle */
+  height: 100vh;    /* use dvh to stop “jump”, caused by mobile browsers dynamically showing and hiding the URL bar if supported - see below*/
   z-index: 999;
   transform: translateX(100%);   /* hidden off-screen */
   transition: transform 0.3s ease-out;
+}
+
+/* Modern browsers override */
+@supports (height: 100dvh) {
+  #timelineMinimap {
+    height: 100dvh;
+  }
 }
 
 #timelineMinimap.open {
