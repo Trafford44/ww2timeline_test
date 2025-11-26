@@ -202,23 +202,6 @@ function renderMinimap(timelineData) {
         highlightActiveMinimapYear();
     });
 
-    setViewportHeight();
-}
-
-/**
- * setViewportHeight()
- * 
- * Fixes mobile viewport height issues caused by browser chrome (URL bar).
- * - Reads window.innerHeight and converts it to 1% units.
- * - Stores the value in the CSS variable --vh.
- * - Use in CSS: height: calc(var(--vh) * 100);
- * 
- * Ensures consistent full-height panels across devices.  The override only applies if JS is active
- */
-function setViewportHeight() {
-  const vh = window.innerHeight * 0.01;
-  document.documentElement.style.setProperty('--vh', `${vh}px`);
-  document.documentElement.classList.add('has-vh-fix');
 }
 
 function highlightActiveMinimapYear() {
@@ -283,11 +266,6 @@ function initializeToolbarListeners() {
             }
         }
     });
-
-    // for viewport height. See setViewportHeight() function above
-    window.addEventListener('resize', setViewportHeight);
-    window.addEventListener('orientationchange', setViewportHeight);
-    window.addEventListener('scroll', setViewportHeight);
 }
 
 // Ensure functions are exposed globally or exported for use in main.js
