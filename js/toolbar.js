@@ -213,11 +213,12 @@ function renderMinimap(timelineData) {
  * - Stores the value in the CSS variable --vh.
  * - Use in CSS: height: calc(var(--vh) * 100);
  * 
- * Ensures consistent full-height panels across devices.
+ * Ensures consistent full-height panels across devices.  The override only applies if JS is active
  */
 function setViewportHeight() {
   const vh = window.innerHeight * 0.01;
   document.documentElement.style.setProperty('--vh', `${vh}px`);
+  document.documentElement.classList.add('has-vh-fix');
 }
 
 function highlightActiveMinimapYear() {
