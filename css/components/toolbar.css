@@ -124,6 +124,10 @@
   }
 }
 
+#timelineMinimap {
+  height: calc(var(--vh, 1vh) * 100);
+}
+
 #timelineMinimap.open {
   transform: translateX(0);
 }
