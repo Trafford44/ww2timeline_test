@@ -5,6 +5,25 @@
   --primary-color: #0d6efd;
 }
 
+html, body {
+  height: 100%; /* baseline */
+}
+
+#appBody {
+  height: 100vh; /* fallback */
+}
+
+@supports (height: 100dvh) {
+  #app {
+    height: 100dvh; /* modern browsers */
+  }
+}
+
+html.has-vh-fix #app {
+  height: calc(var(--vh, 1vh) * 100); /* JS fallback */
+}
+
+
 body {
   background-color: var(--bg-color);
   color: var(--text-color);
@@ -50,3 +69,4 @@ a:hover {
     opacity: 0.7; /* Simple visual feedback */
 }
 /* --- END INFO INDICATOR CSS --- */
+

@@ -286,6 +286,8 @@ function initializeToolbarListeners() {
 
     // for viewport height. See setViewportHeight() function above
     window.addEventListener('resize', setViewportHeight);
+    window.addEventListener('orientationchange', setViewportHeight);
+    window.addEventListener('scroll', setViewportHeight);
 }
 
 // Ensure functions are exposed globally or exported for use in main.js
