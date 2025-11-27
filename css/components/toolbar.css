@@ -98,6 +98,7 @@
   z-index: 999;
   transform: translateX(-100%);  /* hidden off-screen */
   transition: transform 0.3s ease-out;
+  -webkit-overflow-scrolling: touch; /* smooth iOS scrolling */
 }
 
 #hamburgerPanel.active {
@@ -117,6 +118,7 @@
   z-index: 999;
   transform: translateX(100%);   /* hidden off-screen */
   transition: transform 0.3s ease-out;
+  -webkit-overflow-scrolling: touch; /* smooth iOS scrolling */
 }
 
 
