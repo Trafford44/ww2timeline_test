@@ -93,7 +93,8 @@
   top: 90px;
   left: 0;
   width: 280px;              /* unify width to match handle offset */
-  height: 100vh;
+  height: calc(100% - 90px); /* fill viewport minus toolbar */
+  overflow-y: auto;   /* enable vertical scrolling */
   z-index: 999;
   transform: translateX(-100%);  /* hidden off-screen */
   transition: transform 0.3s ease-out;
@@ -111,7 +112,8 @@
   top: 90px;
   right: 0;
   width: 100px;              /* match with handle: body.minimap-open #minimapHandle */
-  height: 100vh;
+  height: calc(100% - 90px); /* fill viewport minus toolbar */
+  overflow-y: auto;   /* enable vertical scrolling */
   z-index: 999;
   transform: translateX(100%);   /* hidden off-screen */
   transition: transform 0.3s ease-out;
