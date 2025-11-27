@@ -6,6 +6,7 @@
 
 import { toggleAllYears } from './timeline.js';
 import { goToTop, goToBottom } from './timeline.js';
+import { refreshApp } from './main.js';
 
 // Global state tracking which main toolbar button is currently active
 let activeToolbarButton = null;
@@ -17,6 +18,7 @@ const elements = {
     collapseAllBtn: document.getElementById('collapseAllBtn'),
     openAllBtn: document.getElementById('openAllBtn'),
     toggleAllYearsBtn: document.getElementById('toggleAllYearsBtn'),
+    refreshAppBtn: document.getElementById('refreshAppBtn'),
     goTopBtn: document.getElementById('goTopBtn'),
     goBottomBtn: document.getElementById('goBottomBtn'),
     
@@ -247,6 +249,10 @@ function initializeToolbarListeners() {
         toggleAllYearsBtn.addEventListener('click', toggleAllYears);
     }
 
+    refreshAppBtn.addEventListener('click', () => {
+        refreshApp(); // Re-initialize the application
+    });
+    
     if (goTopBtn) {
         goTopBtn.addEventListener('click', goToTop);
     }

@@ -23,6 +23,13 @@ let domain = {};
 let settings = {};
 let general;
 
+export function setUIMessage(uiMessage) {
+    const initialPrompt = document.getElementById("initialPrompt");
+    if (initialPrompt) {
+        initialPrompt.textContent = uiMessage;
+    }   
+}
+
 /**
  * Configures initial UI text and browser title based on domain and settings.
  * Sets document.title, input placeholders, and the no-data message.
@@ -72,9 +79,9 @@ function applyFeatureVisibility() {
  * Bootstraps the entire application lifecycle.
  * Loads config, initializes UI, fetches data, loads pinned state, and applies filters.
  */
-async function initApp() { 
+export async function initApp() { 
     logActivity("info", "initApp: Startup initiated");
-    
+
     try { 
         // 1. CONFIG LOADING
         const config = await loadConfig(domainKey);
@@ -134,6 +141,24 @@ async function initApp() {
             retryCallback: () => initApp()
         });
     }
+}
+
+export async function refreshApp() {
+    logActivity("info", "refreshApp: Manual refresh triggered");
+    clearTimeline();
+    //setUIMessage('Loading data..');
+    const data = await fetchData(features, domain, settings);
+    
+    applyFilters();
+    renderMinimap(data);
+    loadFeatures(data);
+}
+
+function clearTimeline() {
+  const container = document.getElementById('timelineContainer');
+  if (container) {
+    container.innerHTML = ''; // remove all existing timeline items
+  }
 }
 
 /**

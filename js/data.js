@@ -3,6 +3,7 @@ import { logActivity } from './alerts/logger.js';
 import { showAlert } from './alerts/alertUtils.js';
 import { errorHandler } from './alerts/errorUtils.js';
 import { normaliseEventDate, convertToLocalDate } from "./dateUtils.js";
+import { setUIMessage } from './main.js';
 
 export let dataset = [];
 
@@ -11,13 +12,7 @@ export async function fetchData(features, domain, settings) {
   logActivity("information", "fetchData starting", { dataSource, domain: domain?.subject });
   
   let data;
-  const initialPrompt = document.getElementById("initialPrompt");
-  
-  // 1. Show UI status
-  const loadingMessage = `Loading data for ${domain?.subject || 'application'} from ${dataSource}...`;
-  if (initialPrompt) initialPrompt.textContent = loadingMessage;
-  // Store the alert instance so we can dismiss it later
-  // const loadingAlert = showAlert(loadingMessage, "info", { autoDismiss: false });
+  setUIMessage(`Loading data for ${domain?.subject || 'application'} from ${dataSource}...`);
 
   try {
       if (dataSource === "localJSON") {
@@ -49,8 +44,7 @@ export async function fetchData(features, domain, settings) {
       
   } finally {
       // 3. UI Cleanup (Crucial!)
-      // if (loadingAlert) loadingAlert.dismiss(); // Dismiss the persistent loading alert
-      if (initialPrompt) initialPrompt.textContent = ''; // Clear the initial prompt
+      setUIMessage(''); // Clear any loading message
   }
 }
 

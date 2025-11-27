@@ -7,6 +7,7 @@ import { domainKey } from './domain.js';
 import { showAlert } from './alerts/alertUtils.js';
 import { errorHandler } from './alerts/errorUtils.js'; // KEPT for main async function
 import { logActivity } from './alerts/logger.js';
+import { setUIMessage } from './main.js';
 
 
 let domain = {};
@@ -409,7 +410,6 @@ export async function renderTimeline(filteredData) {
 
   try {
     const timelineContainer = document.getElementById("timelineContainer");
-    const initialPrompt = document.getElementById("initialPrompt");
     let layoutIndex = 0; // This counter tracks the position of ALL Level 1 events globally.
 
     const config = await loadConfig(domainKey);
@@ -424,12 +424,9 @@ export async function renderTimeline(filteredData) {
     timelineContainer.innerHTML = "";
 
     if (!Array.isArray(filteredData) || filteredData.length === 0) {
-      initialPrompt.style.display = "block";
-      initialPrompt.textContent = "No data found or all records filtered out.";
+      setUIMessage("No data found or all records filtered out.");
       return;
     }
-
-    initialPrompt.style.display = "none";
    
 
     const grouped = groupEventsByYear(filteredData);
