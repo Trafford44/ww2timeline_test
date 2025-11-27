@@ -91,6 +91,7 @@
 #hamburgerPanel {
   position: fixed;
   top: 90px;
+  bottom: 0;                  /* anchor to bottom of viewport */
   left: 0;
   width: 280px;              /* unify width to match handle offset */
   height: calc(100% - 90px); /* fill viewport minus toolbar */
@@ -111,6 +112,7 @@
 #timelineMinimap {
   position: fixed;
   top: 90px;
+  bottom: 0;                  /* anchor to bottom of viewport */
   right: 0;
   width: 100px;              /* match with handle: body.minimap-open #minimapHandle */
   height: calc(100% - 90px); /* fill viewport minus toolbar */
