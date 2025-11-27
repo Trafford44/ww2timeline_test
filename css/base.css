@@ -5,6 +5,11 @@
   --primary-color: #0d6efd;
 }
 
+/* --- Stop overscroll refresh --- */
+html, body {
+  overscroll-behavior-y: contain;
+}
+
 body {
   background-color: var(--bg-color);
   color: var(--text-color);
