@@ -31,6 +31,36 @@
   color: var(--primary, #0077cc);
 }
 
+#toolbarSearch {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;        /* space between icon and textbox */
+}
+
+#toolbarSearchBtn {
+  font-size: 1rem;     /* keep consistent with other buttons */
+  padding: 0.25rem 0.5rem;
+}
+
+#toolbarSearchInput {
+  width: 140px;        /* adjust width as needed */
+  padding: 0.25rem;
+  font-size: 0.9rem;
+}
+
+.search-wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+#toolbarSearchClear {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
 /* ============================
    Panels (hamburger + minimap)
    ============================ */
@@ -67,6 +97,17 @@
 .panel-close:focus {
   outline: none;
 }
+
+.timeline-minimap .panel-header {
+  flex-direction: column;   /* stack children vertically */
+  align-items: flex-end;    /* ✖ aligned to the right */
+}
+
+.timeline-minimap .panel-title {
+  margin-top: 0.5rem;       /* spacing below the ✖ */
+  align-self: flex-start;   /* title aligned left */
+}
+
 
 .panel-body {
   padding: 1rem;

@@ -10,16 +10,28 @@
 <body id="appBody">
 
 
-    <!-- 1. TOP TOOLBAR (Includes Hamburger, Legend, Stats, Options, Filters) -->
+    <!-- 1. TOP TOOLBAR -->
     <div id="toolbarTop">
-        <button id="hamburgerToggle" title="Toggle Options & Settings">☰</button> 
-        <button id="legendToggle" title="Toggle Legend">📚</button>
-        <button id="statsToggle" title="Toggle Stats">📊</button>
-        <button id="optionsToggle" title="Toggle Options">⚙️</button>
-        <button id="filtersToggle" title="Toggle Filters">🔍</button>
-        <!-- Updated: Icon only (🌙) to signify the switch to dark mode -->
-        <button id="themeToggleButton_Toolbar" title="Toggle Theme">🌙</button>
+    <!-- Hamburger menu stays -->
+    <button id="hamburgerToggle" title="Toggle Options & Settings">☰</button> 
+
+    <!-- Collapse / Open -->
+    <button id="toggleAllYearsBtn" title="Collapse/Expand All">➖</button>
+
+
+    <!-- Navigation -->
+    <button id="goTopBtn" title="Go to Top">⬆️</button>
+    <button id="goBottomBtn" title="Go to Bottom">⬇️</button>
+
+    <!-- Search -->
+    <div class="search-wrapper">
+        <button id="toolbarSearchBtn" title="Search">🔍</button>
+        <input type="text" id="toolbarSearchInput" placeholder="Search…" />
+        <button id="toolbarSearchClear" title="Clear">✖</button>
     </div>
+
+    </div>
+
 
 
     <!-- 2. LEFT SLIDING PANEL -->
@@ -136,8 +148,8 @@
     <!-- 3. RIGHT SLIDING PANEL (Minimap) -->
     <aside class="timeline-minimap" id="timelineMinimap">
         <div class="panel-header">
+            <button id="minimapClose" class="panel-close" aria-label="Close minimap">✖</button>            
             <h3 class="panel-title">Timeline Map</h3>
-            <button id="minimapClose" class="panel-close" aria-label="Close minimap">✖</button>
         </div>
         <div id="minimapContent" class="panel-body panel-scroll">
             <div class="panel-center-muted">Loading minimap data...</div>

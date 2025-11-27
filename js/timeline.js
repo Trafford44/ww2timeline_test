@@ -10,6 +10,8 @@ import { logActivity } from './alerts/logger.js';
 
 
 let domain = {};
+let allYearsCollapsed = false; // track state globally
+
 
 /**
  * Groups event data by its event year for timeline rendering.
@@ -514,5 +516,55 @@ export async function renderTimeline(filteredData) {
     errorHandler(error, "renderTimeline failed.");
     throw error;
   }
+}
+
+export function collapseAllYears() {
+  document.querySelectorAll('.year-group').forEach(yearGroup => {
+    yearGroup.classList.add('collapsed');
+  });
+}
+
+export function openAllYears() {
+  document.querySelectorAll('.year-group').forEach(yearGroup => {
+    yearGroup.classList.remove('collapsed');
+  });
+}
+
+
+export function toggleAllYears() {
+  const yearGroups = document.querySelectorAll('.year-group');
+
+  if (allYearsCollapsed) {
+    // Currently collapsed → open all
+    yearGroups.forEach(yearGroup => yearGroup.classList.remove('collapsed'));
+    allYearsCollapsed = false;
+    updateToggleButton(false);
+  } else {
+    // Currently open → collapse all
+    yearGroups.forEach(yearGroup => yearGroup.classList.add('collapsed'));
+    allYearsCollapsed = true;
+    updateToggleButton(true);
+  }
+}
+
+function updateToggleButton(collapsed) {
+  const btn = document.getElementById('toggleAllYearsBtn');
+  if (!btn) return;
+  if (collapsed) {
+    btn.textContent = "➕"; // icon for "Open All"
+    btn.title = "Open All Years";
+  } else {
+    btn.textContent = "➖"; // icon for "Collapse All"
+    btn.title = "Collapse All Years";
+  }
+}
+
+export function goToTop() {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+export function goToBottom() {
+  const max = document.documentElement.scrollHeight;
+  window.scrollTo({ top: max, behavior: 'smooth' });
 }
 

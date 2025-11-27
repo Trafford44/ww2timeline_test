@@ -4,17 +4,21 @@
  * and the Minimap, ensuring only one main panel is open at a time.
  */
 
+import { toggleAllYears } from './timeline.js';
+import { goToTop, goToBottom } from './timeline.js';
+
 // Global state tracking which main toolbar button is currently active
 let activeToolbarButton = null;
 
 // --- DOM ELEMENTS ---
 const elements = {
     // Top Bar Buttons
-    legendToggle: document.getElementById('legendToggle'),
-    statsToggle: document.getElementById('statsToggle'),
-    optionsToggle: document.getElementById('optionsToggle'),
-    filtersToggle: document.getElementById('filtersToggle'),
     hamburgerToggle: document.getElementById('hamburgerToggle'),
+    collapseAllBtn: document.getElementById('collapseAllBtn'),
+    openAllBtn: document.getElementById('openAllBtn'),
+    toggleAllYearsBtn: document.getElementById('toggleAllYearsBtn'),
+    goTopBtn: document.getElementById('goTopBtn'),
+    goBottomBtn: document.getElementById('goBottomBtn'),
     
     // Top Bar Panels (Details elements)
     legendPanel: document.querySelector('.timeline-legend'),
@@ -239,11 +243,18 @@ function highlightActiveMinimapYear() {
  */
 function initializeToolbarListeners() {
     // Main toolbar buttons (Top Bar Panels)
-    if (elements.legendToggle) elements.legendToggle.addEventListener('click', () => togglePanel(elements.legendPanel, elements.legendToggle));
-    if (elements.statsToggle) elements.statsToggle.addEventListener('click', () => togglePanel(elements.statsPanel, elements.statsToggle));
-    if (elements.optionsToggle) elements.optionsToggle.addEventListener('click', () => togglePanel(elements.optionsPanel, elements.optionsToggle));
-    if (elements.filtersToggle) elements.filtersToggle.addEventListener('click', () => togglePanel(elements.filterPanel, elements.filtersToggle));
-    
+    if (toggleAllYearsBtn) {
+        toggleAllYearsBtn.addEventListener('click', toggleAllYears);
+    }
+
+    if (goTopBtn) {
+        goTopBtn.addEventListener('click', goToTop);
+    }
+
+    if (goBottomBtn) {
+        goBottomBtn.addEventListener('click', goToBottom);
+    }
+
     // Minimap buttons (Slide Right)
     if (elements.minimapHandle) elements.minimapHandle.addEventListener('click', () => toggleMinimap());
     if (elements.minimapClose) elements.minimapClose.addEventListener('click', () => toggleMinimap(false));

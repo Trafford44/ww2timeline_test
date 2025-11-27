@@ -6,6 +6,9 @@ import { logActivity } from './alerts/logger.js';
 import { errorHandler } from './alerts/errorUtils.js';
 
 // --- DOM Element References ---
+export const searchInputToolbarBtn = document.getElementById('toolbarSearchBtn');
+export const searchInputToolbarInput = document.getElementById('toolbarSearchInput');
+export const searchClearToolbar = document.getElementById('toolbarSearchClear');
 export const searchInput = document.getElementById('searchInput');
 export const watchedFilter = document.getElementById('watchedFilter');
 export const formatFilter = document.getElementById('formatFilter');
@@ -143,9 +146,11 @@ export function parseSearchQuery(query) {
  * @returns {Object} A structured object of current filter values.
  */
 function getFilterValues() {
+    // Prefer toolbar search if present, else fall back to filter panel
+    const rawSearch = getDomValue(searchInputToolbarInput) || getDomValue(searchInput);
+
     return {
-        // Use getDomValue for robustness
-        search: parseSearchQuery(getDomValue(searchInput)),
+        search: parseSearchQuery(rawSearch),
         watched: getDomValue(watchedFilter),
         format: getDomValue(formatFilter),
         classification: getDomValue(classificationFilter),
@@ -154,12 +159,12 @@ function getFilterValues() {
         period: getDomValue(periodFilter),
         pinned: getDomValue(pinnedFilter),
         
-        // Use optional chaining for toggles
         hideWatched: hideWatchedToggle?.checked || false,
         hidePinned: hidePinnedToggle?.checked || false,
         challengeMode: challengeModeToggle?.checked || false
     };
 }
+
 
 /**
  * Prepares the export button to trigger data export using the current filtered dataset.
@@ -369,10 +374,41 @@ hidePinnedToggle?.addEventListener("change", applyFilters);
 challengeModeToggle?.addEventListener("change", applyFilters);
 
 // Search input is debounced for performance (but here we use direct call as per current design)
-if (searchInput) searchInput.addEventListener("input", applyFilters);
-
+if (searchInput) {
+    searchInput.addEventListener("input", applyFilters);
+    searchInput.addEventListener("focus", () => {
+    if (searchInputToolbarInput) searchInputToolbarInput.value = "";
+    });
+}
 
 if (clearFilters) clearFilters.addEventListener("click", resetFilters);
+
+
+// Toolbar search listeners
+// Toolbar search listeners
+if (searchInputToolbarBtn) {
+    searchInputToolbarBtn.addEventListener("click", applyFilters);
+}
+
+if (searchInputToolbarInput) {
+    searchInputToolbarInput.addEventListener("input", applyFilters); // live filtering
+    searchInputToolbarInput.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+            applyFilters();
+        }
+    });
+    searchInputToolbarInput.addEventListener("focus", () => {
+    if (searchInput) searchInput.value = "";
+    });
+
+}
+
+if (searchClearToolbar) {
+    searchClearToolbar.addEventListener("click", () => {
+        searchInputToolbarInput.value = "";
+        resetFilters(); // clear all filters and reapply
+    });
+}
 
 
 // CRITICAL: Call resetFilters on module load to ensure all filter states are initially set to "" (All)
