@@ -22,39 +22,14 @@
     </div>
 
 
-    <!-- 2. LEFT SLIDING PANEL (Tailwind for look, Custom CSS for slide) -->
+    <!-- 2. LEFT SLIDING PANEL -->
     <aside class="toolbar-hamburger" id="hamburgerPanel">
-    <div class="panel-header">
-        <h3 class="panel-title">Options & Settings</h3>
-        <button id="hamburgerClose" class="panel-close" aria-label="Close menu">✖</button>
-    </div>
-    <div id="hamburgerContent" class="panel-body">
-        <p class="panel-muted">Your settings and configuration options will appear here.</p>
-    </div>
-    </aside>
-
-    <!-- 3. RIGHT SLIDING PANEL (Minimap) -->
-    <aside class="timeline-minimap" id="timelineMinimap">
-    <div class="panel-header">
-        <h3 class="panel-title">Timeline Map</h3>
-        <button id="minimapClose" class="panel-close" aria-label="Close minimap">✖</button>
-    </div>
-    <div id="minimapContent" class="panel-body panel-scroll">
-        <div class="panel-center-muted">Loading minimap data...</div>
-    </div>
-    </aside>
-
-    <!-- 4. Minimap Drag/Click Handle (Local CSS) -->
-    <div id="minimapHandle" class="minimap-handle" title="Toggle Timeline Minimap">
-    <svg id="minimapIcon" xmlns="http://www.w3.org/2000/svg" class="minimap-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="15 18 9 12 15 6"></polyline>
-    </svg>
-    </div>
-
-    <!-- 5. MAIN TIMELINE CONTENT -->
-    <!-- Keeps Tailwind classes as they are standard for the main content layout -->
-    <div class="container" id="mainAppContent">
-        
+        <div class="panel-header">
+            <h3 class="panel-title">Options & Settings</h3>
+            <button id="hamburgerClose" class="panel-close" aria-label="Close menu">✖</button>
+        </div>
+        <div id="hamburgerContent" class="panel-body">
+            <p class="panel-muted">Your settings and configuration options will appear here.</p>
         <!-- Filter/Search Panel (Your Existing Details Panels) -->
         <details class="timeline-legend">
         <summary>Timeline Legend</summary>
@@ -154,6 +129,32 @@
             </div>    
             <div id="filterCount" class="filter-count">Showing 0 records</div>
         </details>
+
+        </div>
+    </aside>
+
+    <!-- 3. RIGHT SLIDING PANEL (Minimap) -->
+    <aside class="timeline-minimap" id="timelineMinimap">
+        <div class="panel-header">
+            <h3 class="panel-title">Timeline Map</h3>
+            <button id="minimapClose" class="panel-close" aria-label="Close minimap">✖</button>
+        </div>
+        <div id="minimapContent" class="panel-body panel-scroll">
+            <div class="panel-center-muted">Loading minimap data...</div>
+        </div>
+    </aside>
+
+    <!-- 4. Minimap Drag/Click Handle (Local CSS) -->
+    <div id="minimapHandle" class="minimap-handle" title="Toggle Timeline Minimap">
+    <svg id="minimapIcon" xmlns="http://www.w3.org/2000/svg" class="minimap-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="15 18 9 12 15 6"></polyline>
+    </svg>
+    </div>
+
+    <!-- 5. MAIN TIMELINE CONTENT -->
+    <!-- Keeps Tailwind classes as they are standard for the main content layout -->
+    <div class="container" id="mainAppContent">
+        
 
 
         <!-- Timeline Header and Data -->

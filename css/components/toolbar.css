@@ -90,7 +90,7 @@
    ============================ */
 #hamburgerPanel {
   position: fixed;
-  top: 0;
+  top: 90px;
   left: 0;
   width: 280px;              /* unify width to match handle offset */
   height: 100vh;
