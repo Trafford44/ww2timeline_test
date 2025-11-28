@@ -54,11 +54,13 @@
   gap: 0.25rem;
 }
 
-#toolbarSearchClear {
-  background: none;
+#toolbarTop #toolbarSearchClear {
+  font-size: 1.0rem;
+  color: #9ca3af;
+  background: transparent;
   border: none;
   cursor: pointer;
-  font-size: 1rem;
+  padding: 0.0rem;
 }
 
 /* ============================
