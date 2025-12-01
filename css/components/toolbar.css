@@ -19,7 +19,7 @@
 #toolbarTop button {
   padding: 0.5rem;
   font-size: 1.25rem;
-  color: #374151;
+  color: #82a6a7;
   border-radius: 9999px;
   background: none;
   border: none;
@@ -28,7 +28,7 @@
 }
 
 #toolbarTop button:hover {
-  color: var(--primary, #0077cc);
+  color: var(--primary, #82a6a7);
 }
 
 #toolbarSearch {
@@ -63,6 +63,19 @@
   padding: 0.0rem;
 }
 
+#toggleAllYearsBtn {
+  font-size: 1.25rem;
+  color: #689992; /* grey */
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+#toggleAllYearsBtn:hover {
+  color: var(--primary, #0077cc); /* blue on hover */
+}
+
 /* ============================
    Panels (hamburger + minimap)
    ============================ */
@@ -75,7 +88,7 @@
 
 /* Panel headers and content (semantic, shared) */
 .panel-header {
-  padding: 1rem;
+  /* padding: 1rem; */   /* moved to panel-body for better spacing */
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -95,6 +108,7 @@
   background: transparent;
   border: none;
   cursor: pointer;
+  align-self: flex-start;   /* title aligned left */
 }
 .panel-close:focus {
   outline: none;
@@ -134,10 +148,10 @@
 #hamburgerPanel {
   position: fixed;
   top: 90px;
-  bottom: 0;                  /* anchor to bottom of viewport */
+  bottom: 90px;                  /* anchor to bottom of viewport */
   left: 0;
   width: 280px;              /* unify width to match handle offset */
-  height: calc(100% - 90px); /* fill viewport minus toolbar */
+  height: calc(100% - 90px - 90px); /* fill viewport minus toolbar */
   overflow-y: auto;   /* enable vertical scrolling */
   z-index: 999;
   transform: translateX(-100%);  /* hidden off-screen */
@@ -155,10 +169,10 @@
 #timelineMinimap {
   position: fixed;
   top: 90px;
-  bottom: 0;                  /* anchor to bottom of viewport */
+  bottom: 90px;                  /* anchor to bottom of viewport */
   right: 0;
   width: 100px;              /* match with handle: body.minimap-open #minimapHandle */
-  height: calc(100% - 90px); /* fill viewport minus toolbar */
+  height: calc(100% - 90px - 90px); /* fill viewport minus toolbar */
   overflow-y: auto;   /* enable vertical scrolling */
   z-index: 999;
   transform: translateX(100%);   /* hidden off-screen */

@@ -548,10 +548,10 @@ function updateToggleButton(collapsed) {
   const btn = document.getElementById('toggleAllYearsBtn');
   if (!btn) return;
   if (collapsed) {
-    btn.textContent = "➕"; // icon for "Open All"
+    btn.textContent = "▼"; // icon for "Open All"
     btn.title = "Open All Years";
   } else {
-    btn.textContent = "➖"; // icon for "Collapse All"
+    btn.textContent = "▶"; // icon for "Collapse All"
     btn.title = "Collapse All Years";
   }
 }
