@@ -148,15 +148,18 @@
 #hamburgerPanel {
   position: fixed;
   top: 90px;
-  bottom: 90px;                  /* anchor to bottom of viewport */
+  bottom: 50px;                  /* anchor to bottom of viewport */
   left: 0;
   width: 280px;              /* unify width to match handle offset */
-  height: calc(100% - 90px - 90px); /* fill viewport minus toolbar */
+  height: calc(100% - 90px - 50px); /* fill viewport minus toolbar */
   overflow-y: auto;   /* enable vertical scrolling */
   z-index: 999;
   transform: translateX(-100%);  /* hidden off-screen */
   transition: transform 0.3s ease-out;
   -webkit-overflow-scrolling: touch; /* smooth iOS scrolling */
+  border-top-right-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+  overflow: hidden; /* ensures inner content respects the rounding */    
 }
 
 #hamburgerPanel.active {
@@ -169,15 +172,18 @@
 #timelineMinimap {
   position: fixed;
   top: 90px;
-  bottom: 90px;                  /* anchor to bottom of viewport */
+  bottom: 50px;                  /* anchor to bottom of viewport */
   right: 0;
   width: 100px;              /* match with handle: body.minimap-open #minimapHandle */
-  height: calc(100% - 90px - 90px); /* fill viewport minus toolbar */
+  height: calc(100% - 90px - 50px); /* fill viewport minus toolbar */
   overflow-y: auto;   /* enable vertical scrolling */
   z-index: 999;
   transform: translateX(100%);   /* hidden off-screen */
   transition: transform 0.3s ease-out;
   -webkit-overflow-scrolling: touch; /* smooth iOS scrolling */
+  border-top-left-radius: 0.5rem;
+  border-bottom-left-radius: 0.5rem;
+  overflow: hidden; /* ensures inner content respects the rounding */    
 }
 
 
@@ -255,6 +261,13 @@
   color: var(--minimap-text, #444);
   cursor: pointer;
   transition: background-color 150ms ease;
+}
+
+.minimap-current-year {
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 0.5rem;
+  color: #0077cc; /* or your grey/blue palette */
 }
 
 /* Active year highlight */

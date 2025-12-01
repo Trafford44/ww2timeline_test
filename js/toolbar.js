@@ -213,29 +213,35 @@ function renderMinimap(timelineData) {
 function highlightActiveMinimapYear() {
   const minimapYears = document.querySelectorAll(".minimap-year");
   const yearMarkers = document.querySelectorAll(".year-marker");
+  const currentYearLabel = document.getElementById("minimapCurrentYear");
+console.log("Year markers found:", yearMarkers.length);
+  if (yearMarkers.length === 0 || minimapYears.length === 0) return;
 
-  if (yearMarkers.length === 0 || minimapYears.length === 0) {
-    //console.warn("No year markers or minimap years found.");
-    return; // nothing to observe yet
-  }
-
-  const observer = new IntersectionObserver(entries => {
+    const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => {
-      if (entry.isIntersecting) {
+        if (entry.isIntersecting) {
         const label = entry.target.querySelector(".year-label");
         if (!label) return;
-
         const visibleYear = label.textContent.trim();
 
         minimapYears.forEach(el => {
-          el.classList.toggle("active-year", el.textContent.trim() === visibleYear);
+            el.classList.toggle("active-year", el.textContent.trim() === visibleYear);
         });
-      }
+
+        if (currentYearLabel) {
+            currentYearLabel.textContent = visibleYear;
+        }
+        }
     });
-  }, { threshold: 0.5 });
+    }, {
+    root: null,        // window scroll
+    threshold: 0.5     // lower threshold so it triggers earlier
+    });
+
 
   yearMarkers.forEach(marker => observer.observe(marker));
 }
+
 
 
 
