@@ -159,7 +159,6 @@
   -webkit-overflow-scrolling: touch; /* smooth iOS scrolling */
   border-top-right-radius: 0.5rem;
   border-bottom-right-radius: 0.5rem;
-  overflow: hidden; /* ensures inner content respects the rounding */    
 }
 
 #hamburgerPanel.active {
@@ -182,8 +181,7 @@
   transition: transform 0.3s ease-out;
   -webkit-overflow-scrolling: touch; /* smooth iOS scrolling */
   border-top-left-radius: 0.5rem;
-  border-bottom-left-radius: 0.5rem;
-  overflow: hidden; /* ensures inner content respects the rounding */    
+  border-bottom-left-radius: 0.5rem;   
 }
 
 

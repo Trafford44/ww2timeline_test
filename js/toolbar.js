@@ -214,7 +214,7 @@ function highlightActiveMinimapYear() {
   const minimapYears = document.querySelectorAll(".minimap-year");
   const yearMarkers = document.querySelectorAll(".year-marker");
   const currentYearLabel = document.getElementById("minimapCurrentYear");
-console.log("Year markers found:", yearMarkers.length);
+
   if (yearMarkers.length === 0 || minimapYears.length === 0) return;
 
     const observer = new IntersectionObserver(entries => {
